@@ -1,0 +1,43 @@
+#!/usr/bin/env php
+<?php
+
+date_default_timezone_set('America/Chicago');
+
+$root = realpath(dirname(__FILE__));
+
+// Include path
+$paths = array(
+    ".",
+    $root . DIRECTORY_SEPARATOR,
+    $root . DIRECTORY_SEPARATOR . 'lib',
+);
+set_include_path(implode(PATH_SEPARATOR, $paths));
+
+require_once 'Qi/Console/Std.php';
+require_once 'Qi/Console/Terminal.php';
+require_once 'Qi/Console/ArgV.php';
+require_once 'Qis.php';
+require_once 'QisExceptionHandler.php';
+
+if (!function_exists('get_called_class')) {
+    include_once 'get_called_class.func.php';
+}
+
+$args = new Qi_Console_ArgV(
+    $argv,
+    array(
+        'arg:action' => 'Subcommand',
+        'help|h'     => 'Show help',
+        'direct|d'   => 'Show results directly in console',
+        'verbose|v'  => 'Include more verbose output',
+        'quiet|q'    => 'Print less messages',
+        'version'    => 'Show version',
+        'no-color'   => 'Don\'t use color output',
+    )
+);
+$terminal = new Qi_Console_Terminal();
+
+$qis = new Qis($args, $terminal);
+QisExceptionHandler::initHandlers($qis);
+$value = $qis->execute();
+exit((int) $value);

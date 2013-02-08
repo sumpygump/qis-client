@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+
+require_once 'CloverCoverageReport.php';
+
+if (!isset($argv[1])) {
+    echo "Missing required parameter: filename.";
+    exit(1);
+}
+
+$xmlFilename = $argv[1];
+
+if (isset($argv[2])) {
+    $targetFile = $argv[2];
+} else {
+    $targetFile = null;
+}
+
+$report = new CloverCoverageReport($xmlFilename, $targetFile);

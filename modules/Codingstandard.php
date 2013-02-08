@@ -591,8 +591,6 @@ class Qis_Module_Codingstandard implements QisModuleInterface
      */
     public function displaySummary($pretty = true)
     {
-        include_once 'Qi/Console/Tabular.php';
-
         $project = $this->getProjectSummary();
 
         $results = array(
@@ -634,8 +632,6 @@ class Qis_Module_Codingstandard implements QisModuleInterface
      */
     public function displayList()
     {
-        include_once 'Qi/Console/Tabular.php';
-
         $results = $this->_getFileList();
 
         // Determine common root from files
@@ -644,8 +640,6 @@ class Qis_Module_Codingstandard implements QisModuleInterface
             $filelist[] = $row['file'];
         }
         $root = realpath('.') . DIRECTORY_SEPARATOR;
-        //$commonRoot = Utils::findCommonRoot($filelist);
-        //$root = $commonRoot;
 
         // Group by severity to get error and warning counts
         $summary = array();

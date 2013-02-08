@@ -1,0 +1,5 @@
+{
+    "require": {
+        "sumpygump/qi-console": "dev-master"
+    }
+}

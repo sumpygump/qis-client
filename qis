@@ -3,6 +3,8 @@
 
 date_default_timezone_set('America/Chicago');
 
+require_once 'vendor/autoload.php';
+
 $root = realpath(dirname(__FILE__));
 
 // Include path
@@ -13,9 +15,6 @@ $paths = array(
 );
 set_include_path(implode(PATH_SEPARATOR, $paths));
 
-require_once 'Qi/Console/Std.php';
-require_once 'Qi/Console/Terminal.php';
-require_once 'Qi/Console/ArgV.php';
 require_once 'Qis.php';
 require_once 'QisExceptionHandler.php';
 

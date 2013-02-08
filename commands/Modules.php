@@ -81,7 +81,6 @@ class Qis_Command_Modules implements QisCommandInterface
             'headers' => array('Module', 'Command', 'Description'),
         );
 
-        include_once 'Qi/Console/Tabular.php';
         $table = new Qi_Console_Tabular($data, $options);
         $table->display();
 

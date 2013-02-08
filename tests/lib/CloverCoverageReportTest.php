@@ -133,7 +133,7 @@ class CloverCoverageReportTest extends BaseTestCase
     {
         $this->_createXmlFile();
 
-        $result = $this->_bufferOutput('lib/Qi/Console/ArgV.php');
+        $result = $this->_bufferOutput('vendor/sumpygump/qi-console/lib/Qi/Console/ArgV.php');
         $this->assertContains('    1          : <' . '?php', $result);
     }
 
@@ -340,7 +340,7 @@ class CloverCoverageReportTest extends BaseTestCase
             $contents = '<?xml version="1.0" encoding="UTF-8"?>
     <coverage generated="1301557448" phpunit="3.4.15">
         <project name="." timestamp="1301558264">
-        <file name="' . $path . '/lib/Qi/Console/ArgV.php">
+        <file name="' . $path . '/vendor/sumpygump/qi-console/lib/Qi/Console/ArgV.php">
             <class name="Qi_Console_ArgV" namespace="global" fullPackage="Qi.Console" package="Qi" subpackage="Console">
                 <metrics methods="17" coveredmethods="12" statements="119" coveredstatements="73" elements="136" coveredelements="85"/>
             </class>
@@ -348,7 +348,7 @@ class CloverCoverageReportTest extends BaseTestCase
             <line num="105" type="method" name="__construct" count="59"/>
             <metrics loc="423" ncloc="220" classes="1" methods="17" coveredmethods="0" statements="119" coveredstatements="107" elements="136" coveredelements="0"/>
         </file>
-        <file name="' . $path . '/lib/Qi/Console/Std.php">
+        <file name="' . $path . '/vendor/sumpygump/qi-console/lib/Qi/Console/Std.php">
             <class name="Qi_Console_Std" namespace="global" fullPackage="Qi.Console" package="Qi" subpackage="Console">
                 <metrics methods="8" coveredmethods="7" statements="200" coveredstatements="190" elements="110" coveredelements="70"/>
             </class>
@@ -356,7 +356,7 @@ class CloverCoverageReportTest extends BaseTestCase
             <line num="105" type="method" name="__construct" count="59"/>
             <metrics loc="71" ncloc="29" classes="1" methods="3" coveredmethods="0" statements="15" coveredstatements="12" elements="18" coveredelements="0"/>
         </file>
-        <file name="' . $path . '/lib/Qi/Console/Terminfo.php">
+        <file name="' . $path . '/vendor/sumpygump/qi-console/lib/Qi/Console/Terminfo.php">
             <class name="Qi_Console_Terminfo" namespace="global" fullPackage="Qi.Console" package="Qi" subpackage="Console">
                 <metrics methods="0" coveredmethods="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
             </class>

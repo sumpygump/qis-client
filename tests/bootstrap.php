@@ -10,6 +10,8 @@ require_once 'BaseTestCase.php';
 
 $root = realpath(dirname(dirname(__FILE__)));
 
+require_once $root . '/vendor/autoload.php';
+
 // Include path
 $paths = array(
     '.',
@@ -18,10 +20,6 @@ $paths = array(
     get_include_path(),
 );
 set_include_path(implode(PATH_SEPARATOR, $paths));
-
-require_once 'Qi/Console/Std.php';
-require_once 'Qi/Console/Terminal.php';
-require_once 'Qi/Console/ArgV.php';
 
 require_once 'Qis.php';
 require_once 'QisModuleInterface.php';

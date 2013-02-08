@@ -310,8 +310,6 @@ class Qis_Module_Test implements QisModuleInterface
      */
     public function displaySummary($pretty = true)
     {
-        include_once 'Qi/Console/Tabular.php';
-
         $results = $this->getProjectSummary();
         if (false === $results) {
             return 'No data yet.';

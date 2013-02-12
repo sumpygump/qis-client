@@ -1,4 +1,13 @@
 {
+    "name": "sumpygump/qis-client",
+    "description": "Console continuous integration for PHP",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jansen Price",
+            "email": "jansen.price@gmail.com"
+        }
+    ],
     "require": {
         "sumpygump/qi-console": "dev-master"
     }

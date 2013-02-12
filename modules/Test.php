@@ -239,6 +239,13 @@ class Qis_Module_Test implements QisModuleInterface
         ) {
             $configuration = '--configuration='
                 . $this->_settings['configuration'] . ' ';
+
+            // Set path to empty if it is not set to something other than . to 
+            // allow for setting a more specific path in the XML configuration 
+            // file
+            if ($path == '.') {
+                $path = '';
+            }
         }
 
         $cmd = 'cd ' . $testsDir . ';'

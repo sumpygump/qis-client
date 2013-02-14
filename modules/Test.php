@@ -255,6 +255,7 @@ class Qis_Module_Test implements QisModuleInterface
             . $colors
             . '--log-junit ' . $this->_outputPath . 'log.junit '
             . '--log-tap ' . $this->_outputPath . 'log.tap '
+            . '--log-json ' . $this->_outputPath . 'log.json '
             //. '--story-text ' . $this->_outputPath . 'story.text.txt '
             . '--testdox-text ' . $this->_outputPath . 'testdox.text.txt '
             . '--coverage-clover=' . $coverageReportFilename . ' '

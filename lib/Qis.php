@@ -322,7 +322,13 @@ class Qis
         // Find module to run
         if (isset($this->_modules[$action])) {
             $module = $this->_modules[$action];
-            return $module->execute($this->_args);
+            $returnCode = $module->execute($this->_args);
+            if ($returnCode === 0) {
+                $this->saveHistory(
+                    $action, $module->getStatus(), $module->getSummary(true)
+                );
+            }
+            return $returnCode;
         } else {
             $this->halt("Unrecognized command '$action'", 1);
         }
@@ -380,6 +386,61 @@ class Qis
     public function getCommands()
     {
         return $this->_commands;
+    }
+
+    /**
+     * Get history file path
+     *
+     * @return string
+     */
+    public function getHistoryFilepath()
+    {
+        return $this->getProjectQisRoot()
+            . DIRECTORY_SEPARATOR . 'history.json';
+    }
+
+    /**
+     * Save history
+     *
+     * @param string $moduleName Module name
+     * @param bool $status Status (pass, fail)
+     * @param string $summary Summary results
+     * @return void
+     */
+    public function saveHistory($moduleName, $status, $summary)
+    {
+        $history = $this->readHistory();
+
+        $index = date('Y-m-d H:i:s');
+        $history[] = array(
+            'module'  => $moduleName,
+            'date'    => $index,
+            'status'  => $status,
+            'summary' => $summary,
+        );
+
+        file_put_contents(
+            $this->getHistoryFilepath(), json_encode($history)
+        );
+    }
+
+    /**
+     * Read history data
+     *
+     * @return array
+     */
+    public function readHistory()
+    {
+        $historyFile = $this->getHistoryFilepath();
+
+        if (!file_exists($historyFile)) {
+            $history = array();
+        } else {
+            $history = file_get_contents($historyFile);
+            $history = json_decode($history);
+        }
+
+        return $history;
     }
 
     /**

@@ -254,7 +254,7 @@ class QisTest extends BaseTestCase
         $commands = $this->_object->getCommands();
 
         $expected = array(
-            'all', 'help', 'init', 'modules', 'summary',
+            'all', 'help', 'history', 'init', 'modules', 'summary',
         );
 
         $keys = array_keys($commands);

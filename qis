@@ -1,11 +1,16 @@
 #!/usr/bin/env php
 <?php
+/**
+ * qis command line runner
+ *
+ * @package Qis
+ */
 
 date_default_timezone_set('America/Chicago');
 
-require_once 'vendor/autoload.php';
-
 $root = realpath(dirname(__FILE__));
+
+require_once $root . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
 
 // Include path
 $paths = array(

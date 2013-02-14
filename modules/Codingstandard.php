@@ -569,6 +569,8 @@ class Qis_Module_Codingstandard implements QisModuleInterface
         $sql = "update project set errors=$errorTotal, "
             . "warnings=$warningTotal, error_level=$errorLevel;";
         $this->_db->safeQuery($sql);
+
+        return $errorLevel;
     }
 
     /**
@@ -628,7 +630,7 @@ class Qis_Module_Codingstandard implements QisModuleInterface
     /**
      * Display a list of files with error levels from database
      *
-     * @return void
+     * @return int
      */
     public function displayList()
     {

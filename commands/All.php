@@ -105,7 +105,8 @@ class Qis_Command_All implements QisCommandInterface
             $result = $module->execute($args);
             if ($result === 0) {
                 $this->_qis->saveHistory(
-                    $name, $module->getStatus(), $module->getSummary(true)
+                    $name,
+                    $module
                 );
             }
             $this->_rule();

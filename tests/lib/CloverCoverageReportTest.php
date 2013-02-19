@@ -133,7 +133,9 @@ class CloverCoverageReportTest extends BaseTestCase
     {
         $this->_createXmlFile();
 
-        $result = $this->_bufferOutput('vendor/sumpygump/qi-console/lib/Qi/Console/ArgV.php');
+        $result = $this->_bufferOutput(
+            'vendor/sumpygump/qi-console/lib/Qi/Console/ArgV.php'
+        );
         $this->assertContains('    1          : <' . '?php', $result);
     }
 

@@ -59,7 +59,7 @@ class Qis_Module_Coverage implements QisModuleInterface
             . "coverage.command=coverage\n"
             . "coverage.class=" . get_called_class() ."\n"
             . "coverage.root=.\n"
-            . "coverage.ignorePaths=\n"
+            . "coverage.ignorePaths=vendor,SymfonyComponents\n"
             ;
     }
 
@@ -189,11 +189,12 @@ class Qis_Module_Coverage implements QisModuleInterface
     }
 
     /**
-     * Get status for this module (pass/fail)
-     * 
-     * @return bool
+     * Get metrics for current results
+     *
+     * @param bool $onlyPrimary Only return primary metric
+     * @return array|float
      */
-    public function getStatus()
+    public function getMetrics($onlyPrimary = false)
     {
         $totalCoverageFloat = 0.0;
 
@@ -204,6 +205,26 @@ class Qis_Module_Coverage implements QisModuleInterface
         if (isset($results[2])) {
             $totalCoverageFloat = $results[2];
         }
+
+        if ($onlyPrimary) {
+            return $totalCoverageFloat;
+        }
+
+        return array(
+            'coverage' => $totalCoverageFloat,
+        );
+    }
+
+    /**
+     * Get status for this module (pass/fail)
+     * 
+     * @return bool
+     */
+    public function getStatus()
+    {
+        $metrics = $this->getMetrics();
+
+        $totalCoverageFloat = $metrics['coverage'];
 
         return $totalCoverageFloat > 80.0;
     }

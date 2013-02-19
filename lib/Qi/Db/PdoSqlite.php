@@ -614,7 +614,8 @@ class Qi_Db_PdoSqlite
     {
         $logFile = $this->_cfg['log_file'];
 
-        // Determine if log dir is writable or whether we can write to the log file
+        // Determine if log dir is writable or whether we can write to the log 
+        // file
         if (!is_writable(dirname($logFile))
             || (file_exists($logFile) && !is_writable($logFile))
         ) {

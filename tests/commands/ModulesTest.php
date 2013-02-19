@@ -104,6 +104,16 @@ class MockQisModuleBaseForModules implements QisModuleInterface
     {
         return true;
     }
+
+    /**
+     * getMetrics
+     *
+     * @return void
+     */
+    public function getMetrics()
+    {
+        return array();
+    }
 }
 
 /**

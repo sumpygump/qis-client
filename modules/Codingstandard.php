@@ -586,12 +586,12 @@ class Qis_Module_Codingstandard implements QisModuleInterface
     }
 
     /**
-     * Display summary
+     * Get metrics for current results
      *
-     * @param bool $pretty Use pretty output
-     * @return mixed
+     * @param bool $onlyPrimary Return only the primary metric
+     * @return array|float
      */
-    public function displaySummary($pretty = true)
+    public function getMetrics($onlyPrimary = false)
     {
         $project = $this->getProjectSummary();
 
@@ -602,6 +602,23 @@ class Qis_Module_Codingstandard implements QisModuleInterface
             'Warnings'    => $project['warnings'],
             'Error Level' => $project['error_level'] . '%',
         );
+
+        if ($onlyPrimary) {
+            return 100 - $project['error_level'];
+        }
+
+        return $results;
+    }
+
+    /**
+     * Display summary
+     *
+     * @param bool $pretty Use pretty output
+     * @return mixed
+     */
+    public function displaySummary($pretty = true)
+    {
+        $results = $this->getMetrics();
 
         $table = new Qi_Console_Tabular(
             array(array_values($results)),

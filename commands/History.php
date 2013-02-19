@@ -90,7 +90,7 @@ class Qis_Command_History implements QisCommandInterface
         }
 
         $headers = array(
-            'Date', 'Module', 'Status', 'Summary',
+            'Date', 'Module', 'Status', 'Summary', 'Metric',
         );
 
         $rows = array();
@@ -101,6 +101,7 @@ class Qis_Command_History implements QisCommandInterface
                 'module'  => $item->module,
                 'status'  => $item->status ? 'PASS' : 'FAIL',
                 'summary' => $item->summary,
+                'metric'  => $item->metric,
             );
 
             $rows[] = $row;

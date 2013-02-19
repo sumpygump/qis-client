@@ -190,13 +190,13 @@ class Qis_Module_Test implements QisModuleInterface
      */
     public function getStatus()
     {
-        $project = $this->getProjectSummary();
-        if ($project === false) {
+        $metrics = $this->getMetrics();
+        if ($metrics === false) {
             // This means the data isn't available yet
             return false;
         }
 
-        $sum = $project['failures'] + $project['errors'];
+        $sum = $metrics['failures'] + $metrics['errors'];
         return (!$sum);
     }
 
@@ -318,7 +318,7 @@ class Qis_Module_Test implements QisModuleInterface
      */
     public function displaySummary($pretty = true)
     {
-        $results = $this->getProjectSummary();
+        $results = $this->getMetrics();
         if (false === $results) {
             return 'No data yet.';
         }
@@ -340,13 +340,25 @@ class Qis_Module_Test implements QisModuleInterface
     }
 
     /**
-     * Get project summary
+     * Get metrics for current results
      * 
-     * @return void
+     * @param bool $onlyPrimary Return only the primary metric
+     * @return array|float
      */
-    public function getProjectSummary()
+    public function getMetrics($onlyPrimary = false)
     {
-        return $this->readLogJunit($this->_outputPath . 'log.junit');
+        $metrics = $this->readLogJunit($this->_outputPath . 'log.junit');
+
+        if (!$onlyPrimary) {
+            return $metrics;
+        }
+
+        if (false === $metrics || !isset($metrics['tests'])) {
+            return 0.0;
+        }
+
+        // Primary metric is number of passing tests
+        return $metrics['tests'] - ($metrics['failures'] + $metrics['errors']);
     }
 
     /**

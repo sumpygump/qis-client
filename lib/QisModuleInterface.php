@@ -73,4 +73,11 @@ interface QisModuleInterface
      * @return string
      */
     public function getSummary($short = false);
+
+    /**
+     * Get metrics for current status
+     *
+     * @return void
+     */
+    public function getMetrics();
 }

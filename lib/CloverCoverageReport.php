@@ -198,7 +198,7 @@ class CloverCoverageReport
     /**
      * Gather file metrics from grouping in XML
      *
-     * @param mixed $group
+     * @param array $group File grouping in XML
      * @return void
      */
     public function gatherFileMetricsFromGroup($group)
@@ -365,8 +365,8 @@ class CloverCoverageReport
     /**
      * Find a specific file's node in the XML
      *
-     * @param mixed $filename
-     * @return void
+     * @param string $filename Filename
+     * @return string
      */
     public function findTargetFile($filename)
     {
@@ -489,6 +489,7 @@ class CloverCoverageReport
 
         foreach ($this->_files as $filename => $stats) {
             $totalStatements += $stats['statements'];
+
             $coveredStatements += $stats['coveredstatements'];
         }
 

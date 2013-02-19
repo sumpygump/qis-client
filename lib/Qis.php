@@ -322,10 +322,12 @@ class Qis
         // Find module to run
         if (isset($this->_modules[$action])) {
             $module = $this->_modules[$action];
+
             $returnCode = $module->execute($this->_args);
             if ($returnCode === 0) {
                 $this->saveHistory(
-                    $action, $module->getStatus(), $module->getSummary(true)
+                    $action,
+                    $module
                 );
             }
             return $returnCode;
@@ -403,20 +405,22 @@ class Qis
      * Save history
      *
      * @param string $moduleName Module name
-     * @param bool $status Status (pass, fail)
-     * @param string $summary Summary results
+     * @param QisModuleInterface $module Module
      * @return void
      */
-    public function saveHistory($moduleName, $status, $summary)
+    public function saveHistory($moduleName, $module)
     {
         $history = $this->readHistory();
 
         $index = date('Y-m-d H:i:s');
+
         $history[] = array(
             'module'  => $moduleName,
             'date'    => $index,
-            'status'  => $status,
-            'summary' => $summary,
+            'status'  => $module->getStatus(),
+            'summary' => $module->getSummary(true),
+            'metric'  => json_encode($module->getMetrics(true)),
+            'metrics' => json_encode($module->getMetrics()),
         );
 
         file_put_contents(

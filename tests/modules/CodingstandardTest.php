@@ -61,6 +61,14 @@ class MockQisModuleCodingstandard extends Qis_Module_Codingstandard
     }
 }
 
+/**
+ * MockQisModuleCodingstandardErrorLevel
+ *
+ * @uses MockQisModuleCodingstandard
+ * @package Qis
+ * @author Jansen Price <jansen.price@gmail.com>
+ * @version $Id$
+ */
 class MockQisModuleCodingstandardErrorLevel extends MockQisModuleCodingstandard
 {
     /**
@@ -454,6 +462,11 @@ class Qis_Module_CodingstandardTest extends BaseTestCase
         $this->assertTrue($status);
     }
 
+    /**
+     * Test get status error
+     *
+     * @return void
+     */
     public function testGetStatusError()
     {
         $settings = array(

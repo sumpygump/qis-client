@@ -24,7 +24,7 @@ class Qis
      *
      * @var string
      */
-    protected $_version = '1.0.9';
+    protected $_version = '1.0.10';
 
     /**
      * Configuration

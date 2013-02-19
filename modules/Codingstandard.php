@@ -66,6 +66,13 @@ class Qis_Module_Codingstandard implements QisModuleInterface
     protected $_paths = array();
 
     /**
+     * Ignore patterns to exclude during sniffing
+     *
+     * @var string
+     */
+    protected $_ignore = '';
+
+    /**
      * Database object
      *
      * @var object
@@ -120,6 +127,10 @@ class Qis_Module_Codingstandard implements QisModuleInterface
             && $settings['path'] != ''
         ) {
             $this->_path = $settings['path'];
+        }
+
+        if (isset($settings['ignore'])) {
+            $this->_ignore = $settings['ignore'];
         }
 
         $this->_paths = $this->_parsePath($this->_path);
@@ -359,7 +370,7 @@ class Qis_Module_Codingstandard implements QisModuleInterface
         if ($this->_standard) {
             $sniffStandard = $this->_standard;
         } else {
-            $sniffStandard = 'Zend';
+            $sniffStandard = 'PSR2';
         }
 
         $direct = isset($options['direct']) && $options['direct'];
@@ -408,6 +419,10 @@ class Qis_Module_Codingstandard implements QisModuleInterface
                 . ' --standard=' . $sniffStandard
                 . ' -p'
                 . ' --extensions=php';
+
+            if ($this->_ignore) {
+                $cmd .= ' --ignore=' . escapeshellarg($this->_ignore);
+            }
 
             if ($paths == $this->_paths) {
                 // Show high-level summary
@@ -765,6 +780,7 @@ class Qis_Module_Codingstandard implements QisModuleInterface
             . "codingstandard.class=" . get_called_class() . "\n"
             . "codingstandard.standard=Zend\n"
             . "codingstandard.path=.\n"
+            . "codingstandard.ignore=vendor\n"
             ;
     }
 
@@ -934,10 +950,32 @@ class Qis_Module_Codingstandard implements QisModuleInterface
      */
     protected function _createFileList($path)
     {
+        // Ensure path ends in single slash
+        $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+
         $this->_qis->log("Creating file list for path `$path'");
 
         $files = Utils::rglob('*.php', 0, $path);
-        $files = implode("\n", $files);
+
+        $ignorePattern = str_replace(',', '|', $this->_ignore);
+
+        // Filter out ignored paths
+        $filtered = array();
+        foreach ($files as $file) {
+            if (preg_match('#' . $ignorePattern . '#', $file)) {
+                continue;
+            }
+            $filtered[] = $file;
+        }
+
+        $message = sprintf(
+            "Filtered %s of %s files in list.",
+            count($files) - count($filtered),
+            count($files)
+        );
+        $this->_qis->log($message);
+
+        $files = implode("\n", $filtered);
 
         $filelistPath = $this->_outputPath . 'filelist';
 

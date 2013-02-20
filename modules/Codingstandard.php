@@ -957,6 +957,26 @@ class Qis_Module_Codingstandard implements QisModuleInterface
 
         $files = Utils::rglob('*.php', 0, $path);
 
+        $files = $this->_filterIgnoredFiles($files);
+        $files = implode("\n", $files);
+
+        $filelistPath = $this->_outputPath . 'filelist';
+
+        file_put_contents($filelistPath, $files . "\n", FILE_APPEND);
+    }
+
+    /**
+     * Filter files that should be ignored
+     *
+     * @param array $files Array of file paths
+     * @return array Filtered array of file paths
+     */
+    protected function _filterIgnoredFiles($files)
+    {
+        if ($this->_ignore == '') {
+            return $files;
+        }
+
         $ignorePattern = str_replace(',', '|', $this->_ignore);
 
         // Filter out ignored paths
@@ -973,13 +993,10 @@ class Qis_Module_Codingstandard implements QisModuleInterface
             count($files) - count($filtered),
             count($files)
         );
+
         $this->_qis->log($message);
 
-        $files = implode("\n", $filtered);
-
-        $filelistPath = $this->_outputPath . 'filelist';
-
-        file_put_contents($filelistPath, $files . "\n", FILE_APPEND);
+        return $filtered;
     }
 
     /**

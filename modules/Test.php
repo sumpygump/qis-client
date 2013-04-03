@@ -246,6 +246,16 @@ class Qis_Module_Test implements QisModuleInterface
             if ($path == '.') {
                 $path = '';
             }
+        } else {
+            if ($bootstrap == '') {
+                // if no configuration setting and no bootstrap defined, let's 
+                // check if there is a bootstrap file and auto bootstrap it.
+                $detectedBootstrapFile = $testsDir . DIRECTORY_SEPARATOR . 'bootstrap.php';
+                if (file_exists($detectedBootstrapFile)) {
+                    $this->_qis->qecho("Auto-detected bootstrap file bootstrap.php\n");
+                    $bootstrap = '--bootstrap=bootstrap.php ';
+                }
+            }
         }
 
         $cmd = 'cd ' . $testsDir . ';'

@@ -92,8 +92,7 @@ class CloverCoverageReportTest extends BaseTestCase
         $result = $this->_bufferOutput();
 
         $this->assertContains('Coverage report generated', $result);
-        $this->assertContains('107 / 119 |  90%  [*', $result);
-        $this->assertContains(' 12 /  15 |  80%  [*', $result);
+        $this->assertContains('/ 152 |   0%  [', $result);
         $this->assertContains('Total Coverage', $result);
     }
 
@@ -107,7 +106,9 @@ class CloverCoverageReportTest extends BaseTestCase
     {
         $this->_createXmlFile('');
 
-        $result = $this->_bufferOutput('foobar.php');
+        $this->_object = new CloverCoverageReport(
+            'samplecoverage.xml', 'foobar.php', null, array('vendor')
+        );
     }
 
     /**
@@ -134,7 +135,7 @@ class CloverCoverageReportTest extends BaseTestCase
         $this->_createXmlFile();
 
         $result = $this->_bufferOutput(
-            'vendor/sumpygump/qi-console/lib/Qi/Console/ArgV.php'
+            'lib/Qis.php'
         );
         $this->assertContains('    1          : <' . '?php', $result);
     }
@@ -317,7 +318,7 @@ class CloverCoverageReportTest extends BaseTestCase
     {
         ob_start();
         $this->_object = new CloverCoverageReport(
-            'samplecoverage.xml', $targetFile
+            'samplecoverage.xml', $targetFile, null, array('vendor')
         );
 
         $result = ob_get_contents();
@@ -342,6 +343,15 @@ class CloverCoverageReportTest extends BaseTestCase
             $contents = '<?xml version="1.0" encoding="UTF-8"?>
     <coverage generated="1301557448" phpunit="3.4.15">
         <project name="." timestamp="1301558264">
+        <file name="' . $path . '/lib/Qis.php">
+          <class name="Qis" namespace="global" fullPackage="Qis" package="Qis">
+            <metrics methods="27" coveredmethods="24" conditionals="0" coveredconditionals="0" statements="187" coveredstatements="147" elements="214" coveredelements="171"/>
+          </class>
+          <line num="0" type="stmt" count="2"/>
+          <line num="92" type="method" name="__construct" crap="1" count="99"/>
+          <line num="596" type="stmt" count="5"/>
+          <metrics loc="597" ncloc="359" classes="1" methods="27" coveredmethods="19" conditionals="0" coveredconditionals="0" statements="187" coveredstatements="147" elements="214" coveredelements="166"/>
+        </file>
         <file name="' . $path . '/vendor/sumpygump/qi-console/lib/Qi/Console/ArgV.php">
             <class name="Qi_Console_ArgV" namespace="global" fullPackage="Qi.Console" package="Qi" subpackage="Console">
                 <metrics methods="17" coveredmethods="12" statements="119" coveredstatements="73" elements="136" coveredelements="85"/>

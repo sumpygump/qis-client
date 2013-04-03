@@ -227,7 +227,7 @@ class Qis_Command_HelpTest extends BaseTestCase
 
         $args = new Qi_Console_ArgV($argv);
 
-        list($result, $status) = $this->_execute($args);
+        $status = $this->_object->execute($args);
     }
 
     /**

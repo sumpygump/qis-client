@@ -29,10 +29,10 @@ class UtilsTest extends BaseTestCase
     {
         mkdir('testrglob');
         touch('testrglob/foo1.php');
-        touch('testrglob/foo2.txt');
+        touch('testrglob/foo2.txt1');
         mkdir('testrglob/wunk');
         touch('testrglob/wunk/soody.php');
-        touch('testrglob/wunk/farse.txt');
+        touch('testrglob/wunk/farse.txt1');
     }
 
     /**
@@ -42,10 +42,10 @@ class UtilsTest extends BaseTestCase
      */
     public function tearDown()
     {
-        unlink('testrglob/wunk/farse.txt');
+        unlink('testrglob/wunk/farse.txt1');
         unlink('testrglob/wunk/soody.php');
         rmdir('testrglob/wunk');
-        unlink('testrglob/foo2.txt');
+        unlink('testrglob/foo2.txt1');
         unlink('testrglob/foo1.php');
         rmdir('testrglob');
     }
@@ -57,11 +57,11 @@ class UtilsTest extends BaseTestCase
      */
     public function testRglob()
     {
-        $result = Utils::rglob('*.txt');
+        $result = Utils::rglob('*.txt1');
 
         $expected = array(
-            'testrglob/foo2.txt',
-            'testrglob/wunk/farse.txt',
+            'testrglob/foo2.txt1',
+            'testrglob/wunk/farse.txt1',
         );
 
         $this->assertEquals($expected, $result);
@@ -74,12 +74,11 @@ class UtilsTest extends BaseTestCase
      */
     public function testRglobWithDirnameCheck()
     {
-        $result = Utils::rglob('../*.txt');
+        $result = Utils::rglob('../*.txt1');
 
         $expected = array(
-            '../readme.txt',
-            '../tests/testrglob/foo2.txt',
-            '../tests/testrglob/wunk/farse.txt',
+            '../tests/testrglob/foo2.txt1',
+            '../tests/testrglob/wunk/farse.txt1',
         );
 
         $this->assertEquals($expected, $result);

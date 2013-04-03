@@ -24,9 +24,16 @@ class Utils
      */
     public static function rglob($pattern, $flags = 0, $path = '')
     {
+        if ($path == '\\' || $path == '/') {
+            // We don't want to try to find all the paths from root
+            // It takes too long
+            return array();
+        }
+
         if (!$path && ($dir = dirname($pattern)) != '.') {
             if ($dir == '\\' || $dir == '/') {
-                // This gets into infinite loop
+                // This means the pattern starts with root
+                // This takes too long
                 return array();
             }
             return self::rglob(

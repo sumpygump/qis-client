@@ -117,7 +117,7 @@ class UtilsTest extends BaseTestCase
      */
     public function testRglobWithRoot()
     {
-        $result = Utils::rglob('reqwrewqrewqrewqrewqrewqrewq.txt', 0, '/var');
+        $result = Utils::rglob('reqwrewqrewqrewqrewqrewqrewq.txt', 0, '/');
         $this->assertEquals(array(), $result);
     }
 

@@ -142,6 +142,10 @@ class Qis_Command_Help implements QisCommandInterface
             }
         }
 
+        $out .= $this->_terminal->do_op();
+        $out .= "\nUse help [module|subcommand] to get specific help\n"
+            . "for a module or subcommand.\n";
+
         $out .= $this->getGlobalOptions();
 
         $out .= $this->_terminal->do_op();

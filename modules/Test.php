@@ -391,7 +391,12 @@ class Qis_Module_Test implements QisModuleInterface
             return false;
         }
 
+        libxml_use_internal_errors(true);
         $data = simplexml_load_file($filename);
+        if (false == $data) {
+            libxml_clear_errors();
+            return false;
+        }
 
         $suite = $data->testsuite;
 

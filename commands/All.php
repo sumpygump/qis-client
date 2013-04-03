@@ -85,6 +85,22 @@ class Qis_Command_All implements QisCommandInterface
     }
 
     /**
+     * Get extended help message
+     *
+     * @return string
+     */
+    public function getExtendedHelpMessage()
+    {
+        $out = $this->getHelpMessage() . "\n";
+
+        $out .= "Usage: all\n"
+            . "Runs all the modules in the order specified in .qis/config.ini\n\n"
+            . "Default: build_order=cs,test,coverage\n";
+
+        return $out;
+    }
+
+    /**
      * Execute all modules with default action
      *
      * @param object $args Args

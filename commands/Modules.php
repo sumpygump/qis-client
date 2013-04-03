@@ -96,4 +96,19 @@ class Qis_Command_Modules implements QisCommandInterface
     {
         return "Show registered modules\n";
     }
+
+    /**
+     * Get extended help message
+     *
+     * @return string
+     */
+    public function getExtendedHelpMessage()
+    {
+        $out = $this->getHelpMessage() . "\n";
+
+        $out .= "Usage: modules\n"
+            . "Shows a list of installed and enabled modules.\n";
+
+        return $out;
+    }
 }

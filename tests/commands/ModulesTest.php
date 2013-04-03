@@ -222,6 +222,18 @@ class Qis_Command_HelpModules extends BaseTestCase
     }
 
     /**
+     * Test get extended help message
+     *
+     * @return void
+     */
+    public function testGetExtendedHelpMessage()
+    {
+        $result = $this->_object->getExtendedHelpMessage();
+
+        $this->assertTrue(is_string($result));
+    }
+
+    /**
      * Run execute on the object and return the buffered output and status
      * 
      * @param Qis_Console_ArgV $args Arguments

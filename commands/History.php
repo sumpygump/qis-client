@@ -126,4 +126,23 @@ class Qis_Command_History implements QisCommandInterface
     {
         return "Show history data for modules\n";
     }
+
+    /**
+     * Get extended help message
+     *
+     * @return string
+     */
+    public function getExtendedHelpMessage()
+    {
+        $out = $this->getHelpMessage() . "\n";
+
+        $out .= "Usage: history [module]\n"
+            . "This will display a history of the results for modules that\n"
+            . "have been run previously, including the pass/fail status and\n"
+            . "basic metric. This basic metric differs per module.\n"
+            . "With an argument provided, it will filter the results\n"
+            . "to only show that module.\n";
+
+        return $out;
+    }
 }

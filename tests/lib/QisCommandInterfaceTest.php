@@ -65,6 +65,15 @@ class QisCommand implements QisCommandInterface
     public function getHelpMessage()
     {
     }
+
+    /**
+     * Get extended help message
+     *
+     * @return string
+     */
+    public function getExtendedHelpMessage()
+    {
+    }
 }
 
 /**

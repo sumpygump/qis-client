@@ -80,6 +80,24 @@ class Qis_Command_Init implements QisCommandInterface
     }
 
     /**
+     * Get extended help message
+     *
+     * @return string
+     */
+    public function getExtendedHelpMessage()
+    {
+        $out = $this->getHelpMessage() . "\n";
+
+        $out .= "Usage: init\n"
+            . "This will initialize a qis project in the current directory.\n"
+            . "If one already exists, it will prompt to overwrite it.\n"
+            . "Initializing a qis project will prompt the user for some\n"
+            . "basic information about the project.\n"
+            . "The files will be written to a .qis directory.\n";
+
+        return $out;
+    }
+    /**
      * Initialize Project
      * 
      * @return int

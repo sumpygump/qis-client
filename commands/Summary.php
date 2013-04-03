@@ -158,4 +158,28 @@ class Qis_Command_Summary implements QisCommandInterface
     {
         return "Get summary of a module or all modules\n";
     }
+
+    /**
+     * Get extended help message
+     *
+     * @return string
+     */
+    public function getExtendedHelpMessage()
+    {
+        $out = $this->getHelpMessage() . "\n";
+
+        $out .= "Usage: summary [--short] [module]\n"
+            . "Show the summary of the most recent results of each module.\n"
+            . "If a module name is provided as an argument, it\n"
+            . "will display only the summary for that module.\n\n"
+            . "This is the default module that is run when no\n"
+            . "module name is given when running qis.\n";
+
+        $out .= "\nValid Options:\n"
+            . $this->_qis->getTerminal()->do_setaf(3)
+            . "  --short : Show only short information\n"
+            . $this->_qis->getTerminal()->do_op();
+
+        return $out;
+    }
 }

@@ -249,6 +249,18 @@ class Qis_Command_AllTest extends BaseTestCase
     }
 
     /**
+     * Test get help message
+     *
+     * @return void
+     */
+    public function testGetExtendedHelpMessage()
+    {
+        $result = $this->_object->getExtendedHelpMessage();
+
+        $this->assertTrue(is_string($result));
+    }
+
+    /**
      * Test execute all with default build order
      *
      * @return void

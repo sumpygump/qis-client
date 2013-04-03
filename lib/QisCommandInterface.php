@@ -53,6 +53,13 @@ interface QisCommandInterface
      * @return string
      */
     public function getHelpMessage();
+
+    /**
+     * Get extended help message for this command
+     *
+     * @return string
+     */
+    public function getExtendedHelpMessage();
 }
 
 /**

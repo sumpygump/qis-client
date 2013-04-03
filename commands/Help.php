@@ -93,6 +93,25 @@ class Qis_Command_Help implements QisCommandInterface
     }
 
     /**
+     * Get extended help message
+     *
+     * @return string
+     */
+    public function getExtendedHelpMessage()
+    {
+        $out = $this->getHelpMessage() . "\n";
+
+        $out .= "Usage: help [command|module]\n"
+            . "Without any arguments, display basic help.\n"
+            . "This will display all the available modules\n"
+            . "and commands.\n\n"
+            . "Including a module or command name will provide\n"
+            . "contextual help for that module or command.\n"
+            . "Example: qis help coverage\n";
+
+        return $out;
+    }
+    /**
      * Show help messages
      *
      * @return void
@@ -156,12 +175,20 @@ class Qis_Command_Help implements QisCommandInterface
      */
     protected function _showContextualHelp($context)
     {
-        $module = $this->_qis->getModule($context);
-        if ($module) {
-            echo "\n" . $context . ": " . $module->getExtendedHelpMessage();
-        } else {
-            throw new QisCommandException("Module '$context' not found.", 64);
+        // First try to find module by name
+        $contextObject = $this->_qis->getModule($context);
+
+        if (!$contextObject) {
+            // No module; try a command by that name
+            $contextObject = $this->_qis->getCommand($context);
         }
+
+        if (!$contextObject) {
+            throw new QisCommandException("No module or command by name '$context' found.", 64);
+        }
+
+        echo "\n" . $context . ": " . $contextObject->getExtendedHelpMessage();
+
 
         echo $this->getGlobalOptions();
     }

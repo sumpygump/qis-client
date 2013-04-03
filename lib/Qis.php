@@ -391,6 +391,21 @@ class Qis
     }
 
     /**
+     * Get command by name
+     *
+     * @param string $name Name of command
+     * @return QisCommandInterface|false
+     */
+    public function getCommand($name)
+    {
+        if (!isset($this->_commands[$name])) {
+            return false;
+        }
+
+        return $this->_commands[$name];
+    }
+
+    /**
      * Get history file path
      *
      * @return string

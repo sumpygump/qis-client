@@ -386,7 +386,7 @@ class Qis_Module_Test implements QisModuleInterface
 
         echo $data;
 
-        return 0;
+        return 1;
     }
 
     /**

@@ -712,7 +712,7 @@ class Qis_Module_Codingstandard implements QisModuleInterface
 
         echo $table->display(true);
 
-        return 0;
+        return 1;
     }
 
     /**

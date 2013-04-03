@@ -386,7 +386,7 @@ class Qis_Module_Test implements QisModuleInterface
 
         echo $data;
 
-        return 1;
+        return QisModuleInterface::RETURN_BENIGN;
     }
 
     /**

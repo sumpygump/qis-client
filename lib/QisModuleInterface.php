@@ -15,6 +15,15 @@
 interface QisModuleInterface
 {
     /**
+     * Return value constants
+     *
+     * @var int
+     */
+    const RETURN_SUCCESS = 0;
+    const RETURN_ERROR   = 1;
+    const RETURN_BENIGN  = 8;
+
+    /**
      * Get the default ini for this module
      *
      * @return string

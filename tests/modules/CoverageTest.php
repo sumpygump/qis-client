@@ -197,7 +197,7 @@ class Qis_Module_CoverageTest extends BaseTestCase
     {
         $status = $this->_object->getStatus();
 
-        $this->assertEquals(0, $status);
+        $this->assertEquals(false, $status);
     }
 
     /**

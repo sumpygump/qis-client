@@ -207,7 +207,8 @@ class Qis_Command_HelpTest extends BaseTestCase
 
         $this->assertContains('Usage: qis <subcommand', $result);
         $this->assertContains("Modules:\n", $result);
-        $this->assertContains("foobar : help message\nGlobal", $result);
+        $this->assertContains("foobar : help message\nUse", $result);
+        $this->assertContains("Global Options:", $result);
         $this->assertEquals(0, $status);
     }
 

@@ -106,8 +106,14 @@ class Qis_Module_Test implements QisModuleInterface
             return $this->showList();
         }
 
+        $options = array();
+
+        if ($args->tap) {
+            $options['tap'] = true;
+        }
+
         $this->_saveTimeStamp();
-        $this->runTest($path);
+        $this->runTest($path, $options);
 
         $this->_qis->qecho("\nCompleted Test module task.\n");
         return 0;
@@ -141,6 +147,7 @@ class Qis_Module_Test implements QisModuleInterface
         $out .= "\nValid Options:\n"
             . $this->_qis->getTerminal()->do_setaf(3)
             . "  --list : Show list of previous tests run\n"
+            . "  --tap  : Run tests using TAP output format\n"
             . $this->_qis->getTerminal()->do_op();
 
         return $out;
@@ -258,11 +265,17 @@ class Qis_Module_Test implements QisModuleInterface
             }
         }
 
+        $executionOutputFormat = '';
+        if (isset($options['tap']) && $options['tap']) {
+            $executionOutputFormat = '--tap ';
+        }
+
         $cmd = 'cd ' . $testsDir . ';'
             . 'phpunit '
             . $bootstrap
             . $configuration
             . $colors
+            . $executionOutputFormat
             . '--log-junit ' . $this->_outputPath . 'log.junit '
             . '--log-tap ' . $this->_outputPath . 'log.tap '
             . '--log-json ' . $this->_outputPath . 'log.json '

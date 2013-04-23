@@ -278,7 +278,9 @@ class Qis_Module_Test implements QisModuleInterface
             . $executionOutputFormat
             . '--log-junit ' . $this->_outputPath . 'log.junit '
             . '--log-tap ' . $this->_outputPath . 'log.tap '
-            . '--log-json ' . $this->_outputPath . 'log.json '
+            // Dont log json: it breaks when testing binary values in 
+            // assertions in phpunit < 3.7
+            //. '--log-json ' . $this->_outputPath . 'log.json '
             //. '--story-text ' . $this->_outputPath . 'story.text.txt '
             . '--testdox-text ' . $this->_outputPath . 'testdox.text.txt '
             . '--coverage-clover=' . $coverageReportFilename . ' '

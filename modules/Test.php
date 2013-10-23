@@ -270,15 +270,23 @@ class Qis_Module_Test implements QisModuleInterface
             $executionOutputFormat = '--tap ';
         }
 
+        $phpunitBin = $this->_qis->getConfig()->get('phpunit_bin');
+
+        // If phpunit binary path is not in config file, default to 'phpunit'
+        $isEmptyPhpunitBin = (array) $phpunitBin;
+        if (empty($isEmptyPhpunitBin)) {
+            $phpunitBin = 'phpunit';
+        }
+
         $cmd = 'cd ' . $testsDir . ';'
-            . 'phpunit '
+            . $phpunitBin . ' '
             . $bootstrap
             . $configuration
             . $colors
             . $executionOutputFormat
             . '--log-junit ' . $this->_outputPath . 'log.junit '
             . '--log-tap ' . $this->_outputPath . 'log.tap '
-            . '--log-json ' . $this->_outputPath . 'log.json '
+            //. '--log-json ' . $this->_outputPath . 'log.json '
             //. '--story-text ' . $this->_outputPath . 'story.text.txt '
             . '--testdox-text ' . $this->_outputPath . 'testdox.text.txt '
             . '--coverage-clover=' . $coverageReportFilename . ' '

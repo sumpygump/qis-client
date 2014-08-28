@@ -10,6 +10,7 @@
     ],
     "require": {
         "sumpygump/qi-console": "dev-master",
-        "sumpygump/qi-db": "dev-master"
+        "sumpygump/qi-db": "dev-master",
+        "phploc/phploc": "*"
     }
 }

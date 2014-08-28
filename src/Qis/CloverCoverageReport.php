@@ -7,6 +7,7 @@
 
 namespace Qis;
 
+use SebastianBergmann\PHPLOC\Analyser;
 use Exception;
 
 /**
@@ -151,17 +152,11 @@ class CloverCoverageReport
      */
     protected function _getSloc($file)
     {
-        $cmd = "phpsloc $file";
+        $analyser = new Analyser();
+        $results = $analyser->countFiles(array($file), false);
 
-        exec($cmd, $result, $status);
-
-        if ($status === 0) {
-            $sloc = trim(end($result));
-        } else {
-            $sloc = 0;
-        }
-
-        return $sloc;
+        // lloc = Logical Lines of Code
+        return $results['lloc'];
     }
 
     /**

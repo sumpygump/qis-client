@@ -13,6 +13,7 @@ use Qis\Utils;
 use Qi_Console_ArgV;
 use Qi_Db_PdoSqlite;
 use Qi_Console_Tabular;
+use SebastianBergmann\PHPLOC\Analyser;
 use Exception;
 
 /**
@@ -61,6 +62,13 @@ class Codingstandard implements ModuleInterface
     protected $_paths = array();
 
     /**
+     * List of files to sniff
+     *
+     * @var array
+     */
+    protected $files = array();
+
+    /**
      * Ignore patterns to exclude during sniffing
      *
      * @var string
@@ -77,18 +85,11 @@ class Codingstandard implements ModuleInterface
     /**
      * Whether to include sniffcodes in result
      *
-     * Required phpcs version 1.2 or higher.
+     * Required phpcs version 1.3 or higher.
      *
      * @var bool
      */
     protected $_includeSniffCodes = true;
-
-    /**
-     * Whether to use features in phpcs 1.3
-     *
-     * @var bool
-     */
-    protected $_phpcsVersionOneThree = true;
 
     /**
      * Options
@@ -96,7 +97,6 @@ class Codingstandard implements ModuleInterface
      * @var array
      */
     protected $_options = array(
-        'phpslocbin' => 'phpsloc',
         'phpcsbin'   => 'phpcs',
     );
 
@@ -170,7 +170,6 @@ class Codingstandard implements ModuleInterface
     protected function _checkRequirements()
     {
         $this->_checkVersion();
-        $this->_checkPhpSloc();
     }
 
     /**
@@ -187,7 +186,7 @@ class Codingstandard implements ModuleInterface
 
         if ($status) {
             throw new CodingStandardException(
-                "PHPCodeSniffer (phpcs) not installed."
+                "PHPCodeSniffer (phpcs) not installed. Please install with command `composer global require \"squizlabs/php_codesniffer=1.*\"`"
             );
         }
 
@@ -212,42 +211,14 @@ class Codingstandard implements ModuleInterface
 
         list($version, $major, $minor, $revision) = $matches;
 
-        if ((int) $major <= 1 && (int) $minor < 2) {
-            $this->_includeSniffCodes = false;
-            throw new Qis_Module_CodingStandardException(
-                "phpcs version 1.2 or higher required."
-            );
-        }
-
         if ((int) $major <= 1 && (int) $minor < 3) {
-            $this->_phpcsVersionOneThree = false;
+            $this->_includeSniffCodes = false;
+            throw new CodingStandardException(
+                "phpcs version 1.3 or higher required."
+            );
         }
 
         return true;
-    }
-
-    /**
-     * Check phpsloc is installed
-     *
-     * @return bool
-     */
-    protected function _checkPhpSloc()
-    {
-        $cmd = $this->_options['phpslocbin'] . " --help 2>&1";
-
-        exec($cmd, $result, $status);
-
-        if ($status == 127) {
-            throw new Qis_Module_CodingStandardException(
-                "phpsloc not installed."
-            );
-        }
-
-        if (!empty($result)) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -383,52 +354,24 @@ class Codingstandard implements ModuleInterface
             echo "\n";
         }
 
-        if (!$this->_phpcsVersionOneThree) {
-            // Fall back to functionality in phpcs 1.2.x
-            $cmd = $this->_options['phpcsbin']
-                . ' --standard=' . $sniffStandard
-                . ' --extensions=php';
+        $cmd = $this->_options['phpcsbin']
+            . ' --standard=' . $sniffStandard
+            . ' -p'
+            . ' --extensions=php';
 
-            // In direct mode the report should go to stdout
-            if ($direct) {
-                if ($paths == $this->_paths) {
-                    // Show high-level summary
-                    $cmd .= ' --report=summary';
-                } else {
-                    $cmd .= ' --report=full';
-                }
-            } else {
-                $cmd .= ' --report=csv --report-file="'
-                    . $this->_outputPath . 'results.csv"';
-            }
-
-            $cmd .= ' "' . implode('" "', $validPaths) . '"';
-
-            if ($direct) {
-                $cmd .= ' | tee "' . $this->_outputPath . 'output.log"';
-            } else {
-                $cmd .= ' > "' . $this->_outputPath . 'results.csv"';
-            }
-        } else {
-            $cmd = $this->_options['phpcsbin']
-                . ' --standard=' . $sniffStandard
-                . ' -p'
-                . ' --extensions=php';
-
-            if ($this->_ignore) {
-                $cmd .= ' --ignore=' . escapeshellarg($this->_ignore);
-            }
-
-            if ($paths == $this->_paths) {
-                // Show high-level summary
-                $cmd .= ' --report-summary=';
-            } else {
-                $cmd .= ' --report-full=';
-            }
-
-            $cmd .= ' --report-csv=' . $this->_outputPath . 'results.csv'
-                . ' "' . implode('" "', $validPaths) . '" ';
+        if ($this->_ignore) {
+            $cmd .= ' --ignore=' . escapeshellarg($this->_ignore);
         }
+
+        if ($paths == $this->_paths) {
+            // Show high-level summary
+            $cmd .= ' --report-summary=';
+        } else {
+            $cmd .= ' --report-full=';
+        }
+
+        $cmd .= ' --report-csv=' . $this->_outputPath . 'results.csv'
+            . ' "' . implode('" "', $validPaths) . '" ';
 
         $this->_qis->log($cmd);
 
@@ -475,11 +418,11 @@ class Codingstandard implements ModuleInterface
             // We ran the sniff for a specific file
             foreach ($paths as $path) {
                 $sqlString = $sql . " WHERE file = '" . realpath($path) . "';";
-                $this->_db->safeQuery($sqlString);
+                $this->_db->executeQuery($sqlString);
             }
         } else {
             // Yes, just delete everything.
-            $this->_db->safeQuery($sql);
+            $this->_db->executeQuery($sql);
         }
 
         $row    = 0;
@@ -508,6 +451,14 @@ class Codingstandard implements ModuleInterface
                 continue;
             }
 
+            if ($data[0] == $cols[0]) {
+                // No data, we got the headers again.
+                if ($this->_qis->isVerbose()) {
+                    $this->_qis->log('No sniff results found.');
+                }
+                break;
+            }
+
             if ($this->_includeSniffCodes) {
                 $sniffCode = $this->_db->escape($data[5]);
             } else {
@@ -522,7 +473,7 @@ class Codingstandard implements ModuleInterface
                 . "'" . $sniffCode . "')";
 
             $sql = $sqlPre . $sqlRow;
-            $this->_db->safeQuery($sql);
+            $this->_db->executeQuery($sql);
 
             if ($this->_qis->isVerbose()) {
                 echo '.';
@@ -578,7 +529,7 @@ class Codingstandard implements ModuleInterface
 
         $sql = "update project set errors=$errorTotal, "
             . "warnings=$warningTotal, error_level=$errorLevel;";
-        $this->_db->safeQuery($sql);
+        $this->_db->executeQuery($sql);
 
         return $errorLevel;
     }
@@ -635,7 +586,14 @@ class Codingstandard implements ModuleInterface
             array('headers' => array_keys($results))
         );
 
-        $out = "Codingstandard results:\n" . $table->display(true);
+
+        $out = "Codingstandard results:\n";
+        if (!$results) {
+            $out .= "No results.";
+        } else {
+            $out .= $table->display(true);
+        }
+
         if ($pretty) {
             $this->_qis->prettyMessage(trim($out), 8, 4);
         } else {
@@ -707,7 +665,7 @@ class Codingstandard implements ModuleInterface
 
         echo $table->display(true);
 
-        return QisModuleInterface::RETURN_BENIGN;
+        return ModuleInterface::RETURN_BENIGN;
     }
 
     /**
@@ -853,7 +811,7 @@ class Codingstandard implements ModuleInterface
             'error_level' real
         );";
 
-        $this->_db->safeQuery($sql);
+        $this->_db->executeQuery($sql);
 
         $sql = "create table snif_results (
             'id' integer primary key,
@@ -865,7 +823,7 @@ class Codingstandard implements ModuleInterface
             'sniffcode' text
         );";
 
-        $this->_db->safeQuery($sql);
+        $this->_db->executeQuery($sql);
 
         return true;
     }
@@ -890,7 +848,6 @@ class Codingstandard implements ModuleInterface
      */
     public function countSloc()
     {
-        $phpslocBin   = $this->_options['phpslocbin'];
         $filelistPath = $this->_outputPath . 'filelist';
 
         $this->_qis->log(
@@ -904,18 +861,20 @@ class Codingstandard implements ModuleInterface
         $this->_clearFileList();
 
         foreach ($this->_paths as $path) {
-            $this->_createFileList($path);
+            $files = $this->_createFileList($path);
         }
 
-        $cmd = $phpslocBin . " -c -f \"" . $filelistPath . "\"";
+        $analyser = new Analyser();
+        $results = $analyser->countFiles($files, false);
 
-        $this->_qis->log($cmd);
+        if (isset($results['loc'])) {
+            // Lines of Code
+            $sloc = $results['loc'];
+        }
 
-        exec($cmd, $result, $status);
-        if ($status === 0) {
-            $totals   = explode(' ', end($result));
-            $sloc     = $totals[0];
-            $comments = $totals[1];
+        if (isset($results['cloc'])) {
+            // Lines of Code
+            $comments = $results['cloc'];
         }
 
         $this->_updateSloc($sloc);
@@ -935,6 +894,8 @@ class Codingstandard implements ModuleInterface
         if (file_exists($filelistPath)) {
             unlink($filelistPath);
         }
+
+        $this->files = array();
     }
 
     /**
@@ -953,11 +914,15 @@ class Codingstandard implements ModuleInterface
         $files = Utils::rglob('*.php', 0, $path);
 
         $files = $this->_filterIgnoredFiles($files);
-        $files = implode("\n", $files);
+        $filelist = implode("\n", $files);
 
         $filelistPath = $this->_outputPath . 'filelist';
 
-        file_put_contents($filelistPath, $files . "\n", FILE_APPEND);
+        file_put_contents($filelistPath, $filelist . "\n", FILE_APPEND);
+
+        $this->files = array_merge($this->files, $files);
+
+        return $this->files;
     }
 
     /**
@@ -1003,7 +968,7 @@ class Codingstandard implements ModuleInterface
     protected function _updateSloc($total)
     {
         $sql = "update project set sloc=$total";
-        return $this->_db->safeQuery($sql);
+        return $this->_db->executeQuery($sql);
     }
 
     /**
@@ -1015,7 +980,7 @@ class Codingstandard implements ModuleInterface
     protected function _updateCommentLines($total)
     {
         $sql = "update project set comment_lines=$total";
-        return $this->_db->safeQuery($sql);
+        return $this->_db->executeQuery($sql);
     }
 }
 

@@ -10,14 +10,29 @@ namespace Qis;
 
 date_default_timezone_set('America/Chicago');
 
-$root = realpath(dirname(dirname(__FILE__)));
+$root = realpath(dirname(__DIR__));
 
-// Composer autoload require guard
-if (!file_exists($root . DIRECTORY_SEPARATOR . 'vendor/autoload.php')) {
-   die("You must run the command `composer install` from the terminal in the directory '$root' before activating this plugin.\n");
+$autoloadLocations = array(
+    __DIR__ . '/../../../autoload.php',
+    $root . DIRECTORY_SEPARATOR . 'vendor/autoload.php'
+);
+
+foreach ($autoloadLocations as $file) {
+    if (file_exists($file)) {
+        define('QIS_COMPOSER_AUTOLOAD', $file);
+        break;
+    }
 }
 
-$autoload = require_once $root . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
+// Composer autoload require guard
+if (!defined('QIS_COMPOSER_AUTOLOAD')) {
+    die(
+        "You must run the command `composer install` from the terminal "
+        . "in the directory '$root' before using this tool.\n"
+    );
+}
+
+$autoload = require_once QIS_COMPOSER_AUTOLOAD;
 $autoload->set('Qis', array($root . DIRECTORY_SEPARATOR . 'src'));
 
 if (!function_exists('get_called_class')) {

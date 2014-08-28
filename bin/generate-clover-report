@@ -1,14 +1,44 @@
 #!/usr/bin/env php
 <?php
 
-require_once 'CloverCoverageReport.php';
+namespace Qis;
+
+date_default_timezone_set('America/Chicago');
+
+$root = realpath(dirname(__DIR__));
+
+$autoloadLocations = array(
+    __DIR__ . '/../../../autoload.php',
+    $root . DIRECTORY_SEPARATOR . 'vendor/autoload.php'
+);
+
+foreach ($autoloadLocations as $file) {
+    if (file_exists($file)) {
+        define('QIS_COMPOSER_AUTOLOAD', $file);
+        break;
+    }
+}
+
+// Composer autoload require guard
+if (!defined('QIS_COMPOSER_AUTOLOAD')) {
+    die(
+        "You must run the command `composer install` from the terminal "
+        . "in the directory '$root' before using this tool.\n"
+    );
+}
+
+$autoload = require_once QIS_COMPOSER_AUTOLOAD;
 
 if (!isset($argv[1])) {
-    echo "Missing required parameter: filename.";
+    echo "Missing required parameter: filename.\n";
     exit(1);
 }
 
 $xmlFilename = $argv[1];
+
+if (!file_exists($xmlFilename)) {
+    throw new \Exception(sprintf("XML file '%s' not found.", $xmlFilename));
+}
 
 if (isset($argv[2])) {
     $targetFile = $argv[2];

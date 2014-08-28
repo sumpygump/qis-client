@@ -33,7 +33,6 @@ if (!defined('QIS_COMPOSER_AUTOLOAD')) {
 }
 
 $autoload = require_once QIS_COMPOSER_AUTOLOAD;
-$autoload->set('Qis', array($root . DIRECTORY_SEPARATOR . 'src'));
 
 if (!function_exists('get_called_class')) {
     include_once $root . DIRECTORY_SEPARATOR . 'src/get_called_class.func.php';

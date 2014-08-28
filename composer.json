@@ -9,8 +9,18 @@
         }
     ],
     "require": {
-        "sumpygump/qi-console": "dev-master",
-        "sumpygump/qi-db": "dev-master",
+        "php": ">=5.3",
+        "sumpygump/qi-console": "1.*",
+        "sumpygump/qi-db": "1.*",
         "phploc/phploc": "*"
+    },
+    "bin": [
+        "qis",
+        "generate-clover-report"
+    ],
+    "autoload": {
+        "psr-0" : {
+            "Qis" : "src/"
+        }
     }
 }

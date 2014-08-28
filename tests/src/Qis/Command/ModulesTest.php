@@ -209,7 +209,7 @@ class ModulesTest extends BaseTestCase
         list($result, $status) = $this->_execute($args);
 
         $this->assertContains('|  Module', $result);
-        $this->assertContains('|  MockQisModuleBaseForModules  |', $result);
+        $this->assertContains('|  Qis\\Tests\\Command\\MockQisModuleBaseForModules  |', $result);
         $this->assertEquals(0, $status);
     }
 
@@ -262,7 +262,7 @@ class ModulesTest extends BaseTestCase
     {
         $modules = array(
             'mock' => array(
-                'class' => 'MockQisModuleBaseForModules',
+                'class' => 'Qis\\Tests\\Command\\MockQisModuleBaseForModules',
                 'command' => 'foobar',
             ),
         );

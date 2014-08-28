@@ -225,20 +225,7 @@ class Qis
             $command = strtolower($name);
         }
 
-        // If class doesn't exist, attempt to include the file
-        if (!class_exists($className)) {
-            $file = 'Module/' . $filename . '.php';
-            try {
-                include_once $file;
-            } catch (Exception $e) {
-                $this->warningMessage(
-                    "Failed to load module $name. File '$file' not found."
-                );
-                return false;
-            }
-        }
-
-        // If it still doesn't exist, fail
+        // If it doesn't exist, fail; Should be autoloaded already
         if (!class_exists($className)) {
             $this->warningMessage(
                 "Failed to load module $name. Class $className not found."

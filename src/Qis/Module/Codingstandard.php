@@ -835,9 +835,9 @@ class Codingstandard implements ModuleInterface
      */
     protected function _createProjectRow()
     {
-        $sql = "insert into project (datetime) values (" . time() . ");";
+        $sql = "INSERT INTO project (datetime) values (" . time() . ");";
 
-        $id = $this->_db->doSafeQuery($sql);
+        $id = $this->_db->executeQuery($sql);
         return $id;
     }
 

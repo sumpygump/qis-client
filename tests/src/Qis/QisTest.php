@@ -46,7 +46,7 @@ class MockQis extends Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class MockQisModule implements ModuleInterface
+class MockModule implements ModuleInterface
 {
     /**
      * Get default ini
@@ -198,7 +198,7 @@ class QisTest extends BaseTestCase
     {
         $version = $this->_object->getVersion();
 
-        $this->assertEquals('1.0.11', $version);
+        $this->assertEquals('1.1.0', $version);
     }
 
     /**
@@ -320,7 +320,7 @@ class QisTest extends BaseTestCase
     public function testRegisterModulesFailsSilently()
     {
         $modules = array(
-            'Codingstandard' => array(),
+            'Abc' => array(),
         );
 
         ob_start();
@@ -340,7 +340,7 @@ class QisTest extends BaseTestCase
     {
         $modules = array(
             'Mockmodule' => array(
-                'class' => 'MockQisModule',
+                'class' => 'Qis\\Tests\\MockModule',
             ),
         );
 
@@ -358,7 +358,7 @@ class QisTest extends BaseTestCase
     {
         $modules = array(
             'Mockmodule' => array(
-                'class' => 'MockQisModule',
+                'class' => 'Qis\\Tests\\MockModule',
                 'command' => 'mock',
             ),
         );
@@ -397,7 +397,7 @@ class QisTest extends BaseTestCase
      */
     public function testRegisterModuleWithFileButNoClass()
     {
-        $file = 'modules/Mockmodule.php';
+        $file = 'Mockmodule.php';
         file_put_contents($file, '<' . '?php //nothing');
 
         $modules = array(
@@ -596,7 +596,7 @@ class QisTest extends BaseTestCase
         $result = ob_get_contents();
         ob_end_clean();
 
-        $this->assertContains('1.0.11', $result);
+        $this->assertContains('1.1.0', $result);
         $this->assertNotContains('testfoo', $result);
     }
 

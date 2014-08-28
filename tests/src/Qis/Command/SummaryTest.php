@@ -425,11 +425,11 @@ class SummaryTest extends BaseTestCase
     {
         $modules = array(
             'mock' => array(
-                'class' => 'MockQisModuleBaseForSummary',
+                'class' => 'Qis\\Tests\\Command\\MockQisModuleBaseForSummary',
                 'command' => 'mockmock',
             ),
             'mfalse' => array(
-                'class' => 'MockQisModuleSummaryFalseStatus',
+                'class' => 'Qis\\Tests\\Command\\MockQisModuleSummaryFalseStatus',
                 'command' => 'mfalse',
             ),
         );

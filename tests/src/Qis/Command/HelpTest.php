@@ -219,7 +219,7 @@ class HelpTest extends BaseTestCase
     /**
      * If the module doesn't exist, it will throw an exception
      * 
-     * @expectedException QisCommandException
+     * @expectedException Qis\CommandException
      * @return void
      */
     public function testExecuteContextualHelpModuleNotFound()
@@ -307,7 +307,7 @@ class HelpTest extends BaseTestCase
     {
         $modules = array(
             'mock' => array(
-                'class' => 'MockQisModuleBaseForHelp',
+                'class' => 'Qis\\Tests\\Command\\MockQisModuleBaseForHelp',
                 'command' => 'foobar',
             ),
         );

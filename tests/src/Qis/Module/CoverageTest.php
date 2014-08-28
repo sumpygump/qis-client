@@ -104,7 +104,7 @@ class CoverageTest extends BaseTestCase
     /**
      * testExecute
      *
-     * @expectedException CoverageException
+     * @expectedException Qis\Module\CoverageException
      * @return void
      */
     public function testExecute()
@@ -121,7 +121,7 @@ class CoverageTest extends BaseTestCase
     /**
      * Test execute with argument
      *
-     * @expectedException CoverageException
+     * @expectedException Qis\Module\CoverageException
      * @return void
      */
     public function testExecuteWithArgument()

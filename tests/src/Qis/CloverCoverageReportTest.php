@@ -344,7 +344,7 @@ class CloverCoverageReportTest extends BaseTestCase
             $contents = '<?xml version="1.0" encoding="UTF-8"?>
     <coverage generated="1301557448" phpunit="3.4.15">
         <project name="." timestamp="1301558264">
-        <file name="' . $path . '/lib/Qis.php">
+        <file name="' . $path . '/src/Qis/Qis.php">
           <class name="Qis" namespace="global" fullPackage="Qis" package="Qis">
             <metrics methods="27" coveredmethods="24" conditionals="0" coveredconditionals="0" statements="187" coveredstatements="147" elements="214" coveredelements="171"/>
           </class>

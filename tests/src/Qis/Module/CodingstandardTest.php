@@ -7,7 +7,7 @@
 
 namespace Qis\Tests\Module;
 
-use \BaseTestCase;
+use BaseTestCase;
 use Qis\Module\Codingstandard;
 use Qis\CodingStandardException;
 use Qis\Qis;
@@ -52,16 +52,6 @@ class MockQisModuleCodingstandard extends Codingstandard
     public function checkVersion()
     {
         return $this->_checkVersion();
-    }
-
-    /**
-     * Check php sloc
-     *
-     * @return bool
-     */
-    public function checkPhpSloc()
-    {
-        return $this->_checkPhpSloc();
     }
 }
 
@@ -228,7 +218,7 @@ class CodingstandardTest extends BaseTestCase
 
         $this->assertContains('Running Codingstandard module', $result);
         $this->assertContains(
-            'Sniffing code with \'Apricot\' standard...', $result
+            'Sniffing code with \'PSR2\' standard...', $result
         );
         $this->assertContains('Writing results to db...', $result);
         $this->assertContains('Codingstandard results:', $result);
@@ -237,7 +227,7 @@ class CodingstandardTest extends BaseTestCase
     /**
      * testCheckVersion
      *
-     * @expectedException Qis\CodingStandardException
+     * @expectedException Qis\Module\CodingStandardException
      * @return void
      */
     public function testCheckVersion()
@@ -278,33 +268,6 @@ class CodingstandardTest extends BaseTestCase
     }
 
     /**
-     * testCheckPhpSlocNotInstalled
-     *
-     * @expectedException Qis\CodingStandardException
-     * @return void
-     */
-    public function testCheckPhpSlocNotInstalled()
-    {
-        $this->_object->setOption('phpslocbin', 'foofffff');
-        $this->_object->checkPhpSloc();
-    }
-
-    /**
-     * Test check php sloc no response
-     *
-     * @return void
-     */
-    public function testCheckPhpSlocNoResponse()
-    {
-        // The : command returns no output, so this tests that the object will 
-        // return false if there cmd returns no output
-        $this->_object->setOption('phpslocbin', ':');
-        $result = $this->_object->checkPhpSloc();
-
-        $this->assertFalse($result);
-    }
-
-    /**
      * Test execute with path not found
      *
      * @return void
@@ -336,7 +299,7 @@ class CodingstandardTest extends BaseTestCase
         $args = array(
             'cs',
             'foo',
-            'commands/AllTest.php',
+            'src/Qis/Command/AllTest.php',
         );
         $args = new Qi_Console_ArgV($args);
 
@@ -474,7 +437,7 @@ class CodingstandardTest extends BaseTestCase
     public function testGetStatusError()
     {
         $settings = array(
-            'standard' => 'Apricot',
+            'standard' => 'PSR2',
             'path'     => '.',
         );
 
@@ -497,7 +460,7 @@ class CodingstandardTest extends BaseTestCase
     protected function _createObject($initialize = true, $args = array())
     {
         $settings = array(
-            'standard' => 'Apricot',
+            'standard' => 'PSR2',
             'path'     => '.',
         );
 

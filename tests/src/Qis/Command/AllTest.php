@@ -7,7 +7,7 @@
 
 namespace Qis\Tests\Command;
 
-use \BaseTestCase;
+use BaseTestCase;
 use Qis\Command\All;
 use Qis\ModuleInterface;
 use Qis\Config;
@@ -482,15 +482,15 @@ class AllTest extends BaseTestCase
     {
         $modules = array(
             'Aa' => array(
-                'class' => 'MockQisModuleAa',
+                'class' => 'Qis\\Tests\\Command\\MockQisModuleAa',
                 'command' => 'cs',
             ),
             'Kk' => array(
-                'class' => 'MockQisModuleKk',
+                'class' => 'Qis\\Tests\\Command\\MockQisModuleKk',
                 'command' => 'test',
             ),
             'Aa2' => array(
-                'class' => 'MockQisModuleAa',
+                'class' => 'Qis\\Tests\\Command\\MockQisModuleAa',
                 'command' => 'coverage',
             ),
         );

@@ -10,6 +10,7 @@ namespace Qis\Command;
 use Qis\CommandInterface;
 use Qis\Qis;
 use Qi_Console_ArgV;
+use Qi_Console_Tabular;
 
 /**
  * Modules command class

@@ -5,6 +5,16 @@
  * @package Qis
  */
 
+namespace Qis\Tests;
+
+use BaseTestCase;
+use Qis\Qis;
+use Qis\ModuleInterface;
+use Qis\Config;
+use Qi_Console_ArgV;
+use Qi_Console_Terminal;
+use StdClass;
+
 /**
  * Mock Qis class
  *
@@ -36,7 +46,7 @@ class MockQis extends Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class MockQisModule implements QisModuleInterface
+class MockQisModule implements ModuleInterface
 {
     /**
      * Get default ini
@@ -222,7 +232,7 @@ class QisTest extends BaseTestCase
      */
     public function testGetConfig()
     {
-        $expected = new QisConfig();
+        $expected = new Config();
         $config   = $this->_object->getConfig();
         $this->assertEquals($expected, $config);
     }
@@ -234,7 +244,7 @@ class QisTest extends BaseTestCase
      */
     public function testSetConfig()
     {
-        $config = new QisConfig();
+        $config = new Config();
         $this->_object->setConfig($config);
         $actual = $this->_object->getConfig();
         $this->assertEquals($config, $actual);
@@ -430,7 +440,7 @@ class QisTest extends BaseTestCase
      */
     public function testExecuteWithModules()
     {
-        $config = new QisConfig();
+        $config = new Config();
 
         $config->project_name = 'testfoo';
 
@@ -492,7 +502,7 @@ class QisTest extends BaseTestCase
         $this->_object = new MockQis($args, $terminal);
 
         // Setup and attach config
-        $config = new QisConfig();
+        $config = new Config();
 
         $config->project_name = 'testfoo';
 
@@ -531,7 +541,7 @@ class QisTest extends BaseTestCase
         $this->_object = new MockQis($args, $terminal);
 
         // Setup and attach config
-        $config = new QisConfig();
+        $config = new Config();
 
         $config->modules = array(
             'Mockmodule' => array(
@@ -568,7 +578,7 @@ class QisTest extends BaseTestCase
         $this->_object = new MockQis($args, $terminal);
 
         // Setup and attach config
-        $config = new QisConfig();
+        $config = new Config();
 
         $config->project_name = 'testfoo';
 

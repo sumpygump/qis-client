@@ -9,6 +9,7 @@ namespace Qis;
 
 use SebastianBergmann\PHPLOC\Analyser;
 use Exception;
+use StdClass;
 
 /**
  * Clover Coverage Report

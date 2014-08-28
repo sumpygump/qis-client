@@ -1,11 +1,18 @@
 <?php
 /**
- * Qis Command Init test class file 
+ * Qis Command Modules test class file 
  *
  * @package Qis
  */
 
-require_once 'commands/Init.php';
+namespace Qis\Tests\Command;
+
+use \BaseTestCase;
+use Qis\Command\Modules;
+use Qis\ModuleInterface;
+use Qis\Qis;
+use Qi_Console_ArgV;
+use Qi_Console_Terminal;
 
 /**
  * Mock Module class for Init subcommand
@@ -15,7 +22,7 @@ require_once 'commands/Init.php';
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class MockQisModuleBaseForInit implements QisModuleInterface
+class MockQisModuleBaseForModules implements ModuleInterface
 {
     /**
      * Get default ini
@@ -37,7 +44,7 @@ class MockQisModuleBaseForInit implements QisModuleInterface
     public function __construct(Qis $qis, $settings)
     {
     }
-    
+
     /**
      * Initialize
      *
@@ -121,7 +128,7 @@ class MockQisModuleBaseForInit implements QisModuleInterface
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class Qis_Command_InitTest extends BaseTestCase
+class ModulesTest extends BaseTestCase
 {
     /**
      * Setup before each test
@@ -137,7 +144,7 @@ class Qis_Command_InitTest extends BaseTestCase
 
         $settings = array();
 
-        $this->_object = new Qis_Command_Init($this->_qis, $settings);
+        $this->_object = new Modules($this->_qis, $settings);
     }
 
     /**
@@ -147,19 +154,6 @@ class Qis_Command_InitTest extends BaseTestCase
      */
     public function tearDown()
     {
-        passthru('rm -rf .qis');
-    }
-
-    /**
-     * Get name should return the default command name
-     * 
-     * @return void
-     */
-    public function testGetName()
-    {
-        $name = Qis_Command_Init::getName();
-
-        $this->assertEquals('init', $name);
     }
 
     /**
@@ -175,7 +169,19 @@ class Qis_Command_InitTest extends BaseTestCase
     }
 
     /**
-     * Text execute default
+     * Test get name
+     *
+     * @return void
+     */
+    public function testGetName()
+    {
+        $name = Modules::getName();
+
+        $this->assertEquals('modules', $name);
+    }
+
+    /**
+     * Test execute default
      *
      * @return void
      */
@@ -185,24 +191,25 @@ class Qis_Command_InitTest extends BaseTestCase
 
         list($result, $status) = $this->_execute($args);
 
-        $this->assertContains('Initializing project...', $result);
+        $this->assertEquals('', $result);
         $this->assertEquals(0, $status);
     }
 
     /**
-     * Test execute when path already exists
+     * Test execute with registered modules
      *
      * @return void
      */
-    public function testExecuteWhenPathAlreadyExists()
+    public function testExecuteWithRegisteredModules()
     {
-        mkdir('.qis');
+        $this->_setupSomeDefaultModules();
 
         $args = new Qi_Console_ArgV(array());
 
         list($result, $status) = $this->_execute($args);
 
-        $this->assertContains('Initializing project...', $result);
+        $this->assertContains('|  Module', $result);
+        $this->assertContains('|  MockQisModuleBaseForModules  |', $result);
         $this->assertEquals(0, $status);
     }
 
@@ -234,7 +241,7 @@ class Qis_Command_InitTest extends BaseTestCase
      * Run execute on the object and return the buffered output and status
      * 
      * @param Qis_Console_ArgV $args Arguments
-     * @return array
+     * @return void
      */
     protected function _execute($args)
     {
@@ -255,7 +262,7 @@ class Qis_Command_InitTest extends BaseTestCase
     {
         $modules = array(
             'mock' => array(
-                'class' => 'MockQisModuleBaseForInit',
+                'class' => 'MockQisModuleBaseForModules',
                 'command' => 'foobar',
             ),
         );

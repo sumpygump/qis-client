@@ -216,7 +216,7 @@ class Qis
         if (isset($settings['class']) && trim($settings['class']) != '') {
             $className = $settings['class'];
         } else {
-            $className = 'Qis_Module_' . $filename;
+            $className = 'Qis\\Module\\' . $filename;
         }
 
         if (isset($settings['command'])) {
@@ -227,7 +227,7 @@ class Qis
 
         // If class doesn't exist, attempt to include the file
         if (!class_exists($className)) {
-            $file = 'modules/' . $filename . '.php';
+            $file = 'Module/' . $filename . '.php';
             try {
                 include_once $file;
             } catch (Exception $e) {

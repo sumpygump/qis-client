@@ -5,10 +5,11 @@
  * @package Qis
  */
 
-/**
- * @see Utils
- */
-require_once 'Utils.php';
+namespace Qis\Tests;
+
+use BaseTestCase;
+use Qis\Utils;
+use StdClass;
 
 /**
  * Utils test class

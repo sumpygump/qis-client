@@ -5,10 +5,11 @@
  * @package Qis
  */
 
-/**
- * @see QisConfig
- */
-require_once 'QisConfig.php';
+namespace Qis\Tests;
+
+use BaseTestCase;
+use Qis\Config;
+use StdClass;
 
 /**
  * QisConfig Test class
@@ -18,7 +19,7 @@ require_once 'QisConfig.php';
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class QisConfigTest extends BaseTestCase
+class ConfigTest extends BaseTestCase
 {
     /**
      * Setup before each test
@@ -27,7 +28,7 @@ class QisConfigTest extends BaseTestCase
      */
     public function setUp()
     {
-        $this->_object = new QisConfig();
+        $this->_object = new Config();
     }
 
     /**
@@ -51,7 +52,7 @@ class QisConfigTest extends BaseTestCase
             . "project_name=test786T464";
         file_put_contents($file, $contents);
 
-        $this->_object = new QisConfig($file);
+        $this->_object = new Config($file);
 
         $this->assertEquals('test786T464', $this->_object->project_name);
         unlink($file);
@@ -91,7 +92,7 @@ class QisConfigTest extends BaseTestCase
             . "height=480\n";
         file_put_contents($file, $contents);
 
-        $this->_object = new QisConfig($file);
+        $this->_object = new Config($file);
 
         $this->assertEquals('640', $this->_object->images->width);
 

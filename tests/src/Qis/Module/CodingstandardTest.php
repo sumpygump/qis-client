@@ -5,10 +5,14 @@
  * @package Qis
  */
 
-/**
- * @see Codingstandard
- */
-require_once 'modules/Codingstandard.php';
+namespace Qis\Tests\Module;
+
+use \BaseTestCase;
+use Qis\Module\Codingstandard;
+use Qis\CodingStandardException;
+use Qis\Qis;
+use Qi_Console_ArgV;
+use Qi_Console_Terminal;
 
 /**
  * Mock Qis Module coding standard
@@ -18,7 +22,7 @@ require_once 'modules/Codingstandard.php';
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class MockQisModuleCodingstandard extends Qis_Module_Codingstandard
+class MockQisModuleCodingstandard extends Codingstandard
 {
     /**
      * Get standard
@@ -90,7 +94,7 @@ class MockQisModuleCodingstandardErrorLevel extends MockQisModuleCodingstandard
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class Qis_Module_CodingstandardTest extends BaseTestCase
+class CodingstandardTest extends BaseTestCase
 {
     /**
      * Setup before each test
@@ -126,7 +130,7 @@ class Qis_Module_CodingstandardTest extends BaseTestCase
      */
     public function testConstructorWithNoArguments()
     {
-        $this->_object = new Qis_Module_Codingstandard();
+        $this->_object = new Codingstandard();
     }
 
     /**
@@ -137,7 +141,7 @@ class Qis_Module_CodingstandardTest extends BaseTestCase
      */
     public function testConstructorWithoutSecondArgument()
     {
-        $this->_object = new Qis_Module_Codingstandard(
+        $this->_object = new Codingstandard(
             $this->_getDefaultQisObject()
         );
     }
@@ -151,11 +155,11 @@ class Qis_Module_CodingstandardTest extends BaseTestCase
     {
         $settings = array();
 
-        $this->_object = new Qis_Module_Codingstandard(
+        $this->_object = new Codingstandard(
             $this->_getDefaultQisObject(), $settings
         );
 
-        $this->assertInstanceOf('Qis_Module_Codingstandard', $this->_object);
+        $this->assertInstanceOf('Qis\Module\Codingstandard', $this->_object);
     }
 
     /**
@@ -233,7 +237,7 @@ class Qis_Module_CodingstandardTest extends BaseTestCase
     /**
      * testCheckVersion
      *
-     * @expectedException Qis_Module_CodingStandardException
+     * @expectedException Qis\CodingStandardException
      * @return void
      */
     public function testCheckVersion()
@@ -276,7 +280,7 @@ class Qis_Module_CodingstandardTest extends BaseTestCase
     /**
      * testCheckPhpSlocNotInstalled
      *
-     * @expectedException Qis_Module_CodingStandardException
+     * @expectedException Qis\CodingStandardException
      * @return void
      */
     public function testCheckPhpSlocNotInstalled()
@@ -487,8 +491,8 @@ class Qis_Module_CodingstandardTest extends BaseTestCase
      * Create object
      *
      * @param bool $initialize Whether to initialize
-     * @param Qis_Console_ArgV $args Arguments to pass to object
-     * @return Qis_Module_Codingstandard
+     * @param Qi_Console_ArgV $args Arguments to pass to object
+     * @return Codingstandard
      */
     protected function _createObject($initialize = true, $args = array())
     {
@@ -509,7 +513,7 @@ class Qis_Module_CodingstandardTest extends BaseTestCase
     /**
      * Get default qis object
      *
-     * @param Qis_Console_ArgV $args Arguments
+     * @param Qi_Console_ArgV $args Arguments
      * @return void
      */
     protected function _getDefaultQisObject($args = array())

@@ -5,10 +5,11 @@
  * @package Qis
  */
 
-/**
- * @see CloverCoverageReport
- */
-require_once 'CloverCoverageReport.php';
+namespace Qis\Tests;
+
+use \BaseTestCase;
+use Qis\CloverCoverageReport;
+use StdClass;
 
 /**
  * Clover Coverage Report test class
@@ -54,7 +55,7 @@ class CloverCoverageReportTest extends BaseTestCase
     /**
      * A valid file is required
      * 
-     * @expectedException CloverCoverageReportException
+     * @expectedException Qis\CloverCoverageReportException
      * @return void
      */
     public function testConstructionFileNotExists()
@@ -99,7 +100,7 @@ class CloverCoverageReportTest extends BaseTestCase
     /**
      * Passing in a file when no coverage xml
      * 
-     * @expectedException CloverCoverageReportException
+     * @expectedException Qis\CloverCoverageReportException
      * @return void
      */
     public function testReportFileAnalysisWhenNoXml()
@@ -135,7 +136,7 @@ class CloverCoverageReportTest extends BaseTestCase
         $this->_createXmlFile();
 
         $result = $this->_bufferOutput(
-            'lib/Qis.php'
+            'src/Qis/Qis.php'
         );
         $this->assertContains('    1          : <' . '?php', $result);
     }

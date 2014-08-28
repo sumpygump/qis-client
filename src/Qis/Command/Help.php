@@ -8,6 +8,7 @@
 namespace Qis\Command;
 
 use Qis\CommandInterface;
+use Qis\CommandException;
 use Qis\Qis;
 use Qi_Console_ArgV;
 
@@ -189,7 +190,7 @@ class Help implements CommandInterface
         }
 
         if (!$contextObject) {
-            throw new QisCommandException("No module or command by name '$context' found.", 64);
+            throw new CommandException("No module or command by name '$context' found.", 64);
         }
 
         echo "\n" . $context . ": " . $contextObject->getExtendedHelpMessage();

@@ -5,10 +5,13 @@
  * @package Qis
  */
 
-/**
- * @see Coverage
- */
-require_once 'modules/Coverage.php';
+namespace Qis\Tests\Module;
+
+use \BaseTestCase;
+use Qis\Module\Coverage;
+use Qis\Qis;
+use Qi_Console_ArgV;
+use Qi_Console_Terminal;
 
 /**
  * Mock Qis Module Coverage
@@ -18,19 +21,19 @@ require_once 'modules/Coverage.php';
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class MockQisModuleCoverage extends Qis_Module_Coverage
+class MockQisModuleCoverage extends Coverage
 {
 }
 
 /**
- * Qis_Module_CoverageTest
+ * CoverageTest
  *
  * @uses BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class Qis_Module_CoverageTest extends BaseTestCase
+class CoverageTest extends BaseTestCase
 {
     /**
      * Setup before each test
@@ -66,7 +69,7 @@ class Qis_Module_CoverageTest extends BaseTestCase
      */
     public function testConstructorWithNoArguments()
     {
-        $this->_object = new Qis_Module_Coverage();
+        $this->_object = new Coverage();
     }
 
     /**
@@ -76,7 +79,7 @@ class Qis_Module_CoverageTest extends BaseTestCase
      */
     public function testGetDefaultIni()
     {
-        $defaultIni = Qis_Module_Coverage::getDefaultIni();
+        $defaultIni = Coverage::getDefaultIni();
 
         $this->assertContains(
             '; Module for code coverage of unit tests', $defaultIni
@@ -101,7 +104,7 @@ class Qis_Module_CoverageTest extends BaseTestCase
     /**
      * testExecute
      *
-     * @expectedException Qis_Module_CoverageException
+     * @expectedException CoverageException
      * @return void
      */
     public function testExecute()
@@ -118,7 +121,7 @@ class Qis_Module_CoverageTest extends BaseTestCase
     /**
      * Test execute with argument
      *
-     * @expectedException Qis_Module_CoverageException
+     * @expectedException CoverageException
      * @return void
      */
     public function testExecuteWithArgument()
@@ -204,8 +207,8 @@ class Qis_Module_CoverageTest extends BaseTestCase
      * Create object
      *
      * @param bool $initialize Whether to initialize
-     * @param Qis_Console_ArgV $args Arguments
-     * @return Qis_Module_Coverage
+     * @param Qi_Console_ArgV $args Arguments
+     * @return Coverage
      */
     protected function _createObject($initialize = true, $args = array())
     {

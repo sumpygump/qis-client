@@ -5,10 +5,15 @@
  * @package Qis
  */
 
-/**
- * All Command class
- */
-require_once 'commands/All.php';
+namespace Qis\Tests\Command;
+
+use \BaseTestCase;
+use Qis\Command\All;
+use Qis\ModuleInterface;
+use Qis\Config;
+use Qis\Qis;
+use Qi_Console_ArgV;
+use Qi_Console_Terminal;
 
 /**
  * Mock Qis Module for All subcommand tests
@@ -18,7 +23,7 @@ require_once 'commands/All.php';
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class MockQisModuleBaseForAll implements QisModuleInterface
+class MockQisModuleBaseForAll implements ModuleInterface
 {
     /**
      * Get default ini
@@ -170,7 +175,7 @@ class MockQisModuleKk extends MockQisModuleBaseForAll
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class Qis_Command_AllTest extends BaseTestCase
+class AllTest extends BaseTestCase
 {
     /**
      * Setup before each test
@@ -186,7 +191,7 @@ class Qis_Command_AllTest extends BaseTestCase
 
         $settings = array();
 
-        $this->_object = new Qis_Command_All($this->_qis, $settings);
+        $this->_object = new All($this->_qis, $settings);
     }
 
     /**
@@ -205,7 +210,7 @@ class Qis_Command_AllTest extends BaseTestCase
      */
     public function testGetName()
     {
-        $name = Qis_Command_All::getName();
+        $name = All::getName();
 
         $this->assertEquals('all', $name);
     }
@@ -284,7 +289,7 @@ class Qis_Command_AllTest extends BaseTestCase
      */
     public function testExecuteAllWithConfigedBuildOrder()
     {
-        $config = new QisConfig();
+        $config = new Config();
         $config->set('build_order', 'cs');
 
         $this->_qis->setConfig($config);
@@ -306,7 +311,7 @@ class Qis_Command_AllTest extends BaseTestCase
      */
     public function testGetBuildOrderWithSpacesInBetweenCommas()
     {
-        $config = new QisConfig();
+        $config = new Config();
         $config->set('build_order', 'cs,  coverage,  test');
 
         $this->_qis->setConfig($config);
@@ -328,7 +333,7 @@ class Qis_Command_AllTest extends BaseTestCase
      */
     public function testGetBuildOrderWithInvalidBuildOrder()
     {
-        $config = new QisConfig();
+        $config = new Config();
         $config->set('build_order', ',,,,,,');
 
         $this->_qis->setConfig($config);
@@ -350,7 +355,7 @@ class Qis_Command_AllTest extends BaseTestCase
      */
     public function testGetBuildOrderWithAnotherInvalidBuildOrder()
     {
-        $config = new QisConfig();
+        $config = new Config();
         $config->set(
             'build_order',
             '$#@$#@^%$#^%$#%$#$#@$,$#@!$#@!$#@!$#@!,8893438439483948393893'
@@ -375,7 +380,7 @@ class Qis_Command_AllTest extends BaseTestCase
      */
     public function testGetBuildOrderWithEmptyBuildOrder()
     {
-        $config = new QisConfig();
+        $config = new Config();
         $config->set('build_order', '');
 
         $this->_qis->setConfig($config);
@@ -397,7 +402,7 @@ class Qis_Command_AllTest extends BaseTestCase
      */
     public function testGetBuildOrderWithBlankBuildOrder()
     {
-        $config = new QisConfig();
+        $config = new Config();
         $config->set('build_order', '    ');
 
         $this->_qis->setConfig($config);
@@ -419,7 +424,7 @@ class Qis_Command_AllTest extends BaseTestCase
      */
     public function testGetBuildOrderWithArrayBuildOrder()
     {
-        $config = new QisConfig();
+        $config = new Config();
         $config->set('build_order', array('nofooling'));
 
         $this->_qis->setConfig($config);

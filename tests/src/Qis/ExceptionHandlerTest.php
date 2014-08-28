@@ -5,10 +5,14 @@
  * @package Qis
  */
 
-/**
- * @see QisExceptionHandler
- */
-require_once 'QisExceptionHandler.php';
+namespace Qis\Tests;
+
+use BaseTestCase;
+use Qis\ExceptionHandler;
+use Qis\Qis;
+use Qi_Console_ArgV;
+use Qi_Console_Terminal;
+use Exception;
 
 /**
  * Mock Qis Exception Handler
@@ -18,7 +22,7 @@ require_once 'QisExceptionHandler.php';
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class MockQisExceptionHandler extends QisExceptionHandler
+class MockQisExceptionHandler extends ExceptionHandler
 {
     /**
      * Get Qis
@@ -50,7 +54,7 @@ class MockQisExceptionHandler extends QisExceptionHandler
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class QisExceptionHandlerTest extends BaseTestCase
+class ExceptionHandlerTest extends BaseTestCase
 {
     /**
      * Setup before each test
@@ -68,7 +72,7 @@ class QisExceptionHandlerTest extends BaseTestCase
      */
     public function tearDown()
     {
-        QisExceptionHandler::restoreHandlers();
+        ExceptionHandler::restoreHandlers();
     }
 
     /**
@@ -79,7 +83,7 @@ class QisExceptionHandlerTest extends BaseTestCase
      */
     public function testInitHandlersNoArguments()
     {
-        QisExceptionHandler::initHandlers();
+        ExceptionHandler::initHandlers();
     }
 
     /**
@@ -89,7 +93,7 @@ class QisExceptionHandlerTest extends BaseTestCase
      */
     public function testInitHandlersNormal()
     {
-        QisExceptionHandler::initHandlers($this->_getDefaultQisObject());
+        ExceptionHandler::initHandlers($this->_getDefaultQisObject());
     }
 
     /**
@@ -120,7 +124,7 @@ class QisExceptionHandlerTest extends BaseTestCase
         $expected = "E_ERROR: An error occurred in filename.php:1\n";
 
         ob_start();
-        QisExceptionHandler::handle_error(
+        ExceptionHandler::handle_error(
             $errorNumber, $message, $filename, $line
         );
         $result = ob_get_contents();
@@ -137,7 +141,7 @@ class QisExceptionHandlerTest extends BaseTestCase
     public function testHandleErrorWithNoArguments()
     {
         ob_start();
-        QisExceptionHandler::handle_error();
+        ExceptionHandler::handle_error();
         $result = ob_get_contents();
         ob_end_clean();
 
@@ -151,12 +155,12 @@ class QisExceptionHandlerTest extends BaseTestCase
      */
     public function testHandle()
     {
-        QisExceptionHandler::initHandlers($this->_getDefaultQisObject());
+        ExceptionHandler::initHandlers($this->_getDefaultQisObject());
 
         $exception = new Exception('There was a problem.', 1);
 
         ob_start();
-        QisExceptionHandler::handle($exception);
+        ExceptionHandler::handle($exception);
         $result = ob_get_contents();
         ob_end_clean();
 

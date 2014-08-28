@@ -1,27 +1,31 @@
 <?php
 /**
- * Qis Command Modules test class file 
+ * Qis Command Help test class file 
  *
  * @package Qis
  */
 
-/**
- * Modules command class
- */
-require_once 'commands/Modules.php';
+namespace Qis\Tests\Command;
+
+use \BaseTestCase;
+use Qis\Command\Help;
+use Qis\ModuleInterface;
+use Qis\Qis;
+use Qi_Console_ArgV;
+use Qi_Console_Terminal;
 
 /**
- * Mock Module class for Init subcommand
+ * Mock Module class for Help subcommand
  * 
  * @uses QisModuleInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class MockQisModuleBaseForModules implements QisModuleInterface
+class MockQisModuleBaseForHelp implements ModuleInterface
 {
     /**
-     * Get default ini
+     * Get Default Ini
      *
      * @return void
      */
@@ -34,7 +38,7 @@ class MockQisModuleBaseForModules implements QisModuleInterface
      * Constructor
      *
      * @param Qis $qis Qis object
-     * @param array $settings Config settings
+     * @param mixed $settings Settings
      * @return void
      */
     public function __construct(Qis $qis, $settings)
@@ -117,14 +121,14 @@ class MockQisModuleBaseForModules implements QisModuleInterface
 }
 
 /**
- * Qis Command Init Test cases
+ * Qis Command Help Test cases
  * 
  * @uses BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class Qis_Command_HelpModules extends BaseTestCase
+class HelpTest extends BaseTestCase
 {
     /**
      * Setup before each test
@@ -140,7 +144,7 @@ class Qis_Command_HelpModules extends BaseTestCase
 
         $settings = array();
 
-        $this->_object = new Qis_Command_Modules($this->_qis, $settings);
+        $this->_object = new Help($this->_qis, $settings);
     }
 
     /**
@@ -150,6 +154,18 @@ class Qis_Command_HelpModules extends BaseTestCase
      */
     public function tearDown()
     {
+    }
+
+    /**
+     * Get name should return the default command name
+     * 
+     * @return void
+     */
+    public function testGetName()
+    {
+        $name = Help::getName();
+
+        $this->assertEquals('help', $name);
     }
 
     /**
@@ -165,38 +181,27 @@ class Qis_Command_HelpModules extends BaseTestCase
     }
 
     /**
-     * Test get name
+     * Test execute regular help
      *
      * @return void
      */
-    public function testGetName()
-    {
-        $name = Qis_Command_Modules::getName();
-
-        $this->assertEquals('modules', $name);
-    }
-
-    /**
-     * Test execute default
-     *
-     * @return void
-     */
-    public function testExecuteDefault()
+    public function testExecuteRegularHelp()
     {
         $args = new Qi_Console_ArgV(array());
 
         list($result, $status) = $this->_execute($args);
 
-        $this->assertEquals('', $result);
+        $this->assertContains('Usage: qis <subcommand', $result);
+        $this->assertContains('Global Options:', $result);
         $this->assertEquals(0, $status);
     }
 
     /**
-     * Test execute with registered modules
+     * Test execute regular help with modules registered
      *
      * @return void
      */
-    public function testExecuteWithRegisteredModules()
+    public function testExecuteRegularHelpWithModulesRegistered()
     {
         $this->_setupSomeDefaultModules();
 
@@ -204,8 +209,52 @@ class Qis_Command_HelpModules extends BaseTestCase
 
         list($result, $status) = $this->_execute($args);
 
-        $this->assertContains('|  Module', $result);
-        $this->assertContains('|  MockQisModuleBaseForModules  |', $result);
+        $this->assertContains('Usage: qis <subcommand', $result);
+        $this->assertContains("Modules:\n", $result);
+        $this->assertContains("foobar : help message\nUse", $result);
+        $this->assertContains("Global Options:", $result);
+        $this->assertEquals(0, $status);
+    }
+
+    /**
+     * If the module doesn't exist, it will throw an exception
+     * 
+     * @expectedException QisCommandException
+     * @return void
+     */
+    public function testExecuteContextualHelpModuleNotFound()
+    {
+        $argv = array(
+            './qis',
+            'help',
+            'foobar',
+        );
+
+        $args = new Qi_Console_ArgV($argv);
+
+        $status = $this->_object->execute($args);
+    }
+
+    /**
+     * Test execute contextual help when module exists
+     *
+     * @return void
+     */
+    public function testExecuteContextualHelpModuleExists()
+    {
+        $argv = array(
+            './qis',
+            'help',
+            'foobar',
+        );
+
+        $this->_setupSomeDefaultModules();
+
+        $args = new Qi_Console_ArgV($argv);
+
+        list($result, $status) = $this->_execute($args);
+
+        $this->assertContains("foobar: extended help message\nGlobal", $result);
         $this->assertEquals(0, $status);
     }
 
@@ -236,8 +285,8 @@ class Qis_Command_HelpModules extends BaseTestCase
     /**
      * Run execute on the object and return the buffered output and status
      * 
-     * @param Qis_Console_ArgV $args Arguments
-     * @return void
+     * @param Qi_Console_ArgV $args Arguments
+     * @return array
      */
     protected function _execute($args)
     {
@@ -258,7 +307,7 @@ class Qis_Command_HelpModules extends BaseTestCase
     {
         $modules = array(
             'mock' => array(
-                'class' => 'MockQisModuleBaseForModules',
+                'class' => 'MockQisModuleBaseForHelp',
                 'command' => 'foobar',
             ),
         );

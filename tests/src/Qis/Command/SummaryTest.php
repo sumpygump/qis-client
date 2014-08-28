@@ -5,10 +5,14 @@
  * @package Qis
  */
 
-/**
- * Qis_Command_Summary
- */
-require_once 'commands/Summary.php';
+namespace Qis\Tests\Command;
+
+use \BaseTestCase;
+use Qis\Command\Summary;
+use Qis\ModuleInterface;
+use Qis\Qis;
+use Qi_Console_ArgV;
+use Qi_Console_Terminal;
 
 /**
  * Mock Module class for Summary subcommand
@@ -18,7 +22,7 @@ require_once 'commands/Summary.php';
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class MockQisModuleBaseForSummary implements QisModuleInterface
+class MockQisModuleBaseForSummary implements ModuleInterface
 {
     /**
      * Get default ini
@@ -146,7 +150,7 @@ class MockQisModuleSummaryFalseStatus
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class Qis_Command_SummaryTest extends BaseTestCase
+class SummaryTest extends BaseTestCase
 {
     /**
      * Setup before each test
@@ -162,7 +166,7 @@ class Qis_Command_SummaryTest extends BaseTestCase
 
         $settings = array();
 
-        $this->_object = new Qis_Command_Summary($this->_qis, $settings);
+        $this->_object = new Summary($this->_qis, $settings);
     }
 
     /**
@@ -181,7 +185,7 @@ class Qis_Command_SummaryTest extends BaseTestCase
      */
     public function testGetName()
     {
-        $name = Qis_Command_Summary::getName();
+        $name = Summary::getName();
 
         $this->assertEquals('summary', $name);
     }

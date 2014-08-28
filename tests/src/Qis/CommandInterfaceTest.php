@@ -5,17 +5,23 @@
  * @package Qis
  */
 
-require_once 'QisCommandInterface.php';
+namespace Qis\Tests;
+
+use BaseTestCase;
+use Qis\CommandInterface;
+use Qis\Qis;
+use Qi_Console_ArgV;
+use Qi_Console_Terminal;
 
 /**
  * Qis Command
  *
- * @uses QisCommandInterface
+ * @uses CommandInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class QisCommand implements QisCommandInterface
+class Command implements CommandInterface
 {
     /**
      * Get name
@@ -79,13 +85,13 @@ class QisCommand implements QisCommandInterface
 /**
  * Qis command interface test
  * 
- * @covers QisCommandInterface
+ * @covers Qis\CommandInterface
  * @uses BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@nerdery.com>
  * @version $Id$
  */
-class QisCommandInterfaceTest extends BaseTestCase
+class CommandInterfaceTest extends BaseTestCase
 {
     /**
      * Test get name
@@ -99,7 +105,7 @@ class QisCommandInterfaceTest extends BaseTestCase
 
         $this->_qis = new Qis($args, $terminal);
 
-        $command = new QisCommand($this->_qis, array());
+        $command = new Command($this->_qis, array());
 
         $name = $command->getName();
     }

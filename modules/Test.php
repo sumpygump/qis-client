@@ -270,8 +270,16 @@ class Qis_Module_Test implements QisModuleInterface
             $executionOutputFormat = '--tap ';
         }
 
+        $phpunitBin = $this->_qis->getConfig()->get('phpunit_bin');
+
+        // If phpunit binary path is not in config file, default to 'phpunit'
+        $isEmptyPhpunitBin = (array) $phpunitBin;
+        if (empty($isEmptyPhpunitBin)) {
+            $phpunitBin = 'phpunit';
+        }
+
         $cmd = 'cd ' . $testsDir . ';'
-            . 'phpunit '
+            . $phpunitBin . ' '
             . $bootstrap
             . $configuration
             . $colors

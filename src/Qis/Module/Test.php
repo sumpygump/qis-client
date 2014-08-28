@@ -5,10 +5,13 @@
  * @package Qis
  */
 
-/**
- * @see QisModuleInterface
- */
-require_once 'QisModuleInterface.php';
+namespace Qis\Module;
+
+use Qis\ModuleInterface;
+use Qis\Qis;
+use Qi_Console_Tabular;
+use Qi_Console_ArgV;
+use Exception;
 
 /**
  * Test runner module
@@ -18,7 +21,7 @@ require_once 'QisModuleInterface.php';
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class Qis_Module_Test implements QisModuleInterface
+class Test implements ModuleInterface
 {
     /**
      * Output path
@@ -409,7 +412,7 @@ class Qis_Module_Test implements QisModuleInterface
 
         echo $data;
 
-        return QisModuleInterface::RETURN_BENIGN;
+        return ModuleInterface::RETURN_BENIGN;
     }
 
     /**

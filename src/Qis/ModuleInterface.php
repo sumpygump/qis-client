@@ -5,6 +5,10 @@
  * @package Qis
  */
 
+namespace Qis;
+
+use Qi_Console_ArgV;
+
 /**
  * Qis Module Interface
  * 
@@ -12,7 +16,7 @@
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-interface QisModuleInterface
+interface ModuleInterface
 {
     /**
      * Return value constants

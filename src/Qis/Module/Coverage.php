@@ -5,10 +5,13 @@
  * @package Qis
  */
 
-/**
- * @see QisModuleInterface
- */
-require_once 'QisModuleInterface.php';
+namespace Qis\Module;
+
+use Qis\ModuleInterface;
+use Qis\Qis;
+use Qis\CloverCoverageReport;
+use Qi_Console_ArgV;
+use Exception;
 
 /**
  * Coverage Module class
@@ -18,7 +21,7 @@ require_once 'QisModuleInterface.php';
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class Qis_Module_Coverage implements QisModuleInterface
+class Coverage implements ModuleInterface
 {
     /**
      * Storage of Qis object
@@ -254,13 +257,11 @@ class Qis_Module_Coverage implements QisModuleInterface
             . 'test-results' . DIRECTORY_SEPARATOR . 'coverage.xml';
 
         if (!file_exists($file)) {
-            throw new Qis_Module_CoverageException(
+            throw new CoverageException(
                 "Cannot find file '$file'. "
                 . "Ensure test module is executed first."
             );
         }
-
-        include_once 'CloverCoverageReport.php';
 
         $this->_qis->log('Parsing clover coverage report...');
         $report = new CloverCoverageReport(
@@ -307,13 +308,13 @@ class Qis_Module_Coverage implements QisModuleInterface
 }
 
 /**
- * Qis_Module_CoverageException
+ * Qis Module CoverageException
  *
  * @uses Exception
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class Qis_Module_CoverageException extends Exception
+class CoverageException extends Exception
 {
 }

@@ -2,8 +2,12 @@
 /**
  * Clover Coverage Report class file
  *  
- * @package Apricot
+ * @package Qis
  */
+
+namespace Qis;
+
+use Exception;
 
 /**
  * Clover Coverage Report
@@ -11,7 +15,7 @@
  * This class parses a clover coverage XML file and generates a report of the
  * findings in ASCII format.
  * 
- * @package Apricot
+ * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
@@ -590,7 +594,7 @@ class CloverCoverageReport
  * CloverCoverageReportException
  *
  * @uses Exception
- * @package Apricot
+ * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */

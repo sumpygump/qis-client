@@ -5,10 +5,9 @@
  * @package Qis
  */
 
-/**
- * @see QisConfig
- */
-require_once 'QisConfig.php';
+namespace Qis;
+
+use Qi_Console_ArgV;
 
 /**
  * Qis: Quantal Integration System
@@ -24,7 +23,7 @@ class Qis
      *
      * @var string
      */
-    protected $_version = '1.0.11';
+    const VERSION = '1.1.0';
 
     /**
      * Configuration
@@ -115,7 +114,7 @@ class Qis
     public function getConfig()
     {
         if (!$this->_config) {
-            $this->_config = new QisConfig();
+            $this->_config = new Config();
         }
         return $this->_config;
     }
@@ -123,10 +122,10 @@ class Qis
     /**
      * Set config object
      * 
-     * @param QisConfig $config Config object
+     * @param Config $config Config object
      * @return object
      */
-    public function setConfig(QisConfig $config)
+    public function setConfig(Config $config)
     {
         $this->_config = $config;
         return $this;
@@ -149,7 +148,7 @@ class Qis
      */
     public function getVersion()
     {
-        return $this->_version;
+        return self::VERSION;
     }
 
     /**
@@ -170,13 +169,13 @@ class Qis
     protected function _registerCommands()
     {
         $files = glob(
-            dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR
-            . "commands" . DIRECTORY_SEPARATOR . "*.php"
+            dirname(__FILE__) . DIRECTORY_SEPARATOR
+            . "Command" . DIRECTORY_SEPARATOR . "*.php"
         );
 
         foreach ($files as $file) {
             include_once $file;
-            $classname   = 'Qis_Command_' . pathinfo($file, PATHINFO_FILENAME);
+            $classname   = 'Qis\\Command\\' . pathinfo($file, PATHINFO_FILENAME);
             $commandName = call_user_func(array($classname, 'getName'));
 
             $this->_commands[$commandName] = new $classname($this, array());
@@ -350,7 +349,7 @@ class Qis
             return false;
         }
 
-        $config = new QisConfig($file);
+        $config = new Config($file);
 
         $this->setConfig($config);
     }

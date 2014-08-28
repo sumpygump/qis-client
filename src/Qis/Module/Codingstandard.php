@@ -5,20 +5,15 @@
  * @package Qis
  */
 
-/**
- * @see QisModuleInterface
- */
-require_once 'QisModuleInterface.php';
+namespace Qis\Module;
 
-/**
- * @see Qi_Db_PdoSqlite
- */
-require_once 'Qi/Db/PdoSqlite.php';
-
-/**
- * @see Utils
- */
-require_once 'Utils.php';
+use Qis\ModuleInterface;
+use Qis\Qis;
+use Qis\Utils;
+use Qi_Console_ArgV;
+use Qi_Db_PdoSqlite;
+use Qi_Console_Tabular;
+use Exception;
 
 /**
  * Coding Standard Module
@@ -28,7 +23,7 @@ require_once 'Utils.php';
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class Qis_Module_Codingstandard implements QisModuleInterface
+class Codingstandard implements ModuleInterface
 {
     /**
      * Qis kernel object
@@ -49,7 +44,7 @@ class Qis_Module_Codingstandard implements QisModuleInterface
      *
      * @var string
      */
-    protected $_standard = 'Zend';
+    protected $_standard = 'PSR2';
 
     /**
      * Path to start sniffing
@@ -141,7 +136,7 @@ class Qis_Module_Codingstandard implements QisModuleInterface
      *
      * @param string $name Option name
      * @param mixed $value Value
-     * @return Qis_Module_Codingstandard
+     * @return Codingstandard
      */
     public function setOption($name, $value)
     {
@@ -191,7 +186,7 @@ class Qis_Module_Codingstandard implements QisModuleInterface
         $this->_qis->log('Checking version of phpcs');
 
         if ($status) {
-            throw new Qis_Module_CodingStandardException(
+            throw new CodingStandardException(
                 "PHPCodeSniffer (phpcs) not installed."
             );
         }
@@ -778,7 +773,7 @@ class Qis_Module_Codingstandard implements QisModuleInterface
         return "; Module to run codesniffs to check coding standards.\n"
             . "codingstandard.command=cs\n"
             . "codingstandard.class=" . get_called_class() . "\n"
-            . "codingstandard.standard=Zend\n"
+            . "codingstandard.standard=PSR2\n"
             . "codingstandard.path=.\n"
             . "codingstandard.ignore=vendor\n"
             ;
@@ -1025,13 +1020,13 @@ class Qis_Module_Codingstandard implements QisModuleInterface
 }
 
 /**
- * Qis_Module_CodingStandardException
+ * Qis Module CodingStandardException
  *
  * @uses Exception
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class Qis_Module_CodingStandardException extends Exception
+class CodingStandardException extends Exception
 {
 }

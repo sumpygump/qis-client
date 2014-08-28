@@ -5,10 +5,11 @@
  * @package Qis
  */
 
-/**
- * @see QisCommandInterface
- */
-require_once 'QisCommandInterface.php';
+namespace Qis\Command;
+
+use Qis\CommandInterface;
+use Qis\Qis;
+use Qi_Console_ArgV;
 
 /**
  * Modules command class
@@ -18,7 +19,7 @@ require_once 'QisCommandInterface.php';
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class Qis_Command_Modules implements QisCommandInterface
+class Modules implements CommandInterface
 {
     /**
      * Qis kernel object

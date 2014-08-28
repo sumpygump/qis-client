@@ -5,6 +5,10 @@
  * @package Qis
  */
 
+namespace Qis;
+
+use Exception;
+
 /**
  * Qis Exception Handler
  * 
@@ -12,7 +16,7 @@
  * @author Jansen Price <jansen.price@nerdery.com>
  * @version $Id$
  */
-class QisExceptionHandler
+class ExceptionHandler
 {
     /**
      * Qis object
@@ -31,8 +35,8 @@ class QisExceptionHandler
     {
         self::setQis($qis);
 
-        set_exception_handler(array('QisExceptionHandler', 'handle'));
-        set_error_handler(array('QisExceptionHandler', 'handle_error'));
+        set_exception_handler(array('Qis\ExceptionHandler', 'handle'));
+        set_error_handler(array('Qis\ExceptionHandler', 'handle_error'));
     }
 
     /**

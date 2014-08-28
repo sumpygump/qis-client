@@ -5,20 +5,21 @@
  * @package Qis
  */
 
-/**
- * @see QisCommandInterface
- */
-require_once 'QisCommandInterface.php';
+namespace Qis\Command;
+
+use Qis\CommandInterface;
+use Qis\Qis;
+use Qi_Console_ArgV;
 
 /**
- * Help command class
+ * Help command
  *
  * @uses QisModuleInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class Qis_Command_Help implements QisCommandInterface
+class Help implements CommandInterface
 {
     /**
      * Qis kernel object

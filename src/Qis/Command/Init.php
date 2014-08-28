@@ -5,10 +5,12 @@
  * @package Qis
  */
 
-/**
- * @see QisCommandInterface
- */
-require_once 'QisCommandInterface.php';
+namespace Qis\Command;
+
+use Qis\CommandInterface;
+use Qis\Qis;
+use Qi_Console_ArgV;
+use Qi_Console_Std;
 
 /**
  * Init command class
@@ -18,7 +20,7 @@ require_once 'QisCommandInterface.php';
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class Qis_Command_Init implements QisCommandInterface
+class Init implements CommandInterface
 {
     /**
      * Qis kernel object
@@ -190,14 +192,16 @@ class Qis_Command_Init implements QisCommandInterface
         echo "\n";
 
         $modulesDir = dirname(dirname(__FILE__))
-            . DIRECTORY_SEPARATOR . "modules";
+            . DIRECTORY_SEPARATOR . "Module";
+
+        printf("Modules dir: %s\n", $modulesDir);
 
         // Get internal modules by searching the modules directory for php files
         $files = glob($modulesDir . DIRECTORY_SEPARATOR . "*.php");
 
         foreach ($files as $file) {
             include_once $file;
-            $classname = 'Qis_Module_' . pathinfo($file, PATHINFO_FILENAME);
+            $classname = 'Qis\\Module\\' . pathinfo($file, PATHINFO_FILENAME);
             echo "  Initializing " . $classname . "\n";
             $contents .= call_user_func(
                 array($classname, 'getDefaultIni')

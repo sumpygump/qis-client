@@ -5,6 +5,10 @@
  * @package Qis
  */
 
+namespace Qis;
+
+use StdClass;
+
 /**
  * Qis Config class
  *
@@ -12,7 +16,7 @@
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class QisConfig
+class Config
 {
     /**
      * Storage of configuration data

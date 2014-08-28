@@ -6,28 +6,26 @@
  * @package Qis
  */
 
+namespace Qis;
+
 date_default_timezone_set('America/Chicago');
 
 $root = realpath(dirname(dirname(__FILE__)));
 
-$autoload = require_once $root . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
-
-// Include path
-$paths = array(
-    ".",
-    $root . DIRECTORY_SEPARATOR,
-    $root . DIRECTORY_SEPARATOR . 'lib',
-);
-set_include_path(implode(PATH_SEPARATOR, $paths));
-
-require_once 'Qis.php';
-require_once 'QisExceptionHandler.php';
-
-if (!function_exists('get_called_class')) {
-    include_once 'get_called_class.func.php';
+// Composer autoload require guard
+if (!file_exists($root . DIRECTORY_SEPARATOR . 'vendor/autoload.php')) {
+   die("You must run the command `composer install` from the terminal in the directory '$root' before activating this plugin.\n");
 }
 
-$args = new Qi_Console_ArgV(
+$autoload = require_once $root . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
+$autoload->set('Qis', array($root . DIRECTORY_SEPARATOR . 'src'));
+$autoload->set('Qi_', array($root . DIRECTORY_SEPARATOR . 'lib'));
+
+if (!function_exists('get_called_class')) {
+    include_once $root . DIRECTORY_SEPARATOR . 'src/get_called_class.func.php';
+}
+
+$args = new \Qi_Console_ArgV(
     $argv,
     array(
         'arg:action' => 'Subcommand',
@@ -39,9 +37,9 @@ $args = new Qi_Console_ArgV(
         'no-color'   => 'Don\'t use color output',
     )
 );
-$terminal = new Qi_Console_Terminal();
+$terminal = new \Qi_Console_Terminal();
 
 $qis = new Qis($args, $terminal);
-QisExceptionHandler::initHandlers($qis);
+ExceptionHandler::initHandlers($qis);
 $value = $qis->execute();
 exit((int) $value);

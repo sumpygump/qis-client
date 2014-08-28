@@ -5,6 +5,8 @@
  * @package Qis
  */
 
+namespace Qis;
+
 /**
  * Recursive glob
  *

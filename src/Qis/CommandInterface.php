@@ -7,6 +7,11 @@
 
 // @codeCoverageIgnoreStart 
 
+namespace Qis;
+
+use Qi_Console_ArgV;
+use Exception;
+
 /**
  * Qis Command Interface
  * 
@@ -14,7 +19,7 @@
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-interface QisCommandInterface
+interface CommandInterface
 {
     /**
      * Get name of this command object
@@ -63,13 +68,13 @@ interface QisCommandInterface
 }
 
 /**
- * QisCommandException
+ * CommandException
  *
  * @uses Exception
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class QisCommandException extends Exception
+class CommandException extends Exception
 {
 }

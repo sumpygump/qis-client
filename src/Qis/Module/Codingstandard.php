@@ -554,7 +554,7 @@ class Codingstandard implements ModuleInterface
             . "group by severity "
             . "order by severity;";
 
-        $rows = $this->_db->getRows($sql);
+        $rows = $this->_db->fetchRows($sql);
 
         $errorTotal   = 0;
         $warningTotal = 0;
@@ -592,7 +592,7 @@ class Codingstandard implements ModuleInterface
     {
         $sql = "select * from project order by id desc limit 1;";
 
-        return $this->_db->getRow($sql);
+        return $this->_db->fetchRow($sql);
     }
 
     /**
@@ -722,7 +722,7 @@ class Codingstandard implements ModuleInterface
             . "group by file, severity "
             . "order by file, severity";
 
-        return $this->_db->getRows($sql);
+        return $this->_db->fetchRows($sql);
     }
 
     /**

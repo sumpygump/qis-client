@@ -19,7 +19,6 @@ if (!file_exists($root . DIRECTORY_SEPARATOR . 'vendor/autoload.php')) {
 
 $autoload = require_once $root . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
 $autoload->set('Qis', array($root . DIRECTORY_SEPARATOR . 'src'));
-$autoload->set('Qi_', array($root . DIRECTORY_SEPARATOR . 'lib'));
 
 if (!function_exists('get_called_class')) {
     include_once $root . DIRECTORY_SEPARATOR . 'src/get_called_class.func.php';

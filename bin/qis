@@ -10,13 +10,18 @@ namespace Qis;
 
 date_default_timezone_set('America/Chicago');
 
-$root = realpath(dirname(__DIR__));
+// Quick version check before proceeding
+if (version_compare(PHP_VERSION, '5.3.0') < 0) {
+    die(sprintf("Qis requires PHP version 5.3.0 or higher. Version %s detected\n", PHP_VERSION));
+}
 
+// Find where the composer autoload is
+// This tool was installed as a composed dependency or directly
+$root = realpath(dirname(__DIR__));
 $autoloadLocations = array(
     __DIR__ . '/../../../autoload.php',
     $root . DIRECTORY_SEPARATOR . 'vendor/autoload.php'
 );
-
 foreach ($autoloadLocations as $file) {
     if (file_exists($file)) {
         define('QIS_COMPOSER_AUTOLOAD', $file);
@@ -32,12 +37,11 @@ if (!defined('QIS_COMPOSER_AUTOLOAD')) {
     );
 }
 
+// Load composer autoloader
 $autoload = require_once QIS_COMPOSER_AUTOLOAD;
 
-if (!function_exists('get_called_class')) {
-    include_once $root . DIRECTORY_SEPARATOR . 'src/get_called_class.func.php';
-}
-
+// Define command line args for this client
+// And fetch args passed in by invocation
 $args = new \Qi_Console_ArgV(
     $argv,
     array(

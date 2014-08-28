@@ -1,17 +1,22 @@
 #!/usr/bin/env php
 <?php
-
+/**
+ * This tool is a standalone script to display the findings from the 
+ * code-coverage XML file generated.
+ *
+ * Usage: generate-clover-report <coverage.xml> [targetfile]
+ */
 namespace Qis;
 
 date_default_timezone_set('America/Chicago');
 
+// Find where the composer autoload is
+// This tool was installed as a composed dependency or directly
 $root = realpath(dirname(__DIR__));
-
 $autoloadLocations = array(
     __DIR__ . '/../../../autoload.php',
     $root . DIRECTORY_SEPARATOR . 'vendor/autoload.php'
 );
-
 foreach ($autoloadLocations as $file) {
     if (file_exists($file)) {
         define('QIS_COMPOSER_AUTOLOAD', $file);
@@ -27,6 +32,7 @@ if (!defined('QIS_COMPOSER_AUTOLOAD')) {
     );
 }
 
+// Load composer autoloader
 $autoload = require_once QIS_COMPOSER_AUTOLOAD;
 
 if (!isset($argv[1])) {

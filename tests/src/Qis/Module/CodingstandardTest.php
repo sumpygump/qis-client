@@ -259,9 +259,8 @@ class CodingstandardTest extends BaseTestCase
      */
     public function testCheckVersionNotFoundMatch()
     {
-        // The ls command doesn't output the version in the same format as 
-        // phpcs
-        $this->_object->setOption('phpcsbin', 'ls');
+        // The echo command will not do the same thing as phpcs --version
+        $this->_object->setOption('phpcsbin', 'echo');
         $result = $this->_object->checkVersion();
 
         $this->assertFalse($result);

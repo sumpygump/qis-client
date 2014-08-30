@@ -126,13 +126,11 @@ class Coverage implements ModuleInterface
             $this->_checkCoverage($targetFile);
         } catch (Exception $e) {
             // If there was an exception, eat the output from ob
-            ob_clean();
+            ob_end_clean();
             throw $e;
         }
 
-        $result = ob_get_contents();
-        ob_end_clean();
-        echo $result;
+        ob_end_flush();
 
         $this->_qis->qecho("\nCompleted coverage module task.\n");
 

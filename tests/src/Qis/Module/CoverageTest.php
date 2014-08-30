@@ -95,10 +95,7 @@ class CoverageTest extends BaseTestCase
      */
     public function testExecuteNoArgument()
     {
-        ob_start();
         $this->_object->execute();
-        $result = ob_get_contents();
-        ob_end_clean();
     }
 
     /**
@@ -112,10 +109,7 @@ class CoverageTest extends BaseTestCase
         $args = array();
         $args = new Qi_Console_ArgV($args);
 
-        ob_start();
         $this->_object->execute($args);
-        $result = ob_get_contents();
-        ob_end_clean();
     }
 
     /**
@@ -134,10 +128,7 @@ class CoverageTest extends BaseTestCase
 
         $args = new Qi_Console_ArgV($args);
 
-        ob_start();
         $this->_object->execute($args);
-        $result = ob_get_contents();
-        ob_end_clean();
     }
 
     /**

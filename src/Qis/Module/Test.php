@@ -340,9 +340,9 @@ class Test implements ModuleInterface
         return "; Run unit and integration tests for a project\n"
             . "test.command=test\n"
             . "test.class=" . get_called_class() . "\n"
-            . "test.bootstrap=bootstrap.php\n"
+            . "test.bootstrap=\n"
             . "test.configuration=\n"
-            . "test.path=.\n"
+            . "test.path=tests\n"
             ;
     }
 

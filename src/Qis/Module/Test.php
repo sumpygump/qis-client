@@ -288,7 +288,7 @@ class Test implements ModuleInterface
             . $colors
             . $executionOutputFormat
             . '--log-junit ' . $this->_outputPath . 'log.junit '
-            . '--log-tap ' . $this->_outputPath . 'log.tap '
+            //. '--log-tap ' . $this->_outputPath . 'log.tap '
             // Dont log json: it breaks when testing binary values in 
             // assertions in phpunit < 3.7
             //. '--log-json ' . $this->_outputPath . 'log.json '

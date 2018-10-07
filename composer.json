@@ -12,8 +12,8 @@
         "php": ">=5.3",
         "sumpygump/qi-console": "1.*",
         "sumpygump/qi-db": "1.*",
-        "phploc/phploc": "2.*",
-        "phpmd/phpmd" : "1.4.*"
+        "phploc/phploc": "4.*",
+        "phpmd/phpmd" : "2.6.*"
     },
     "require-dev": {
         "phpunit/phpunit": "*",

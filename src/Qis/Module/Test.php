@@ -294,9 +294,13 @@ class Test implements ModuleInterface
             //. '--log-json ' . $this->_outputPath . 'log.json '
             //. '--story-text ' . $this->_outputPath . 'story.text.txt '
             . '--testdox-text ' . $this->_outputPath . 'testdox.text.txt '
-            . '--coverage-clover=' . $coverageReportFilename . ' '
-            . '--coverage-html=' . $coverageHtmlDir . ' '
-            . $path
+            . '--coverage-clover=' . $coverageReportFilename . ' ';
+
+        if ((bool) $this->_settings['coverage-html']) {
+            $cmd .= '--coverage-html=' . $coverageHtmlDir . ' ';
+        }
+
+        $cmd .= $path
             . ' | tee ' . $this->_outputPath . 'output.log;'
             . 'cd - > /dev/null';
 
@@ -342,6 +346,7 @@ class Test implements ModuleInterface
             . "test.class=" . get_called_class() . "\n"
             . "test.bootstrap=bootstrap.php\n"
             . "test.configuration=\n"
+            . "test.coverage-html=true\n"
             . "test.path=.\n"
             ;
     }

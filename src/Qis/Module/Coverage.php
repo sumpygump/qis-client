@@ -112,9 +112,6 @@ class Coverage implements ModuleInterface
      */
     public function execute(Qi_Console_ArgV $args)
     {
-        ob_start();
-        $this->_qis->qecho("\nRunning coverage module task...\n");
-
         if ($args->__arg2) {
             $targetFile = $args->__arg2;
         } else {
@@ -123,10 +120,15 @@ class Coverage implements ModuleInterface
 
         $this->_saveTimeStamp();
         try {
+            ob_start();
+            $this->_qis->qecho("\nRunning coverage module task...\n");
+
             $this->_checkCoverage($targetFile);
         } catch (Exception $e) {
             // If there was an exception, eat the output from ob
-            ob_clean();
+            if (ob_get_level()) {
+                ob_end_clean();
+            }
             throw $e;
         }
 

@@ -78,11 +78,12 @@ class ExceptionHandlerTest extends BaseTestCase
     /**
      * Test initing handlers with no arguments
      *
-     * @expectedException PHPUnit_Framework_Error_Warning
      * @return void
      */
     public function testInitHandlersNoArguments()
     {
+        $this->expectException(\ArgumentCountError::class);
+        $this->expectExceptionMessage("Too few arguments");
         ExceptionHandler::initHandlers();
     }
 
@@ -94,6 +95,9 @@ class ExceptionHandlerTest extends BaseTestCase
     public function testInitHandlersNormal()
     {
         ExceptionHandler::initHandlers($this->_getDefaultQisObject());
+
+        // No side effects to confirm
+        $this->assertTrue(true);
     }
 
     /**

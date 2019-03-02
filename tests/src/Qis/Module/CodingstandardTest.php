@@ -115,22 +115,24 @@ class CodingstandardTest extends BaseTestCase
     /**
      * Test constructor with no arguments
      *
-     * @expectedException PHPUnit_Framework_Error
      * @return void
      */
     public function testConstructorWithNoArguments()
     {
+        $this->expectException(\ArgumentCountError::class);
+        $this->expectExceptionMessage("Too few arguments");
         $this->_object = new Codingstandard();
     }
 
     /**
      * testConstructorWithoutSecondArgument
      *
-     * @expectedException PHPUnit_Framework_Error
      * @return void
      */
     public function testConstructorWithoutSecondArgument()
     {
+        $this->expectException(\ArgumentCountError::class);
+        $this->expectExceptionMessage("Too few arguments");
         $this->_object = new Codingstandard(
             $this->_getDefaultQisObject()
         );
@@ -194,11 +196,12 @@ class CodingstandardTest extends BaseTestCase
     /**
      * testExecuteNoArguments
      *
-     * @expectedException PHPUnit_Framework_Error
      * @return void
      */
     public function testExecuteNoArguments()
     {
+        $this->expectException(\ArgumentCountError::class);
+        $this->expectExceptionMessage("Too few arguments");
         $this->_object->execute();
     }
 

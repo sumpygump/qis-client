@@ -19,7 +19,7 @@ use StdClass;
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class CloverCoverageReportTest extends BaseTestCase
+final class CloverCoverageReportTest extends BaseTestCase
 {
     /**
      * Setup before each test
@@ -44,22 +44,24 @@ class CloverCoverageReportTest extends BaseTestCase
     /**
      * Test construction incorrectly
      * 
-     * @expectedException PHPUnit_Framework_Error_Warning
      * @return void
      */
     public function testConstructionIncorrectly()
     {
+        $this->expectException(\ArgumentCountError::class);
+        $this->expectExceptionMessage("Too few arguments");
         $this->_object = new CloverCoverageReport();
     }
 
     /**
      * A valid file is required
      * 
-     * @expectedException Qis\CloverCoverageReportException
      * @return void
      */
     public function testConstructionFileNotExists()
     {
+        $this->expectException(\Qis\CloverCoverageReportException::class);
+        $this->expectExceptionMessage("not found or is not readable");
         $this->_object = new CloverCoverageReport('nofile.xml');
     }
 
@@ -198,20 +200,20 @@ class CloverCoverageReportTest extends BaseTestCase
     /**
      * String as input causes error
      * 
-     * @expectedException PHPUnit_Framework_Error
      * @return void
      */
     public function testFindCommonRootString()
     {
         $list = 'foobar/baz/';
 
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage("Argument 1 passed");
         $commonRoot = CloverCoverageReport::findCommonRoot($list);
     }
 
     /**
      * Object as input causes error
      * 
-     * @expectedException PHPUnit_Framework_Error
      * @return void
      */
     public function testFindCommonRootObject()
@@ -220,6 +222,8 @@ class CloverCoverageReportTest extends BaseTestCase
 
         $list->foo = 'bar';
 
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage("Argument 1 passed");
         $commonRoot = CloverCoverageReport::findCommonRoot($list);
     }
 

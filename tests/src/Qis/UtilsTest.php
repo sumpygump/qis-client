@@ -287,5 +287,15 @@ class UtilsTest extends BaseTestCase
      */
     public function testFindCommonRootMixedArray()
     {
+        $list = array(
+            '98ff',
+            9871,
+        );
+
+        $expected = '98';
+
+        $result = Utils::findCommonRoot($list);
+
+        $this->assertEquals($expected, $result);
     }
 }

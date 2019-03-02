@@ -64,11 +64,12 @@ class CoverageTest extends BaseTestCase
     /**
      * Test constructor with no arguments
      *
-     * @expectedException PHPUnit_Framework_Error
      * @return void
      */
     public function testConstructorWithNoArguments()
     {
+        $this->expectException(\ArgumentCountError::class);
+        $this->expectExceptionMessage("Too few arguments");
         $this->_object = new Coverage();
     }
 
@@ -90,42 +91,42 @@ class CoverageTest extends BaseTestCase
     /**
      * testExecuteNoArgument
      *
-     * @expectedException PHPUnit_Framework_Error
      * @return void
      */
     public function testExecuteNoArgument()
     {
-        ob_start();
+        $this->expectException(\ArgumentCountError::class);
+        $this->expectExceptionMessage("Too few arguments");
+
         $this->_object->execute();
-        $result = ob_get_contents();
-        ob_end_clean();
     }
 
     /**
      * testExecute
      *
-     * @expectedException Qis\Module\CoverageException
      * @return void
      */
     public function testExecute()
     {
+        $this->expectException(\Qis\Module\CoverageException::class);
+        $this->expectExceptionMessage("Cannot find file");
+
         $args = array();
         $args = new Qi_Console_ArgV($args);
 
-        ob_start();
         $this->_object->execute($args);
-        $result = ob_get_contents();
-        ob_end_clean();
     }
 
     /**
      * Test execute with argument
      *
-     * @expectedException Qis\Module\CoverageException
      * @return void
      */
     public function testExecuteWithArgument()
     {
+        $this->expectException(\Qis\Module\CoverageException::class);
+        $this->expectExceptionMessage("Cannot find file");
+
         $args = array(
             'coverage',
             'foo',
@@ -134,10 +135,7 @@ class CoverageTest extends BaseTestCase
 
         $args = new Qi_Console_ArgV($args);
 
-        ob_start();
         $this->_object->execute($args);
-        $result = ob_get_contents();
-        ob_end_clean();
     }
 
     /**

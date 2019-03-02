@@ -85,7 +85,6 @@ class Command implements CommandInterface
 /**
  * Qis command interface test
  * 
- * @covers Qis\CommandInterface
  * @uses BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@nerdery.com>
@@ -108,5 +107,6 @@ class CommandInterfaceTest extends BaseTestCase
         $command = new Command($this->_qis, array());
 
         $name = $command->getName();
+        $this->assertEquals('name', $name);
     }
 }

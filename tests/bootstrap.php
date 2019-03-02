@@ -8,7 +8,7 @@ date_default_timezone_set('America/Chicago');
 
 $root = realpath(dirname(dirname(__FILE__)));
 
-$autoload = require_once $root . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
+$autoload = require $root . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
 $autoload->set('Qis', array($root . DIRECTORY_SEPARATOR . 'src'));
 $autoload->set('Qi_', array($root . DIRECTORY_SEPARATOR . 'lib'));
 

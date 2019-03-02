@@ -365,9 +365,9 @@ class Codingstandard implements ModuleInterface
 
         if ($paths == $this->_paths) {
             // Show high-level summary
-            $cmd .= ' --report-summary=';
+            $cmd .= ' --report=summary';
         } else {
-            $cmd .= ' --report-full=';
+            $cmd .= ' --report=full';
         }
 
         $cmd .= ' --report-csv=' . $this->_outputPath . 'results.csv'

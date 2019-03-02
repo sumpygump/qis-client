@@ -262,7 +262,7 @@ class Test implements ModuleInterface
                 // check if there is a bootstrap file and auto bootstrap it.
                 $detectedBootstrapFile = $testsDir . DIRECTORY_SEPARATOR . 'bootstrap.php';
                 if (file_exists($detectedBootstrapFile)) {
-                    $this->_qis->qecho("Auto-detected bootstrap file bootstrap.php\n");
+                    $this->_qis->qecho("QIS Auto-detected bootstrap file bootstrap.php\n");
                     $bootstrap = '--bootstrap=bootstrap.php ';
                 }
             }
@@ -296,7 +296,7 @@ class Test implements ModuleInterface
             . '--testdox-text ' . $this->_outputPath . 'testdox.text.txt '
             . '--coverage-clover=' . $coverageReportFilename . ' ';
 
-        if ((bool) $this->_settings['coverage-html']) {
+        if (isset($this->_settings['coverage-html']) && (bool) $this->_settings['coverage-html']) {
             $cmd .= '--coverage-html=' . $coverageHtmlDir . ' ';
         }
 

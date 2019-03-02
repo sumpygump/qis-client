@@ -88,9 +88,11 @@ class ExceptionHandler
      * @param Exception $e Exception object
      * @return void
      */
-    public static function handle(Exception $e)
+    public static function handle($e)
     {
-        self::$qis->displayError($e->getMessage());
+        $message = sprintf("%s in %s on line %s", $e->getMessage(), $e->getFile(), $e->getLine());
+        self::$qis->displayError($message);
+        print($e->getTraceAsString() . "\n");
     }
 
     /**

@@ -33,7 +33,7 @@ class Test implements ModuleInterface
     /**
      * Qis kernel object
      *
-     * @var mixed
+     * @var Qis
      */
     protected $_qis = null;
 
@@ -344,10 +344,10 @@ class Test implements ModuleInterface
         return "; Run unit and integration tests for a project\n"
             . "test.command=test\n"
             . "test.class=" . get_called_class() . "\n"
-            . "test.bootstrap=bootstrap.php\n"
+            . "test.bootstrap=\n"
             . "test.configuration=\n"
             . "test.coverage-html=true\n"
-            . "test.path=.\n"
+            . "test.path=tests\n"
             ;
     }
 

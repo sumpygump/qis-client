@@ -1,7 +1,7 @@
 <?php
 /**
  * Clover Coverage Report class file
- *  
+ *
  * @package Qis
  */
 
@@ -16,7 +16,7 @@ use StdClass;
  *
  * This class parses a clover coverage XML file and generates a report of the
  * findings in ASCII format.
- * 
+ *
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
@@ -25,35 +25,35 @@ class CloverCoverageReport
 {
     /**
      * Xml data
-     * 
+     *
      * @var mixed
      */
     protected $_xml = null;
 
     /**
      * Report text
-     * 
+     *
      * @var string
      */
     protected $_reportText = '';
 
     /**
      * Files
-     * 
+     *
      * @var array
      */
     protected $_files = array();
 
     /**
      * Paths to ignore in the coverage report
-     * 
+     *
      * @var array
      */
     protected $_ignorePaths = array();
 
     /**
      * Constructor
-     * 
+     *
      * @param string $xmlFilename Filename to XML file
      * @param string $targetFile Optional PHP file for report
      * @param string $root Root directory to use for file paths
@@ -70,7 +70,7 @@ class CloverCoverageReport
         }
 
         // Load the file
-        // Turn on internal errors for libxml, so we can throw them as 
+        // Turn on internal errors for libxml, so we can throw them as
         // exceptions in case of errors encountered while parsing XML
         libxml_use_internal_errors(true);
         $this->_xml = simplexml_load_file($xmlFilename);
@@ -87,8 +87,8 @@ class CloverCoverageReport
 
         $this->_ignorePaths = $ignorePaths;
 
-        // If targetFile is supplied, instead of outputting the overall stats, 
-        // display the file with line numbers and the number of times covered 
+        // If targetFile is supplied, instead of outputting the overall stats,
+        // display the file with line numbers and the number of times covered
         // for each line
         if ($targetFile) {
             $this->generateFileAnalysis($targetFile, $root);
@@ -100,7 +100,7 @@ class CloverCoverageReport
 
     /**
      * Run the logic to generate the report
-     * 
+     *
      * @param string $root The root path to target
      * @return void
      */
@@ -120,7 +120,7 @@ class CloverCoverageReport
                 continue;
             }
 
-            // User can supply paths to ignore, which uses simple regex to 
+            // User can supply paths to ignore, which uses simple regex to
             // filter filenames out
             if (!empty($this->_ignorePaths)) {
                 $ignoreRegex = implode('|', $this->_ignorePaths);
@@ -129,7 +129,7 @@ class CloverCoverageReport
                 }
             }
 
-            // We want files that weren't in the coverage XML to also appear in 
+            // We want files that weren't in the coverage XML to also appear in
             // the report so we know which ones haven't been covered yet.
             if (!isset($this->_files[$file])) {
                 $sloc = $this->_getSloc($file);
@@ -160,7 +160,7 @@ class CloverCoverageReport
 
     /**
      * Get sloc (source lines of code for a file)
-     * 
+     *
      * @param string $file Path to file
      * @return int
      */
@@ -176,7 +176,7 @@ class CloverCoverageReport
     /**
      * Gather file metrics from XML
      *
-     * Coverage XML will look like this, and we need to fetch metrics for each 
+     * Coverage XML will look like this, and we need to fetch metrics for each
      * given file node:
      * <coverage>
      *     <project>
@@ -190,7 +190,7 @@ class CloverCoverageReport
      *         </package>
      *     </project>
      * </coverage>
-     * 
+     *
      * @return void
      */
     public function gatherFileMetrics()
@@ -229,7 +229,7 @@ class CloverCoverageReport
                 }
             }
 
-            // We will pull out covered statements and total statements for 
+            // We will pull out covered statements and total statements for
             // each file
             $coveredStatements = (int) $file->metrics['coveredstatements'];
 
@@ -245,7 +245,7 @@ class CloverCoverageReport
 
     /**
      * Add file metrics to report text
-     * 
+     *
      * @param string $root The path root
      * @return void
      */
@@ -253,7 +253,7 @@ class CloverCoverageReport
     {
         ksort($this->_files);
 
-        // Strip out the long paths by replacing with a common root as supplied 
+        // Strip out the long paths by replacing with a common root as supplied
         // in $root
         $newFiles = array();
         foreach ($this->_files as $name => $metrics) {
@@ -262,7 +262,7 @@ class CloverCoverageReport
         $this->_files = $newFiles;
 
         // Calculate the column widths to accommodate the longest names
-        // Start with some default assumptions for calculating the width of 
+        // Start with some default assumptions for calculating the width of
         // columns
         $longestNameLength = 10;
         $largestLineCount  = 2;
@@ -310,9 +310,9 @@ class CloverCoverageReport
     /**
      * Generate a file analysis for one file
      *
-     * Shows the lines of code for the given file with line numbers and counts 
+     * Shows the lines of code for the given file with line numbers and counts
      * for coverage for each line
-     * 
+     *
      * @param string $file Path to file to analyze
      * @param string $root Root path
      * @return void
@@ -350,8 +350,8 @@ class CloverCoverageReport
 
             $prepend = str_pad($lineNumber, 5, ' ', STR_PAD_LEFT) . " ";
 
-            // Prepare the gutter to the left of each line, either showing the 
-            // number of times the statement was executed or else an empty 
+            // Prepare the gutter to the left of each line, either showing the
+            // number of times the statement was executed or else an empty
             // space
             if (isset($stats[$lineNumber])) {
                 $prepend .= str_pad(
@@ -368,7 +368,7 @@ class CloverCoverageReport
 
     /**
      * Gather the line statistics for a given PHP file
-     * 
+     *
      * @param string $filename Filename
      * @return array
      */
@@ -382,7 +382,7 @@ class CloverCoverageReport
             return $stats;
         }
 
-        // Basically converts the XML statistics for a file into an array we can 
+        // Basically converts the XML statistics for a file into an array we can
         // traverse more easily, indexed by line number
         //
         // Example : <line num="185" type="stmt" count="6"/>
@@ -426,7 +426,7 @@ class CloverCoverageReport
         if (!isset($this->_xml->project->package)) {
             return null;
         }
-    
+
         // Look through <package> nodes
         foreach ($this->_xml->project->package as $package) {
             foreach ($package->file as $file) {
@@ -439,7 +439,7 @@ class CloverCoverageReport
 
     /**
      * Find common root from a list of file paths
-     * 
+     *
      * @param array $list A list of file paths
      * @return string
      */
@@ -453,7 +453,7 @@ class CloverCoverageReport
             $root = implode(
                 $dirSep,
                 array_slice(explode($dirSep, reset($list)), 0, -1)
-            ); 
+            );
             if (substr($root, -1) != $dirSep) {
                 $root .= $dirSep;
             }
@@ -499,7 +499,7 @@ class CloverCoverageReport
 
     /**
      * Create a percentage bar with ascii
-     * 
+     *
      * @param mixed $percent The percent value
      * @return string
      */
@@ -517,7 +517,7 @@ class CloverCoverageReport
 
     /**
      * Render the report
-     * 
+     *
      * @return void
      */
     public function render()
@@ -556,7 +556,7 @@ class CloverCoverageReport
      * Get Total coverage percentage from the coverage XML
      *
      * This method doesn't respect the ignorePaths
-     * 
+     *
      * @return float
      */
     public function getTotalCoverageFromCoverageXml()
@@ -579,7 +579,7 @@ class CloverCoverageReport
 
     /**
      * Add the title of the report (project name)
-     * 
+     *
      * @return void
      */
     public function addTitle()
@@ -587,7 +587,7 @@ class CloverCoverageReport
         $project = $this->_xml->project;
         $name = 'Coverage';
 
-        // Find the name from the XML, either in the project node, or the 
+        // Find the name from the XML, either in the project node, or the
         // package node if it exists
         if (isset($project['name'])) {
             $name = (string) $project['name'];
@@ -604,7 +604,7 @@ class CloverCoverageReport
 
     /**
      * Append text to the report text accumulator
-     * 
+     *
      * @param mixed $text Text to append
      * @return void
      */
@@ -615,7 +615,7 @@ class CloverCoverageReport
 
     /**
      * Recursive Glob
-     * 
+     *
      * @param string $pattern Pattern
      * @param int $flags Flags to pass to glob
      * @param string $path Path

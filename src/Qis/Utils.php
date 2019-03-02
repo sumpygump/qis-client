@@ -18,7 +18,7 @@ class Utils
 {
     /**
      * Recursive Glob
-     * 
+     *
      * @param string $pattern Pattern
      * @param int $flags Flags to pass to glob
      * @param string $path Path to glob in
@@ -58,7 +58,7 @@ class Utils
 
     /**
      * Find common root from a list of file paths
-     * 
+     *
      * @param array $list A list of file paths
      * @return string
      */
@@ -84,7 +84,7 @@ class Utils
             }
         }
 
-        // Inspect each item by character until we find a difference, then 
+        // Inspect each item by character until we find a difference, then
         // return the previous
         for ($i = 1; $i <= $longest; $i++) {
             $common = array();

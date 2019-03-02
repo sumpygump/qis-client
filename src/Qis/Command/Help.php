@@ -156,7 +156,7 @@ class Help implements CommandInterface
 
     /**
      * Get global options
-     * 
+     *
      * @return string
      */
     public function getGlobalOptions()
@@ -175,7 +175,7 @@ class Help implements CommandInterface
 
     /**
      * Contextual help
-     * 
+     *
      * @param string $context Module or subcommand name
      * @return void
      */
@@ -194,7 +194,6 @@ class Help implements CommandInterface
         }
 
         echo "\n" . $context . ": " . $contextObject->getExtendedHelpMessage();
-
 
         echo $this->getGlobalOptions();
     }

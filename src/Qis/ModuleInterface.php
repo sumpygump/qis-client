@@ -11,7 +11,7 @@ use Qi_Console_ArgV;
 
 /**
  * Qis Module Interface
- * 
+ *
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$

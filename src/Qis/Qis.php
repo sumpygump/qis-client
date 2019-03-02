@@ -121,7 +121,7 @@ class Qis
 
     /**
      * Set config object
-     * 
+     *
      * @param Config $config Config object
      * @return object
      */
@@ -353,7 +353,7 @@ class Qis
 
     /**
      * Get module by name
-     * 
+     *
      * @param string $name Name of module
      * @return object
      */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Test module class file 
+ * Test module class file
  *
  * @package Qis
  */
@@ -15,7 +15,7 @@ use Exception;
 
 /**
  * Test runner module
- * 
+ *
  * @uses QisModuleInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
@@ -25,21 +25,21 @@ class Test implements ModuleInterface
 {
     /**
      * Output path
-     * 
+     *
      * @var string
      */
     protected $_outputPath = 'test-results';
 
     /**
      * Qis kernel object
-     * 
+     *
      * @var mixed
      */
     protected $_qis = null;
 
     /**
      * Settings
-     * 
+     *
      * @var array
      */
     protected $_settings = array();
@@ -50,14 +50,14 @@ class Test implements ModuleInterface
      * This can be overridden in the config
      * For example if you want to define it
      * in the phpunit configuration xml
-     * 
+     *
      * @var string
      */
     protected $_path = '.';
 
     /**
      * Constructor
-     * 
+     *
      * @param Qis $qis Qis object
      * @param array $settings Config settings
      * @return void
@@ -75,7 +75,7 @@ class Test implements ModuleInterface
 
     /**
      * Initialize this module after registration
-     * 
+     *
      * @return void
      */
     public function initialize()
@@ -91,7 +91,7 @@ class Test implements ModuleInterface
 
     /**
      * Execute main logic
-     * 
+     *
      * @param Qi_Console_ArgV $args Arguments
      * @return int
      */
@@ -124,7 +124,7 @@ class Test implements ModuleInterface
 
     /**
      * Help message
-     * 
+     *
      * @return string
      */
     public function getHelpMessage()
@@ -134,7 +134,7 @@ class Test implements ModuleInterface
 
     /**
      * Get extended help message
-     * 
+     *
      * @return string
      */
     public function getExtendedHelpMessage()
@@ -158,7 +158,7 @@ class Test implements ModuleInterface
 
     /**
      * Get summary of this module
-     * 
+     *
      * @param bool $short Get short summary
      * @param string $label Label
      * @return string
@@ -174,7 +174,7 @@ class Test implements ModuleInterface
 
     /**
      * Get short summary
-     * 
+     *
      * @param string $label Label
      * @return string
      */
@@ -195,7 +195,7 @@ class Test implements ModuleInterface
 
     /**
      * Get status for this module (pass/fail)
-     * 
+     *
      * @return bool
      */
     public function getStatus()
@@ -212,7 +212,7 @@ class Test implements ModuleInterface
 
     /**
      * Run test
-     * 
+     *
      * @param string $path Path to run tests
      * @param array $options Array of options
      * @return void
@@ -250,15 +250,15 @@ class Test implements ModuleInterface
             $configuration = '--configuration='
                 . $this->_settings['configuration'] . ' ';
 
-            // Set path to empty if it is not set to something other than . to 
-            // allow for setting a more specific path in the XML configuration 
+            // Set path to empty if it is not set to something other than . to
+            // allow for setting a more specific path in the XML configuration
             // file
             if ($path == '.') {
                 $path = '';
             }
         } else {
             if ($bootstrap == '') {
-                // if no configuration setting and no bootstrap defined, let's 
+                // if no configuration setting and no bootstrap defined, let's
                 // check if there is a bootstrap file and auto bootstrap it.
                 $detectedBootstrapFile = $testsDir . DIRECTORY_SEPARATOR . 'bootstrap.php';
                 if (file_exists($detectedBootstrapFile)) {
@@ -289,7 +289,7 @@ class Test implements ModuleInterface
             . $executionOutputFormat
             . '--log-junit ' . $this->_outputPath . 'log.junit '
             //. '--log-tap ' . $this->_outputPath . 'log.tap '
-            // Dont log json: it breaks when testing binary values in 
+            // Dont log json: it breaks when testing binary values in
             // assertions in phpunit < 3.7
             //. '--log-json ' . $this->_outputPath . 'log.json '
             //. '--story-text ' . $this->_outputPath . 'story.text.txt '
@@ -311,7 +311,7 @@ class Test implements ModuleInterface
 
     /**
      * Save timestamp
-     * 
+     *
      * @return void
      */
     protected function _saveTimeStamp()
@@ -324,7 +324,7 @@ class Test implements ModuleInterface
 
     /**
      * Get timestamp from last run
-     * 
+     *
      * @return string
      */
     public function getLastRunTimeStamp()
@@ -336,7 +336,7 @@ class Test implements ModuleInterface
 
     /**
      * Get default ini settings for this module
-     * 
+     *
      * @return string
      */
     public static function getDefaultIni()
@@ -353,7 +353,7 @@ class Test implements ModuleInterface
 
     /**
      * Display summary
-     * 
+     *
      * @param bool $pretty Use pretty output
      * @return mixed
      */
@@ -382,7 +382,7 @@ class Test implements ModuleInterface
 
     /**
      * Get metrics for current results
-     * 
+     *
      * @param bool $onlyPrimary Return only the primary metric
      * @return array|float
      */
@@ -404,7 +404,7 @@ class Test implements ModuleInterface
 
     /**
      * Show list of last results
-     * 
+     *
      * @return bool
      */
     public function showList()
@@ -422,7 +422,7 @@ class Test implements ModuleInterface
 
     /**
      * Read log from junit (xml) format
-     * 
+     *
      * @param string $filename Filename
      * @return array
      */
@@ -453,7 +453,7 @@ class Test implements ModuleInterface
 
     /**
      * Read the tap log file
-     * 
+     *
      * @param string $filename Filename
      * @return string
      */

@@ -105,6 +105,11 @@ class Test implements ModuleInterface
             $path = '.';
         }
 
+        if ($args->init) {
+            // Special case to initialize testing environment
+            return $this->initializeTestEnvironment();
+        }
+
         if ($args->list) {
             return $this->showList();
         }
@@ -150,7 +155,7 @@ class Test implements ModuleInterface
         $out .= "\nValid Options:\n"
             . $this->_qis->getTerminal()->do_setaf(3)
             . "  --list : Show list of previous tests run\n"
-            . "  --tap  : Run tests using TAP output format\n"
+            . "  --init : Initialize a test environment\n"
             . $this->_qis->getTerminal()->do_op();
 
         return $out;
@@ -268,11 +273,6 @@ class Test implements ModuleInterface
             }
         }
 
-        $executionOutputFormat = '';
-        if (isset($options['tap']) && $options['tap']) {
-            $executionOutputFormat = '--tap ';
-        }
-
         $phpunitBin = $this->_qis->getConfig()->get('phpunit_bin');
 
         // If phpunit binary path is not in config file, default to 'phpunit'
@@ -286,13 +286,7 @@ class Test implements ModuleInterface
             . $bootstrap
             . $configuration
             . $colors
-            . $executionOutputFormat
             . '--log-junit ' . $this->_outputPath . 'log.junit '
-            //. '--log-tap ' . $this->_outputPath . 'log.tap '
-            // Dont log json: it breaks when testing binary values in
-            // assertions in phpunit < 3.7
-            //. '--log-json ' . $this->_outputPath . 'log.json '
-            //. '--story-text ' . $this->_outputPath . 'story.text.txt '
             . '--testdox-text ' . $this->_outputPath . 'testdox.text.txt '
             . '--coverage-clover=' . $coverageReportFilename . ' ';
 
@@ -413,7 +407,7 @@ class Test implements ModuleInterface
         echo $this->getLastRunTimeStamp() . " \n";
         echo str_repeat('-', 32) . "\n";
 
-        $data = $this->readLogTap($this->_outputPath . 'log.tap');
+        $data = $this->readTestDox($this->_outputPath . 'testdox.text.txt');
 
         echo $data;
 
@@ -452,14 +446,110 @@ class Test implements ModuleInterface
     }
 
     /**
-     * Read the tap log file
+     * Read the testdox text file
      *
      * @param string $filename Filename
      * @return string
      */
-    public function readLogTap($filename)
+    public function readTestDox($filename)
     {
         $data = file_get_contents($filename);
         return $data;
+    }
+
+    public function initializeTestEnvironment()
+    {
+        $this->_qis->qecho("\nInitializing default testing environment...\n");
+
+        $this->_qis->qecho("This includes the following:\n");
+        $this->_qis->qecho(" - Create `tests` dir at the root of project\n");
+        $this->_qis->qecho(" - Create phpunit.xml file in `tests` dir\n");
+        $this->_qis->qecho(" - Create a default test file to start with\n\n");
+
+        $input = readline("Do you want to continue? (Y/n): ");
+        if (strtolower(trim($input)) != 'y' && trim($input) != '') {
+            $this->_qis->qecho("Exiting\n");
+            return 0;
+        }
+        $this->_qis->qecho("\n");
+
+        $root = dirname($this->_qis->getProjectQisRoot());
+
+        // Make tests dir
+        $testsdir = $root . '/tests';
+        if (!is_dir($testsdir)) {
+            $this->_qis->qecho(sprintf("Creating directory `%s`\n", $testsdir));
+            mkdir($testsdir);
+        } else {
+            $this->_qis->qecho(sprintf("Directory `%s` already exists.\n", $testsdir));
+        }
+
+        // Write phpunit.xml file
+        $phpunitConfig = $testsdir . '/phpunit.xml';
+        if (!file_exists($phpunitConfig)) {
+            $this->_qis->qecho(sprintf("Writing file `%s`\n", $phpunitConfig));
+            file_put_contents($phpunitConfig, $this->getDefaultPhpunitConfigXml());
+        } else {
+            $this->_qis->qecho(sprintf("File `%s` already exists.\n", $phpunitConfig));
+        }
+
+        // Create first test
+        $testsfileroot = $testsdir . '/src/' . ucfirst($this->_qis->getConfig()->project_name);
+        if (!is_dir($testsfileroot)) {
+            $this->_qis->qecho(sprintf("Creating directory `%s`\n", $testsfileroot));
+            mkdir($testsfileroot, 0755, true);
+
+            $testfile = $testsfileroot . '/DefaultTest.php';
+            $this->_qis->qecho(sprintf("Writing file `%s`\n", $testfile));
+            file_put_contents($testfile, $this->getDefaultTestFile());
+        }
+
+        $this->_qis->qecho("\nTest environment initialized. Now run `qis test` to run your first test.\n");
+
+        return 0;
+    }
+
+    protected function getDefaultPhpunitConfigXml()
+    {
+        return <<<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         bootstrap="../vendor/autoload.php"
+>
+    <testsuites>
+        <testsuite name="Unit Tests">
+            <directory>.</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory>../src</directory>
+        </whitelist>
+    </filter>
+</phpunit>
+EOF;
+    }
+
+    protected function getDefaultTestFile()
+    {
+        return <<<EOF
+<?php
+
+use PHPUnit\Framework\TestCase;
+
+final class CatalogTest extends TestCase
+{
+    public function testDefault()
+    {
+        \$this->assertFalse(true);
+    }
+}
+EOF;
     }
 }

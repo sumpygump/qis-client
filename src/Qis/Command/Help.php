@@ -145,7 +145,7 @@ class Help implements CommandInterface
         }
 
         $out .= $this->_terminal->do_op();
-        $out .= "\nUse help [module|subcommand] to get specific help\n"
+        $out .= "\nUse `qis help [module|subcommand]` to get specific help\n"
             . "for a module or subcommand.\n";
 
         $out .= $this->getGlobalOptions();
@@ -181,19 +181,23 @@ class Help implements CommandInterface
      */
     protected function _showContextualHelp($context)
     {
+        $contextType = 'module';
+
         // First try to find module by name
         $contextObject = $this->_qis->getModule($context);
 
         if (!$contextObject) {
             // No module; try a command by that name
             $contextObject = $this->_qis->getCommand($context);
+            $contextType = 'command';
         }
 
         if (!$contextObject) {
             throw new CommandException("No module or command by name '$context' found.", 64);
         }
 
-        echo "\n" . $context . ": " . $contextObject->getExtendedHelpMessage();
+        $this->_qis->prettyMessage("Help for $contextType '$context'", 8, 4);
+        echo $contextObject->getExtendedHelpMessage();
 
         echo $this->getGlobalOptions();
     }

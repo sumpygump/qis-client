@@ -254,7 +254,8 @@ class HelpTest extends BaseTestCase
 
         list($result, $status) = $this->_execute($args);
 
-        $this->assertContains("foobar: extended help message", $result);
+        $this->assertContains("Help for module 'foobar'", $result);
+        $this->assertContains("extended help message", $result);
         $this->assertEquals(0, $status);
     }
 

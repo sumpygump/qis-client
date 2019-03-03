@@ -550,7 +550,7 @@ EOF;
 
 use PHPUnit\Framework\TestCase;
 
-final class CatalogTest extends TestCase
+final class DefaultTest extends TestCase
 {
     public function testDefault()
     {

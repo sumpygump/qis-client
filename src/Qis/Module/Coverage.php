@@ -120,10 +120,15 @@ class Coverage implements ModuleInterface
 
         $this->_saveTimeStamp();
         try {
-            ob_start();
-            $this->_qis->qecho("\nRunning coverage module task...\n");
+            if ($args->serve) {
+                $this->_serveCoverage();
+                return 0;
+            } else {
+                ob_start();
+                $this->_qis->qecho("\nRunning coverage module task...\n");
 
-            $this->_checkCoverage($targetFile);
+                $this->_checkCoverage($targetFile);
+            }
         } catch (Exception $e) {
             // If there was an exception, eat the output from ob
             if (ob_get_level()) {
@@ -169,6 +174,7 @@ class Coverage implements ModuleInterface
         $out .= "\nValid Options:\n"
             . $this->_qis->getTerminal()->do_setaf(3)
             . "  --list : Show list of files in coverage\n"
+            . "  --serve : Serve the html coverage report on port 8005\n"
             . $this->_qis->getTerminal()->do_op();
 
         return $out;
@@ -273,6 +279,26 @@ class Coverage implements ModuleInterface
         $totalCoverage = $report->getTotalCoverage();
 
         $this->_saveTotalCoverage($totalCoverage);
+    }
+
+    protected function _serveCoverage()
+    {
+        $path = $this->_qis->getProjectQisRoot() . DIRECTORY_SEPARATOR
+            . 'test-results' . DIRECTORY_SEPARATOR . 'coverage';
+
+        if (!is_dir($path)) {
+            throw new CoverageException(
+                "Cannot serve coverage report. "
+                . "Ensure test module is executed first and"
+                . "`test.coverage-html` is set to true in .qis/config.ini"
+            );
+        }
+
+        echo "Attempting to serve coverage report at http://localhost:8005 ...\n";
+
+        $cmd = "php -S 127.0.0.1:8005 -t \"$path\" &2>1";
+        flush();
+        passthru($cmd);
     }
 
     /**

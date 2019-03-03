@@ -210,8 +210,8 @@ class HelpTest extends BaseTestCase
         list($result, $status) = $this->_execute($args);
 
         $this->assertContains('Usage: qis <subcommand', $result);
-        $this->assertContains("Modules:\n", $result);
-        $this->assertContains("foobar : help message\nUse", $result);
+        $this->assertContains("Modules:", $result);
+        $this->assertContains("foobar : help message", $result);
         $this->assertContains("Global Options:", $result);
         $this->assertEquals(0, $status);
     }
@@ -254,7 +254,7 @@ class HelpTest extends BaseTestCase
 
         list($result, $status) = $this->_execute($args);
 
-        $this->assertContains("foobar: extended help message\nGlobal", $result);
+        $this->assertContains("foobar: extended help message", $result);
         $this->assertEquals(0, $status);
     }
 

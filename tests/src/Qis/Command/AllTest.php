@@ -452,7 +452,7 @@ class AllTest extends BaseTestCase
 
         list($result, $status) = $this->_execute($args);
 
-        $expected = "\n" . str_repeat('%', 80) . "\n";
+        $expected = str_repeat('%', 80);
 
         $this->assertContains($expected, $result);
     }

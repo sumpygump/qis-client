@@ -116,8 +116,8 @@ class Test implements ModuleInterface
 
         $options = array();
 
-        if ($args->tap) {
-            $options['tap'] = true;
+        if ($args->testdox) {
+            $options['testdox'] = true;
         }
 
         $this->_saveTimeStamp();
@@ -154,8 +154,9 @@ class Test implements ModuleInterface
 
         $out .= "\nValid Options:\n"
             . $this->_qis->getTerminal()->do_setaf(3)
-            . "  --list : Show list of previous tests run\n"
             . "  --init : Initialize a test environment\n"
+            . "  --list : Show list of previous tests run\n"
+            . "  --testdox : Use testdox output when running tests\n"
             . $this->_qis->getTerminal()->do_op();
 
         return $out;
@@ -273,6 +274,11 @@ class Test implements ModuleInterface
             }
         }
 
+        $executionOutputFormat = '';
+        if (isset($options['testdox']) && $options['testdox']) {
+            $executionOutputFormat = '--testdox ';
+        }
+
         $phpunitBin = $this->_qis->getConfig()->get('phpunit_bin');
 
         // If phpunit binary path is not in config file, default to 'phpunit'
@@ -286,6 +292,7 @@ class Test implements ModuleInterface
             . $bootstrap
             . $configuration
             . $colors
+            . $executionOutputFormat
             . '--log-junit ' . $this->_outputPath . 'log.junit '
             . '--testdox-text ' . $this->_outputPath . 'testdox.text.txt '
             . '--coverage-clover=' . $coverageReportFilename . ' ';

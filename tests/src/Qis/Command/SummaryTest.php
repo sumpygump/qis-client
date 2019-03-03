@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Qis Command Summary test class file

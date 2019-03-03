@@ -78,7 +78,7 @@ class MockQisModuleCodingstandardErrorLevel extends MockQisModuleCodingstandard
 
 /**
  * Codingstandard Module Test class
- * 
+ *
  * @uses BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
@@ -88,7 +88,7 @@ class CodingstandardTest extends BaseTestCase
 {
     /**
      * Setup before each test
-     * 
+     *
      * @return void
      */
     public function setUp()
@@ -101,7 +101,7 @@ class CodingstandardTest extends BaseTestCase
 
     /**
      * Tear down after each test
-     * 
+     *
      * @return void
      */
     public function tearDown()
@@ -247,7 +247,7 @@ class CodingstandardTest extends BaseTestCase
     public function testCheckVersionCannotDetectVersion()
     {
         // The : command will output nothing and return status 0
-        // This means no version output will be found so checkVersion will 
+        // This means no version output will be found so checkVersion will
         // return false
         $this->_object->setOption('phpcsbin', ':');
         $result = $this->_object->checkVersion();
@@ -262,7 +262,7 @@ class CodingstandardTest extends BaseTestCase
      */
     public function testCheckVersionNotFoundMatch()
     {
-        // The ls command doesn't output the version in the same format as 
+        // The ls command doesn't output the version in the same format as
         // phpcs
         $this->_object->setOption('phpcsbin', 'ls');
         $result = $this->_object->checkVersion();

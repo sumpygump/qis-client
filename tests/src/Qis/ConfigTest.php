@@ -1,6 +1,6 @@
 <?php
 /**
- * QisConfig Test class file 
+ * QisConfig Test class file
  *
  * @package Qis
  */
@@ -13,7 +13,7 @@ use StdClass;
 
 /**
  * QisConfig Test class
- * 
+ *
  * @uses BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
@@ -23,7 +23,7 @@ class ConfigTest extends BaseTestCase
 {
     /**
      * Setup before each test
-     * 
+     *
      * @return void
      */
     public function setUp()
@@ -33,7 +33,7 @@ class ConfigTest extends BaseTestCase
 
     /**
      * Tear down after each test
-     * 
+     *
      * @return void
      */
     public function tearDown()
@@ -42,7 +42,7 @@ class ConfigTest extends BaseTestCase
 
     /**
      * Construct object and read ini file
-     * 
+     *
      * @return void
      */
     public function testConstructWithFile()
@@ -123,7 +123,7 @@ class ConfigTest extends BaseTestCase
      * Setting an array overwrites a scalar value that had the same name
      *
      * This seems like a bug, but there isn't a good way around it
-     * 
+     *
      * @return void
      */
     public function testAddArrayOverwrite()
@@ -168,7 +168,7 @@ class ConfigTest extends BaseTestCase
      *
      * When this happens the subkey is just a duplicate
      * of the first half of the key
-     * 
+     *
      * @return void
      */
     public function testAddArrayWithValueEndingInDot()

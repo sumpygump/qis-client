@@ -37,7 +37,7 @@ class CoverageTest extends BaseTestCase
 {
     /**
      * Setup before each test
-     * 
+     *
      * @return void
      */
     public function setUp()
@@ -50,7 +50,7 @@ class CoverageTest extends BaseTestCase
 
     /**
      * Tear down after each test
-     * 
+     *
      * @return void
      */
     public function tearDown()

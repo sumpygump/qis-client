@@ -1,7 +1,7 @@
 <?php
 /**
  * Test the Qis All Command
- *  
+ *
  * @package Qis
  */
 
@@ -17,7 +17,7 @@ use Qi_Console_Terminal;
 
 /**
  * Mock Qis Module for All subcommand tests
- * 
+ *
  * @uses QisModuleInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
@@ -123,7 +123,7 @@ class MockQisModuleBaseForAll implements ModuleInterface
 
 /**
  * Mock Qis Module Aa
- * 
+ *
  * @uses MockQisModuleBaseForAll
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
@@ -146,7 +146,7 @@ class MockQisModuleAa extends MockQisModuleBaseForAll
 
 /**
  * Mock Qis Module Kk
- * 
+ *
  * @uses MockQisModuleBaseForAll
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
@@ -169,7 +169,7 @@ class MockQisModuleKk extends MockQisModuleBaseForAll
 
 /**
  * Qis Command All test
- * 
+ *
  * @uses BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
@@ -179,7 +179,7 @@ class AllTest extends BaseTestCase
 {
     /**
      * Setup before each test
-     * 
+     *
      * @return void
      */
     public function setUp()
@@ -196,7 +196,7 @@ class AllTest extends BaseTestCase
 
     /**
      * Tear down after each test
-     * 
+     *
      * @return void
      */
     public function tearDown()
@@ -306,7 +306,7 @@ class AllTest extends BaseTestCase
 
     /**
      * The names of the commands in the list are trimmed
-     * 
+     *
      * @return void
      */
     public function testGetBuildOrderWithSpacesInBetweenCommas()
@@ -328,7 +328,7 @@ class AllTest extends BaseTestCase
 
     /**
      * This will just end up running no modules
-     * 
+     *
      * @return void
      */
     public function testGetBuildOrderWithInvalidBuildOrder()
@@ -350,7 +350,7 @@ class AllTest extends BaseTestCase
 
     /**
      * This will run no modules, since no commands match
-     * 
+     *
      * @return void
      */
     public function testGetBuildOrderWithAnotherInvalidBuildOrder()
@@ -375,7 +375,7 @@ class AllTest extends BaseTestCase
 
     /**
      * If the build order is empty, it will use the default
-     * 
+     *
      * @return void
      */
     public function testGetBuildOrderWithEmptyBuildOrder()
@@ -394,10 +394,10 @@ class AllTest extends BaseTestCase
         $this->assertContains('execute aa', $result);
         $this->assertContains('execute kk', $result);
     }
-    
+
     /**
      * If the build order is a bunch of whitespace, it'll use the default
-     * 
+     *
      * @return void
      */
     public function testGetBuildOrderWithBlankBuildOrder()
@@ -419,7 +419,7 @@ class AllTest extends BaseTestCase
 
     /**
      * If the build order is an array, it will use the default
-     * 
+     *
      * @return void
      */
     public function testGetBuildOrderWithArrayBuildOrder()
@@ -459,7 +459,7 @@ class AllTest extends BaseTestCase
 
     /**
      * Run execute on the object and return the buffered output and status
-     * 
+     *
      * @param Qi_Console_ArgV $args ARguments
      * @return array
      */
@@ -475,7 +475,7 @@ class AllTest extends BaseTestCase
 
     /**
      * Setup some default mock modules and register with qis
-     * 
+     *
      * @return void
      */
     protected function _setupSomeDefaultModules()

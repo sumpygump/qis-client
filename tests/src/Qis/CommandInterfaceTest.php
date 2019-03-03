@@ -84,7 +84,7 @@ class Command implements CommandInterface
 
 /**
  * Qis command interface test
- * 
+ *
  * @uses BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@nerdery.com>

@@ -13,7 +13,7 @@ use StdClass;
 
 /**
  * Clover Coverage Report test class
- * 
+ *
  * @uses BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
@@ -23,7 +23,7 @@ final class CloverCoverageReportTest extends BaseTestCase
 {
     /**
      * Setup before each test
-     * 
+     *
      * @return void
      */
     public function setUp()
@@ -33,7 +33,7 @@ final class CloverCoverageReportTest extends BaseTestCase
 
     /**
      * Tear down after each test
-     * 
+     *
      * @return void
      */
     public function tearDown()
@@ -43,7 +43,7 @@ final class CloverCoverageReportTest extends BaseTestCase
 
     /**
      * Test construction incorrectly
-     * 
+     *
      * @return void
      */
     public function testConstructionIncorrectly()
@@ -55,7 +55,7 @@ final class CloverCoverageReportTest extends BaseTestCase
 
     /**
      * A valid file is required
-     * 
+     *
      * @return void
      */
     public function testConstructionFileNotExists()
@@ -101,7 +101,7 @@ final class CloverCoverageReportTest extends BaseTestCase
 
     /**
      * Passing in a file when no coverage xml
-     * 
+     *
      * @expectedException Qis\CloverCoverageReportException
      * @return void
      */
@@ -116,7 +116,7 @@ final class CloverCoverageReportTest extends BaseTestCase
 
     /**
      * Passing in a file not in coverage xml throws an exception
-     * 
+     *
      * @return void
      */
     public function testReportFileAnalysisTargetFileNotExisting()
@@ -130,7 +130,7 @@ final class CloverCoverageReportTest extends BaseTestCase
     /**
      * When a full path is not given for a target file,
      * the file is relative to the common root
-     * 
+     *
      * @return void
      */
     public function testReportFileAnalysisShortTarget()
@@ -199,7 +199,7 @@ final class CloverCoverageReportTest extends BaseTestCase
 
     /**
      * String as input causes error
-     * 
+     *
      * @return void
      */
     public function testFindCommonRootString()
@@ -213,7 +213,7 @@ final class CloverCoverageReportTest extends BaseTestCase
 
     /**
      * Object as input causes error
-     * 
+     *
      * @return void
      */
     public function testFindCommonRootObject()
@@ -237,7 +237,7 @@ final class CloverCoverageReportTest extends BaseTestCase
         $list = array(
             'foo/bar/baz/quux.php',
         );
-        
+
         $commonRoot = CloverCoverageReport::findCommonRoot($list);
         $this->assertEquals('foo/bar/baz/', $commonRoot);
     }
@@ -298,7 +298,7 @@ final class CloverCoverageReportTest extends BaseTestCase
      *
      * If a directory or file starts with the same letters, don't
      * consider the commonality among them as the root
-     * 
+     *
      * @return void
      */
     public function testFindCommonRootReturnsOnlyPaths()
@@ -315,7 +315,7 @@ final class CloverCoverageReportTest extends BaseTestCase
 
     /**
      * Buffer output and capture
-     * 
+     *
      * @param string $targetFile Target file name
      * @return array
      */

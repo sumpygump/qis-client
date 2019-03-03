@@ -1,6 +1,6 @@
 <?php
 /**
- * Qis Command Modules test class file 
+ * Qis Command Modules test class file
  *
  * @package Qis
  */
@@ -16,7 +16,7 @@ use Qi_Console_Terminal;
 
 /**
  * Mock Module class for Init subcommand
- * 
+ *
  * @uses QisModuleInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
@@ -122,7 +122,7 @@ class MockQisModuleBaseForModules implements ModuleInterface
 
 /**
  * Qis Command Init Test cases
- * 
+ *
  * @uses BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
@@ -132,7 +132,7 @@ class ModulesTest extends BaseTestCase
 {
     /**
      * Setup before each test
-     * 
+     *
      * @return void
      */
     public function setUp()
@@ -149,7 +149,7 @@ class ModulesTest extends BaseTestCase
 
     /**
      * Tear down after each test
-     * 
+     *
      * @return void
      */
     public function tearDown()
@@ -158,7 +158,7 @@ class ModulesTest extends BaseTestCase
 
     /**
      * Initialize doesn't do anything, but it should be available
-     * 
+     *
      * @return void
      */
     public function testInitialize()
@@ -215,7 +215,7 @@ class ModulesTest extends BaseTestCase
 
     /**
      * Get help message should return a string
-     * 
+     *
      * @return void
      */
     public function testGetHelpMessage()
@@ -239,7 +239,7 @@ class ModulesTest extends BaseTestCase
 
     /**
      * Run execute on the object and return the buffered output and status
-     * 
+     *
      * @param Qis_Console_ArgV $args Arguments
      * @return void
      */
@@ -255,7 +255,7 @@ class ModulesTest extends BaseTestCase
 
     /**
      * Setup some default mock modules and register with qis
-     * 
+     *
      * @return void
      */
     protected function _setupSomeDefaultModules()

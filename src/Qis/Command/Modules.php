@@ -14,7 +14,7 @@ use Qi_Console_Tabular;
 
 /**
  * Modules command class
- * 
+ *
  * @uses QisModuleInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
@@ -24,14 +24,14 @@ class Modules implements CommandInterface
 {
     /**
      * Qis kernel object
-     * 
+     *
      * @var mixed
      */
     protected $_qis = null;
 
     /**
      * Get Name of command
-     * 
+     *
      * @return string
      */
     public static function getName()
@@ -41,7 +41,7 @@ class Modules implements CommandInterface
 
     /**
      * Constructor
-     * 
+     *
      * @param object $qis Qis object
      * @param mixed $settings Configuration settings
      * @return void
@@ -53,7 +53,7 @@ class Modules implements CommandInterface
 
     /**
      * Initialize this module after registration
-     * 
+     *
      * @return void
      */
     public function initialize()
@@ -62,7 +62,7 @@ class Modules implements CommandInterface
 
     /**
      * Execute main logic
-     * 
+     *
      * @param Qi_Console_ArgV $args Arguments
      * @return void
      */
@@ -91,7 +91,7 @@ class Modules implements CommandInterface
 
     /**
      * Get Help message for this module
-     * 
+     *
      * @return string
      */
     public function getHelpMessage()

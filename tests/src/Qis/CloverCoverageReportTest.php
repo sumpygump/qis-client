@@ -13,17 +13,17 @@ use StdClass;
 
 /**
  * Clover Coverage Report test class
- * 
+ *
  * @uses BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class CloverCoverageReportTest extends BaseTestCase
+final class CloverCoverageReportTest extends BaseTestCase
 {
     /**
      * Setup before each test
-     * 
+     *
      * @return void
      */
     public function setUp()
@@ -33,7 +33,7 @@ class CloverCoverageReportTest extends BaseTestCase
 
     /**
      * Tear down after each test
-     * 
+     *
      * @return void
      */
     public function tearDown()
@@ -43,23 +43,25 @@ class CloverCoverageReportTest extends BaseTestCase
 
     /**
      * Test construction incorrectly
-     * 
-     * @expectedException PHPUnit_Framework_Error_Warning
+     *
      * @return void
      */
     public function testConstructionIncorrectly()
     {
+        $this->expectException(\ArgumentCountError::class);
+        $this->expectExceptionMessage("Too few arguments");
         $this->_object = new CloverCoverageReport();
     }
 
     /**
      * A valid file is required
-     * 
-     * @expectedException Qis\CloverCoverageReportException
+     *
      * @return void
      */
     public function testConstructionFileNotExists()
     {
+        $this->expectException(\Qis\CloverCoverageReportException::class);
+        $this->expectExceptionMessage("not found or is not readable");
         $this->_object = new CloverCoverageReport('nofile.xml');
     }
 
@@ -99,7 +101,7 @@ class CloverCoverageReportTest extends BaseTestCase
 
     /**
      * Passing in a file when no coverage xml
-     * 
+     *
      * @expectedException Qis\CloverCoverageReportException
      * @return void
      */
@@ -114,7 +116,7 @@ class CloverCoverageReportTest extends BaseTestCase
 
     /**
      * Passing in a file not in coverage xml throws an exception
-     * 
+     *
      * @return void
      */
     public function testReportFileAnalysisTargetFileNotExisting()
@@ -128,7 +130,7 @@ class CloverCoverageReportTest extends BaseTestCase
     /**
      * When a full path is not given for a target file,
      * the file is relative to the common root
-     * 
+     *
      * @return void
      */
     public function testReportFileAnalysisShortTarget()
@@ -197,21 +199,21 @@ class CloverCoverageReportTest extends BaseTestCase
 
     /**
      * String as input causes error
-     * 
-     * @expectedException PHPUnit_Framework_Error
+     *
      * @return void
      */
     public function testFindCommonRootString()
     {
         $list = 'foobar/baz/';
 
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage("Argument 1 passed");
         $commonRoot = CloverCoverageReport::findCommonRoot($list);
     }
 
     /**
      * Object as input causes error
-     * 
-     * @expectedException PHPUnit_Framework_Error
+     *
      * @return void
      */
     public function testFindCommonRootObject()
@@ -220,6 +222,8 @@ class CloverCoverageReportTest extends BaseTestCase
 
         $list->foo = 'bar';
 
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage("Argument 1 passed");
         $commonRoot = CloverCoverageReport::findCommonRoot($list);
     }
 
@@ -233,7 +237,7 @@ class CloverCoverageReportTest extends BaseTestCase
         $list = array(
             'foo/bar/baz/quux.php',
         );
-        
+
         $commonRoot = CloverCoverageReport::findCommonRoot($list);
         $this->assertEquals('foo/bar/baz/', $commonRoot);
     }
@@ -294,7 +298,7 @@ class CloverCoverageReportTest extends BaseTestCase
      *
      * If a directory or file starts with the same letters, don't
      * consider the commonality among them as the root
-     * 
+     *
      * @return void
      */
     public function testFindCommonRootReturnsOnlyPaths()
@@ -311,7 +315,7 @@ class CloverCoverageReportTest extends BaseTestCase
 
     /**
      * Buffer output and capture
-     * 
+     *
      * @param string $targetFile Target file name
      * @return array
      */

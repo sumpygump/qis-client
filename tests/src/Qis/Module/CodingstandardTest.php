@@ -78,7 +78,7 @@ class MockQisModuleCodingstandardErrorLevel extends MockQisModuleCodingstandard
 
 /**
  * Codingstandard Module Test class
- * 
+ *
  * @uses BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
@@ -88,7 +88,7 @@ class CodingstandardTest extends BaseTestCase
 {
     /**
      * Setup before each test
-     * 
+     *
      * @return void
      */
     public function setUp()
@@ -101,7 +101,7 @@ class CodingstandardTest extends BaseTestCase
 
     /**
      * Tear down after each test
-     * 
+     *
      * @return void
      */
     public function tearDown()
@@ -115,22 +115,24 @@ class CodingstandardTest extends BaseTestCase
     /**
      * Test constructor with no arguments
      *
-     * @expectedException PHPUnit_Framework_Error
      * @return void
      */
     public function testConstructorWithNoArguments()
     {
+        $this->expectException(\ArgumentCountError::class);
+        $this->expectExceptionMessage("Too few arguments");
         $this->_object = new Codingstandard();
     }
 
     /**
      * testConstructorWithoutSecondArgument
      *
-     * @expectedException PHPUnit_Framework_Error
      * @return void
      */
     public function testConstructorWithoutSecondArgument()
     {
+        $this->expectException(\ArgumentCountError::class);
+        $this->expectExceptionMessage("Too few arguments");
         $this->_object = new Codingstandard(
             $this->_getDefaultQisObject()
         );
@@ -194,11 +196,12 @@ class CodingstandardTest extends BaseTestCase
     /**
      * testExecuteNoArguments
      *
-     * @expectedException PHPUnit_Framework_Error
      * @return void
      */
     public function testExecuteNoArguments()
     {
+        $this->expectException(\ArgumentCountError::class);
+        $this->expectExceptionMessage("Too few arguments");
         $this->_object->execute();
     }
 
@@ -244,7 +247,7 @@ class CodingstandardTest extends BaseTestCase
     public function testCheckVersionCannotDetectVersion()
     {
         // The : command will output nothing and return status 0
-        // This means no version output will be found so checkVersion will 
+        // This means no version output will be found so checkVersion will
         // return false
         $this->_object->setOption('phpcsbin', ':');
         $result = $this->_object->checkVersion();
@@ -259,8 +262,9 @@ class CodingstandardTest extends BaseTestCase
      */
     public function testCheckVersionNotFoundMatch()
     {
-        // The echo command will not do the same thing as phpcs --version
-        $this->_object->setOption('phpcsbin', 'echo');
+        // The ls command doesn't output the version in the same format as
+        // phpcs
+        $this->_object->setOption('phpcsbin', 'ls');
         $result = $this->_object->checkVersion();
 
         $this->assertFalse($result);

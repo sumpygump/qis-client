@@ -136,7 +136,7 @@ class All implements CommandInterface
      * Get build order from config
      *
      * Default to sensible order
-     * 
+     *
      * @return string
      */
     protected function _getBuildOrder()
@@ -156,7 +156,7 @@ class All implements CommandInterface
 
     /**
      * Display a rule
-     * 
+     *
      * @return void
      */
     protected function _rule()

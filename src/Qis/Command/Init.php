@@ -14,7 +14,7 @@ use Qi_Console_Std;
 
 /**
  * Init command class
- * 
+ *
  * @uses QisModuleInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
@@ -24,14 +24,14 @@ class Init implements CommandInterface
 {
     /**
      * Qis kernel object
-     * 
+     *
      * @var mixed
      */
     protected $_qis = null;
 
     /**
      * Get Name of command
-     * 
+     *
      * @return string
      */
     public static function getName()
@@ -41,7 +41,7 @@ class Init implements CommandInterface
 
     /**
      * Constructor
-     * 
+     *
      * @param object $qis Qis object
      * @param mixed $settings Configuration settings
      * @return void
@@ -53,7 +53,7 @@ class Init implements CommandInterface
 
     /**
      * Initialize this module after registration
-     * 
+     *
      * @return void
      */
     public function initialize()
@@ -62,7 +62,7 @@ class Init implements CommandInterface
 
     /**
      * Execute main logic
-     * 
+     *
      * @param Qi_Console_ArgV $args Arguments object
      * @return void
      */
@@ -73,7 +73,7 @@ class Init implements CommandInterface
 
     /**
      * Get Help message for this module
-     * 
+     *
      * @return string
      */
     public function getHelpMessage()
@@ -101,7 +101,7 @@ class Init implements CommandInterface
     }
     /**
      * Initialize Project
-     * 
+     *
      * @return int
      */
     protected function _initializeProject()
@@ -143,7 +143,7 @@ class Init implements CommandInterface
 
     /**
      * Prompt for a project name
-     * 
+     *
      * @return void
      */
     protected function _promptProjectName()
@@ -162,7 +162,7 @@ class Init implements CommandInterface
 
     /**
      * Prompt to overwrite
-     * 
+     *
      * @return bool
      */
     protected function _promptOverwrite()
@@ -182,7 +182,7 @@ class Init implements CommandInterface
 
     /**
      * Find module classes and get default config ini
-     * 
+     *
      * @return string
      */
     protected function _addModuleConfigDefaults()
@@ -213,7 +213,7 @@ class Init implements CommandInterface
 
     /**
      * Check existence of directory
-     * 
+     *
      * @param string $dir Directory to check
      * @param bool $create Whether to create if not exists
      * @return bool

@@ -1,6 +1,6 @@
 <?php
 /**
- * Qis Exception Handler class file 
+ * Qis Exception Handler class file
  *
  * @package Qis
  */
@@ -11,7 +11,7 @@ use Exception;
 
 /**
  * Qis Exception Handler
- * 
+ *
  * @package Qis
  * @author Jansen Price <jansen.price@nerdery.com>
  * @version $Id$
@@ -52,7 +52,7 @@ class ExceptionHandler
 
     /**
      * Set Qis object
-     * 
+     *
      * @param Qis $qis Qis object
      * @return void
      */
@@ -84,13 +84,15 @@ class ExceptionHandler
 
     /**
      * Handle exception
-     * 
+     *
      * @param Exception $e Exception object
      * @return void
      */
-    public static function handle(Exception $e)
+    public static function handle($e)
     {
-        self::$qis->displayError($e->getMessage());
+        $message = sprintf("%s in %s on line %s", $e->getMessage(), $e->getFile(), $e->getLine());
+        self::$qis->displayError($message);
+        print($e->getTraceAsString() . "\n");
     }
 
     /**

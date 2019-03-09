@@ -1,6 +1,6 @@
 <?php
 /**
- * Qis Command Summary test class file 
+ * Qis Command Summary test class file
  *
  * @package Qis
  */
@@ -16,7 +16,7 @@ use Qi_Console_Terminal;
 
 /**
  * Mock Module class for Summary subcommand
- * 
+ *
  * @uses QisModuleInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
@@ -144,7 +144,7 @@ class MockQisModuleSummaryFalseStatus
 
 /**
  * Qis Command Init Test cases
- * 
+ *
  * @uses BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
@@ -154,7 +154,7 @@ class SummaryTest extends BaseTestCase
 {
     /**
      * Setup before each test
-     * 
+     *
      * @return void
      */
     public function setUp()
@@ -171,7 +171,7 @@ class SummaryTest extends BaseTestCase
 
     /**
      * Tear down after each test
-     * 
+     *
      * @return void
      */
     public function tearDown()
@@ -180,7 +180,7 @@ class SummaryTest extends BaseTestCase
 
     /**
      * Get name should return the default command name
-     * 
+     *
      * @return void
      */
     public function testGetName()
@@ -192,7 +192,7 @@ class SummaryTest extends BaseTestCase
 
     /**
      * Initialize doesn't do anything, but it should be available
-     * 
+     *
      * @return void
      */
     public function testInitialize()
@@ -378,7 +378,7 @@ class SummaryTest extends BaseTestCase
 
     /**
      * Get help message should return a string
-     * 
+     *
      * @return void
      */
     public function testGetHelpMessage()
@@ -402,7 +402,7 @@ class SummaryTest extends BaseTestCase
 
     /**
      * Run execute on the object and return the buffered output and status
-     * 
+     *
      * @param Qi_Console_ArgV $args Arguments
      * @return void
      */
@@ -418,7 +418,7 @@ class SummaryTest extends BaseTestCase
 
     /**
      * Setup some default mock modules and register with qis
-     * 
+     *
      * @return void
      */
     protected function _setupSomeDefaultModules()
@@ -437,4 +437,3 @@ class SummaryTest extends BaseTestCase
         $this->_qis->registerModules($modules);
     }
 }
-

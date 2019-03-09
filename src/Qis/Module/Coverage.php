@@ -15,7 +15,7 @@ use Exception;
 
 /**
  * Coverage Module class
- * 
+ *
  * @uses QisModuleInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
@@ -25,35 +25,35 @@ class Coverage implements ModuleInterface
 {
     /**
      * Storage of Qis object
-     * 
+     *
      * @var object
      */
     protected $_qis = null;
 
     /**
      * Path
-     * 
+     *
      * @var string
      */
     protected $_root = '.';
 
     /**
      * Output path
-     * 
+     *
      * @var string
      */
     protected $_outputPath = 'coverage';
 
     /**
      * A list of ignore paths
-     * 
+     *
      * @var array
      */
     protected $_ignorePaths = array();
 
     /**
      * Get default ini settings for this module
-     * 
+     *
      * @return string
      */
     public static function getDefaultIni()
@@ -68,7 +68,7 @@ class Coverage implements ModuleInterface
 
     /**
      * Constructor
-     * 
+     *
      * @param object $qis Qis object
      * @param mixed $settings Configuration settings
      * @return void
@@ -88,7 +88,7 @@ class Coverage implements ModuleInterface
 
     /**
      * Initialize this module after registration
-     * 
+     *
      * @return void
      */
     public function initialize()
@@ -106,15 +106,12 @@ class Coverage implements ModuleInterface
 
     /**
      * Execute module
-     * 
+     *
      * @param Qi_Console_ArgV $args Arguments
      * @return int
      */
     public function execute(Qi_Console_ArgV $args)
     {
-        ob_start();
-        $this->_qis->qecho("\nRunning coverage module task...\n");
-
         if ($args->__arg2) {
             $targetFile = $args->__arg2;
         } else {
@@ -123,10 +120,20 @@ class Coverage implements ModuleInterface
 
         $this->_saveTimeStamp();
         try {
-            $this->_checkCoverage($targetFile);
+            if ($args->serve) {
+                $this->_serveCoverage();
+                return 0;
+            } else {
+                ob_start();
+                $this->_qis->qecho("\nRunning coverage module task...\n");
+
+                $this->_checkCoverage($targetFile);
+            }
         } catch (Exception $e) {
             // If there was an exception, eat the output from ob
-            ob_end_clean();
+            if (ob_get_level()) {
+                ob_end_clean();
+            }
             throw $e;
         }
 
@@ -139,7 +146,7 @@ class Coverage implements ModuleInterface
 
     /**
      * Get help message for this module
-     * 
+     *
      * @return string
      */
     public function getHelpMessage()
@@ -149,7 +156,7 @@ class Coverage implements ModuleInterface
 
     /**
      * Get extended help message
-     * 
+     *
      * @return string
      */
     public function getExtendedHelpMessage()
@@ -165,6 +172,7 @@ class Coverage implements ModuleInterface
         $out .= "\nValid Options:\n"
             . $this->_qis->getTerminal()->do_setaf(3)
             . "  --list : Show list of files in coverage\n"
+            . "  --serve : Serve the html coverage report on port 8005\n"
             . $this->_qis->getTerminal()->do_op();
 
         return $out;
@@ -172,7 +180,7 @@ class Coverage implements ModuleInterface
 
     /**
      * Get summary for this module
-     * 
+     *
      * @param bool $short Get short summary
      * @return string
      */
@@ -218,7 +226,7 @@ class Coverage implements ModuleInterface
 
     /**
      * Get status for this module (pass/fail)
-     * 
+     *
      * @return bool
      */
     public function getStatus()
@@ -232,7 +240,7 @@ class Coverage implements ModuleInterface
 
     /**
      * Save timestamp
-     * 
+     *
      * @return bool
      */
     protected function _saveTimeStamp()
@@ -245,7 +253,7 @@ class Coverage implements ModuleInterface
 
     /**
      * Check coverage
-     * 
+     *
      * @param string $targetFile Target file
      * @return void
      */
@@ -271,9 +279,29 @@ class Coverage implements ModuleInterface
         $this->_saveTotalCoverage($totalCoverage);
     }
 
+    protected function _serveCoverage()
+    {
+        $path = $this->_qis->getProjectQisRoot() . DIRECTORY_SEPARATOR
+            . 'test-results' . DIRECTORY_SEPARATOR . 'coverage';
+
+        if (!is_dir($path)) {
+            throw new CoverageException(
+                "Cannot serve coverage report. "
+                . "Ensure test module is executed first and"
+                . "`test.coverage-html` is set to true in .qis/config.ini"
+            );
+        }
+
+        echo "Attempting to serve coverage report at http://localhost:8005 ...\n";
+
+        $cmd = "php -S 127.0.0.1:8005 -t \"$path\" &2>1";
+        flush();
+        passthru($cmd);
+    }
+
     /**
      * Save total coverage to disk to be used by summary
-     * 
+     *
      * @param float $totalCoverage Total coverage percentage
      * @return mixed
      */
@@ -287,7 +315,7 @@ class Coverage implements ModuleInterface
 
     /**
      * Get total coverage from disk from last run.
-     * 
+     *
      * @return string
      */
     public function getTotalCoverage()

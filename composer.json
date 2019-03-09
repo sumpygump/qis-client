@@ -12,16 +12,20 @@
         "php": ">=5.3",
         "sumpygump/qi-console": "1.*",
         "sumpygump/qi-db": "1.*",
-        "phploc/phploc": "2.*"
+        "phploc/phploc": "4.*",
+        "phpmd/phpmd" : "2.6.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "7.*",
+        "phpmetrics/phpmetrics": "^2.3"
     },
     "bin": [
         "bin/qis",
         "bin/generate-clover-report"
     ],
     "autoload": {
-        "psr-0" : {
-            "Qis" : "src/"
+        "psr-4" : {
+            "Qis\\" : "src/Qis"
         }
-    },
-    "minimum-stability": "dev"
+    }
 }

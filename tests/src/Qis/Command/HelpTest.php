@@ -1,6 +1,6 @@
 <?php
 /**
- * Qis Command Help test class file 
+ * Qis Command Help test class file
  *
  * @package Qis
  */
@@ -16,7 +16,7 @@ use Qi_Console_Terminal;
 
 /**
  * Mock Module class for Help subcommand
- * 
+ *
  * @uses QisModuleInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
@@ -122,7 +122,7 @@ class MockQisModuleBaseForHelp implements ModuleInterface
 
 /**
  * Qis Command Help Test cases
- * 
+ *
  * @uses BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
@@ -132,7 +132,7 @@ class HelpTest extends BaseTestCase
 {
     /**
      * Setup before each test
-     * 
+     *
      * @return void
      */
     public function setUp()
@@ -149,7 +149,7 @@ class HelpTest extends BaseTestCase
 
     /**
      * Tear down after each test
-     * 
+     *
      * @return void
      */
     public function tearDown()
@@ -158,7 +158,7 @@ class HelpTest extends BaseTestCase
 
     /**
      * Get name should return the default command name
-     * 
+     *
      * @return void
      */
     public function testGetName()
@@ -170,7 +170,7 @@ class HelpTest extends BaseTestCase
 
     /**
      * Initialize doesn't do anything, but it should be available
-     * 
+     *
      * @return void
      */
     public function testInitialize()
@@ -210,15 +210,15 @@ class HelpTest extends BaseTestCase
         list($result, $status) = $this->_execute($args);
 
         $this->assertContains('Usage: qis <subcommand', $result);
-        $this->assertContains("Modules:\n", $result);
-        $this->assertContains("foobar : help message\nUse", $result);
+        $this->assertContains("Modules:", $result);
+        $this->assertContains("foobar : help message", $result);
         $this->assertContains("Global Options:", $result);
         $this->assertEquals(0, $status);
     }
 
     /**
      * If the module doesn't exist, it will throw an exception
-     * 
+     *
      * @expectedException Qis\CommandException
      * @return void
      */
@@ -254,13 +254,14 @@ class HelpTest extends BaseTestCase
 
         list($result, $status) = $this->_execute($args);
 
-        $this->assertContains("foobar: extended help message\nGlobal", $result);
+        $this->assertContains("Help for module 'foobar'", $result);
+        $this->assertContains("extended help message", $result);
         $this->assertEquals(0, $status);
     }
 
     /**
      * Get help message should return a string
-     * 
+     *
      * @return void
      */
     public function testGetHelpMessage()
@@ -284,7 +285,7 @@ class HelpTest extends BaseTestCase
 
     /**
      * Run execute on the object and return the buffered output and status
-     * 
+     *
      * @param Qi_Console_ArgV $args Arguments
      * @return array
      */
@@ -300,7 +301,7 @@ class HelpTest extends BaseTestCase
 
     /**
      * Setup some default mock modules and register with qis
-     * 
+     *
      * @return void
      */
     protected function _setupSomeDefaultModules()

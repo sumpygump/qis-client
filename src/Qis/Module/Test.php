@@ -233,8 +233,17 @@ class Test implements ModuleInterface
 
         $testsDir = $this->_path;
 
-        if (!file_exists($testsDir)) {
-            $this->_qis->halt("Tests directory '$testsDir' not found.");
+        $rootTestsDir = false;
+        if ($testsDir == '') {
+            $testsDir = getcwd();
+            $rootTestsDir = true;
+            if ($path == '.') {
+                $path = '';
+            }
+        } else {
+            if (!file_exists($testsDir)) {
+                $this->_qis->halt("Tests directory '$testsDir' not found.");
+            }
         }
 
         $colors = '';

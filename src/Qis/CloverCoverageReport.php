@@ -445,25 +445,16 @@ class CloverCoverageReport
      */
     public static function findCommonRoot(array $list)
     {
-        $longest  = 0;
-        $pathlist = array();
-        $dirSep   = '/';
-
         if (count($list) == 1) {
-            $root = implode(
-                $dirSep,
-                array_slice(explode($dirSep, reset($list)), 0, -1)
-            );
-            if (substr($root, -1) != $dirSep) {
-                $root .= $dirSep;
-            }
-
-            return $root;
+            return self::commonRootOne(reset($list));
         }
+
+        $longest = 0;
+        $pathlist = array();
 
         // Chunk each item into parts separated by dirSep
         foreach ($list as $item) {
-            $pathparts  = explode($dirSep, $item);
+            $pathparts  = explode('/', $item);
             $pathlist[] = $pathparts;
 
             if (count($pathparts) > $longest) {
@@ -479,10 +470,10 @@ class CloverCoverageReport
         for ($i = 0; $i < $longest; $i++) {
             $common = array();
             foreach ($pathlist as $pathparts) {
-                $path = implode($dirSep, array_slice($pathparts, 0, $i + 1));
+                $path = implode('/', array_slice($pathparts, 0, $i + 1));
 
-                if (substr($path, -1) != $dirSep) {
-                    $path .= $dirSep;
+                if (substr($path, -1) != '/') {
+                    $path .= '/';
                 }
 
                 $common[] = $path;
@@ -492,6 +483,20 @@ class CloverCoverageReport
                 return $root;
             }
             $root = $common[0];
+        }
+
+        return $root;
+    }
+
+    public static function commonRootOne($path)
+    {
+        $root = implode(
+            '/',
+            array_slice(explode('/', $path), 0, -1)
+        );
+
+        if (substr($root, -1) != '/') {
+            $root .= '/';
         }
 
         return $root;

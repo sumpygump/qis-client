@@ -71,6 +71,10 @@ class Config
     {
         $raw = parse_ini_file($filename, true);
 
+        if (false === $raw) {
+            throw new \Exception("Error reading config file '$filename'");
+        }
+
         foreach ($raw as $key => $value) {
             if (is_array($value)) {
                 $this->_addArray($key, $value);

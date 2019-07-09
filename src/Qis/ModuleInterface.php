@@ -75,7 +75,7 @@ interface ModuleInterface
     /**
      * Get status of this module
      *
-     * @return string
+     * @return bool
      */
     public function getStatus();
 

@@ -251,6 +251,30 @@ class Qis
         $this->_modules[$command] = $module;
     }
 
+    protected function getAction()
+    {
+        $action = trim($this->_args->action);
+
+        if ($action != '') {
+            return $action;
+        }
+
+        return 'summary';
+    }
+
+    protected function preinit()
+    {
+        if ($this->_args->v) {
+            $this->_verbose = true;
+        }
+
+        $this->_registerCommands();
+        $this->_loadProjectConfig();
+        if ($this->_config) {
+            $this->registerModules($this->_config->modules);
+        }
+    }
+
     /**
      * Execute main logic
      *
@@ -258,22 +282,7 @@ class Qis
      */
     public function execute()
     {
-        if ($this->_args->v) {
-            $this->_verbose = true;
-        }
-
-        $action = trim($this->_args->action);
-
-        if ($action == '') {
-            $action = 'summary';
-        }
-
-        $this->_registerCommands();
-
-        $this->_loadProjectConfig();
-        if ($this->_config) {
-            $this->registerModules($this->_config->modules);
-        }
+        $this->preinit();
 
         // Detect '--help' and exit
         if ($this->_args->help) {
@@ -287,6 +296,7 @@ class Qis
             return 0;
         }
 
+        $action = $this->getAction();
         if (!$this->_config && $action != 'init') {
             $this->displayError(
                 "No project config file found. Use 'qis init' to initialize."

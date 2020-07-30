@@ -87,6 +87,10 @@ class Metrics implements ModuleInterface
     {
         $this->_qis->qecho("\nRunning Metrics module task...\n");
 
+        if ($args->explain) {
+            return $this->showExplain();
+        }
+
         if ($args->results) {
             return $this->showMetrics();
         }
@@ -259,6 +263,31 @@ class Metrics implements ModuleInterface
         );
 
         $table->display();
+        print "Use `qis metrics --explain` to show an explanation of each metric.\n";
+    }
+
+    /**
+     * Print out an explanation of the metrics
+     *
+     * @return void
+     */
+    public function showExplain()
+    {
+        print "An explanation of the metrics gathered and reported.\n";
+        print "----------------------------------------------------\n";
+        print "LOC: lines of code in file/method\n";
+        print "CR: Code rank. A Google pagerank applied on packages and classes. Classes with a high value should be tested frequently.\n";
+        print "CSZ: Class Size. Number of methods and properties of a class: CSZ = NOM + VARS. Measures the size of a class concerning operations and data.\n";
+        print "NOM: Number of methods\n";
+        print "VARS: Number of properties\n";
+        print "WMC: Weighted Method Count. Sum of the complexities of all declared methods and constructors of class.\n";
+        print "CCN2: Extended cyclomatic complexity number. Based on the number of branches in a code like if, for, foreach\n";
+        print "NPATH: NPath Complexity. Number of acyclic execution paths through a method.\n";
+        print "HNT: Halstead Length. Total number of operator occurrences and the total number of operand occurrences. HND = N1 + N2\n";
+        print "HND: Halstead Vocabulary. Total number of unique operator and unique operand occurrences. HND = n1 + n2\n";
+        print "HD: Halstead Difficulty. Difficulty of the program to write or understand, e.g. when doing code review. HD = (n1 / 2) * (N2 / n2)\n";
+        print "HE: Halstead Effort. Aount of mental activity needed to translate the existing algorithm into implementation. HE = HV * HD\n";
+        print "HB: Halstead Bugs. Estimated number of errors in the implementation HB = POW(HE, 2/3) / 3000\n";
     }
 
     /**
@@ -286,6 +315,7 @@ class Metrics implements ModuleInterface
             . $this->_qis->getTerminal()->do_setaf(3)
             . "--results : Show results from last run\n"
             . "--class <name> : Show method metrics for class matching name\n"
+            . "--explain : Show explanation of metrics\n"
             . $this->_qis->getTerminal()->do_op();
 
         return $out;

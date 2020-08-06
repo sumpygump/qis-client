@@ -198,7 +198,7 @@ class QisTest extends BaseTestCase
     {
         $version = $this->_object->getVersion();
 
-        $this->assertEquals('1.2.1', $version);
+        $this->assertEquals('1.2.2', $version);
     }
 
     /**
@@ -598,7 +598,7 @@ class QisTest extends BaseTestCase
         $result = ob_get_contents();
         ob_end_clean();
 
-        $this->assertContains('1.2.1', $result);
+        $this->assertContains('1.2.2', $result);
         $this->assertNotContains('testfoo', $result);
     }
 

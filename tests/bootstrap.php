@@ -6,6 +6,8 @@
  */
 date_default_timezone_set('America/Chicago');
 
+sprintf("PHP Version: %s\n", PHP_VERSION);
+
 $root = realpath(dirname(dirname(__FILE__)));
 
 $autoload = require $root . DIRECTORY_SEPARATOR . 'vendor/autoload.php';

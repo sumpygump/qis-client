@@ -258,6 +258,7 @@ class CodingstandardTest extends BaseTestCase
     /**
      * Test check version not found match
      *
+     * @expectedException Qis\Module\CodingStandardException
      * @return void
      */
     public function testCheckVersionNotFoundMatch()

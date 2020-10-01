@@ -9,7 +9,7 @@ namespace Qis\Tests\Module;
 
 use BaseTestCase;
 use Qis\Module\Codingstandard;
-use Qis\CodingStandardException;
+use Qis\Module\CodingStandardException;
 use Qis\Qis;
 use Qi_Console_ArgV;
 use Qi_Console_Terminal;
@@ -230,11 +230,12 @@ class CodingstandardTest extends BaseTestCase
     /**
      * testCheckVersion
      *
-     * @expectedException Qis\Module\CodingStandardException
      * @return void
      */
     public function testCheckVersion()
     {
+        $this->expectException(CodingStandardException::class);
+
         $this->_object->setOption('phpcsbin', 'ffffffff');
         $this->_object->checkVersion();
     }
@@ -258,7 +259,6 @@ class CodingstandardTest extends BaseTestCase
     /**
      * Test check version not found match
      *
-     * @expectedException Qis\Module\CodingStandardException
      * @return void
      */
     public function testCheckVersionNotFoundMatch()

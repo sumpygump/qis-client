@@ -184,7 +184,7 @@ class Codingstandard implements ModuleInterface
 
         $this->_qis->log('Checking version of phpcs');
 
-        if ($status) {
+        if ($status != 0) {
             throw new CodingStandardException(
                 "PHPCodeSniffer (phpcs) not installed. Please install with command `composer global require \"squizlabs/php_codesniffer\"`"
             );

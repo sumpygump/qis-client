@@ -2,12 +2,12 @@
 " File:        qis.vim
 " Description: Vim plugin for QIS (Quantal Integration System)
 " Maintainer:  Jansen Price <jansen.price at gmail dot com>
-" Last Change: 2011-03-25
+" Last Change: 2020-09-04
 " License:     http://www.opensource.org/licenses/mit-license.php MIT
 " Usage:       Run qis command to see the code coverage
 "              reports and analysis files
 " ============================================================================
-let s:Version = '1.0.8'
+let s:Version = '1.0.10'
 
 " Storage for the appended number to keep the buffer names unique
 let s:nextBufferNumber = 1
@@ -16,6 +16,7 @@ let s:nextBufferNumber = 1
 " The name of the Sniff results buffer
 let s:CoverageBufName = 'Qis_Coverage'
 
+" Function to launch the coverage index
 function! QisCoverage()
     if s:getCoverageIndexWinNum() != -1
         exec bufwinnr(t:CoverageIndexResultBuf) . "wincmd w"
@@ -29,37 +30,83 @@ function! QisCoverage()
     call s:GetCoverageIndex()
     call s:bindMappings()
 endfunction
+command! QisCoverage call QisCoverage()
 
+" Print the qis coverage
 function! s:GetCoverageIndex()
     silent exec "%!qis coverage"
     normal 1G
+
     " Go to the line number we were at last time we ran the coverage report
     exec "normal " . t:coverageIndexLineNumber . "G"
+    set ft=qiscoverageindex
+
+    call s:printCoverageIndexHelp()
 endfunction
 
+" Run the qis test module (phpunit tests)
 function! s:RunTest()
+    call s:echo("Running qis test ...")
     silent exec "%!qis test"
     normal 1G
+    call s:printTestHelp()
+    call s:echo("Running qis test ... DONE")
 endfunction
 
+" Run the qis test module for a single file
 function! s:RunTestSingle()
     " Keep track of the line
     let t:coverageIndexLineNumber = line('.')
 
     " Find the filename for which to run the test
-    let s:filename = matchstr(getline('.'), '^\f\+')
-    exec "%!qis test " . s:filename . "Test"
+    let s:filename = substitute(matchstr(getline('.'), '^\f\+'), '.php', '', '')
+    call s:echo("Running qis test on file " . s:filename . " ...")
+    exec "%!qis test " . s:filename . "Test.php"
     normal 1G
+    call s:printTestHelp()
+    call s:echo("Running qis test on file " . s:filename . " ... DONE")
 endfunction
 
+" Bind the mappings for the code coverage module
 function! s:bindMappings()
     nnoremap <silent> <buffer> <CR> :call <SID>openAnalysisFile()<CR>
     nnoremap <silent> <buffer> t :call <SID>RunTest()<CR>
     nnoremap <silent> <buffer> T :call <SID>RunTestSingle()<CR>
     nnoremap <silent> <buffer> r :call <SID>GetCoverageIndex()<CR>
+    nnoremap <silent> <buffer> O :call <SID>OpenTestFile()<CR>
     nnoremap <silent> <buffer> q :close<CR>
 endfunction
 
+" Print the coverage help for the index page
+function! s:printCoverageIndexHelp()
+    let line = line(".")
+
+    normal Go
+    normal oPress enter to view file with coverage for file on current line
+    normal oPress t to re-run tests
+    normal oPress T to re-run tests for the file on the current line
+    normal oPress r to refresh this window
+    normal oPress O to open the test file on the current line
+    normal oPress q to close this window
+
+    " return to original line
+    exec "normal gg" . line . "G"
+endfunction
+
+" Print the coverage help for the output of a test
+function! s:printTestHelp()
+    let line = line(".")
+
+    normal Go
+    normal oPress t to re-run tests
+    normal oPress r to return to coverage index
+    normal oPress q to close this window
+
+    " return to original line
+    exec "normal gg" . line . "G"
+endfunction
+
+" Open the file under test with the coverage window to the left of it
 function! s:openAnalysisFile()
     let t:coverageIndexLineNumber = line('.')
     let s:filename = matchstr(getline('.'), '^\f\+')
@@ -100,8 +147,20 @@ function! s:openAnalysisFile()
     endif
 endfunction
 
+" Open the corresponding test file for the file from the coverage index
+function! s:OpenTestFile()
+    " Find the filename for which to run the test
+    let s:filename = matchstr(getline('.'), '^\f\+')
+    wincmd h
+    " TODO: This assumes test files are in a directory called `tests'
+    exec "edit tests/" . substitute(s:filename, ".php", "Test.php", "")
+    normal 1G
+endfunction
+
+" Create the coverage index window
 function! s:CreateCoverageIndexWin()
     let t:CoverageIndexBufName = s:nextCoverageBufferName()
+    if exists('g:showmarks_ignore_type') | let g:showmarks_ignore_type = "hqr" | endif
 
     vsplit
     wincmd l
@@ -111,6 +170,7 @@ function! s:CreateCoverageIndexWin()
     setlocal noswapfile
     setlocal buftype=nofile
     setlocal bufhidden=hide
+    set readonly
 
     " Highlight the cursor line
     setlocal cursorline
@@ -123,8 +183,10 @@ function! s:CreateCoverageIndexWin()
     let t:CoverageIndexResultBuf = bufnr("")
 endfunction
 
+" Create the coverage file window
 function! s:CreateCoverageFileWin()
     let t:CoverageFileBufName = s:nextCoverageBufferName()
+    if exists('g:showmarks_ignore_type') | let g:showmarks_ignore_type  = "hqr" | endif
 
     vsplit
     exec "edit " . t:CoverageFileBufName
@@ -133,6 +195,7 @@ function! s:CreateCoverageFileWin()
     setlocal noswapfile
     setlocal buftype=nofile
     setlocal bufhidden=hide
+    set readonly
 
     " Setup some coveragefile settings
     setlocal statusline=[%n]
@@ -174,6 +237,7 @@ endfunction
 " Qis codingstandard {{{
 let s:CsBufName = 'Qis_Codingstandard'
 
+" Function to launch the qis codestandard sniff module
 function! QisCs()
     if s:getCsIndexWinNum() != -1
         exec bufwinnr(t:CsIndexResultBuf) . "wincmd w"
@@ -183,38 +247,87 @@ function! QisCs()
 
     call s:GetCsIndex()
 endfunction
+command! QisCs call QisCs()
 
+" Fetch the qis codestandard module index page
 function! s:GetCsIndex()
     silent exec "%!qis cs --list"
+    if v:shell_error == '1'
+        normal G
+        exec "normal oReturn code:" . v:shell_error
+        r ! pwd
+        exec "normal ICurrent path: "
+        exec "normal oYou need to change your current working directory to the project root or else run qis init"
+    endif
     normal 1G
 
     " Go to the line number we were at last time we ran the cs report
     exec "normal " . t:csIndexLineNumber . "G"
-    call s:bindCsMappings()
+    call s:bindCsIndexMappings()
 endfunction
 
+" Run the qis codestandard sniff module for the project
 function! s:RunCs()
-    silent exec "%!qis cs -d"
+    call s:echo("Running codesniffer on project...")
+    silent exec "%!qis cs -q"
     normal 1G
+    call s:echo("Running codesniffer on project...DONE")
 
-    call s:bindCsMappings()
+    call s:GetCsIndex()
 endfunction
 
+" Run the qis codestandard sniff module for a single file
+function! s:RunCsSingle()
+    " Find the filename for which to run the sniff
+    let s:filename = matchstr(getline('.'), '^\f\+')
+    echomsg s:filename
+    if s:filename != ''
+        silent exec "%!qis cs -q " . s:filename
+        call s:GetCsIndex()
+    endif
+endfunction
+
+" Bind the codstandard index mappings
 function! s:bindCsIndexMappings()
     nnoremap <silent> <buffer> <CR> :call <SID>openCsFile()<CR>
-    nnoremap <silent> <buffer> t :call <SID>RunCs()<CR>
-    nnoremap <silent> <buffer> T :call <SID>RunCsSingle()<CR>
+    nnoremap <silent> <buffer> s :call <SID>RunCs()<CR>
+    nnoremap <silent> <buffer> S :call <SID>RunCsSingle()<CR>
     nnoremap <silent> <buffer> r :call <SID>GetCsIndex()<CR>
     nnoremap <silent> <buffer> q :close<CR>
+
+    let line = line(".")
+
+    normal Go
+    normal oPress enter to view sniff report for file on current line
+    normal oPress s to re-run sniff
+    normal oPress S to re-run sniff only for file on the current line
+    normal oPress r to refresh this window
+    normal oPress q to close this window
+
+    " return to original line
+    exec "normal " . line . "G"
 endfunction
 
+" Bind the codestandard mappings for a single file
 function! s:bindCsFileMappings()
     nnoremap <silent> <buffer> <CR> :call <SID>gotoErrorLine()<CR>
     nnoremap <silent> <buffer> t :call <SID>GetCsIndex()<CR>
     nnoremap <silent> <buffer> r :call <SID>performSniff()<CR>
     nnoremap <silent> <buffer> q :close<CR>
+
+    let line = line(".")
+
+    normal Go
+    normal oPress enter to go to line number specified
+    normal oPress t to return to sniff index
+    normal oPress r to refresh this sniff
+    normal oPress q to exit this window
+
+    " return to original line
+    exec "normal " . line . "G"
 endfunction
 
+" Open a file from the codestandard index listing
 function! s:openCsFile()
     let t:csIndexLineNumber = line('.')
     let s:filename = matchstr(getline('.'), '\f\+')
@@ -236,9 +349,13 @@ function! s:openCsFile()
     endif
 endfunction
 
+" Run the sniff for a single file
 function! s:performSniff()
+    call s:echo("Running codesniffer on file " . t:activeCsFile . "...")
     silent exec "%!qis cs --quiet " . t:activeCsFile
     normal 8G
+    call s:echo("Running codesniffer on file " . t:activeCsFile . "...DONE")
+    call s:bindCsFileMappings()
 endfunction
 
 " Find the line number in the error report for the cursor's current line
@@ -256,8 +373,10 @@ function! s:gotoErrorLine()
     endif
 endfunction
 
+" Create the qis codestandard index window
 function! s:CreateCsIndexWin()
     let t:CsIndexBufName = s:nextCsBufferName()
+    if exists('g:showmarks_ignore_type') | let g:showmarks_ignore_type  = "hqr" | endif
 
     vsplit
     wincmd l
@@ -267,6 +386,7 @@ function! s:CreateCsIndexWin()
     setlocal noswapfile
     setlocal buftype=nofile
     setlocal bufhidden=hide
+    set readonly
 
     " Highlight the cursor line
     setlocal cursorline
@@ -281,7 +401,6 @@ function! s:CreateCsIndexWin()
     " Store the buffer number of the resulting buffer
     let t:CsIndexResultBuf = bufnr("")
 endfunction
-
 
 " Get the buffer number of the current index buffer (if exists)
 function! s:getCsIndexWinNum()
@@ -299,3 +418,9 @@ function! s:nextCsBufferName()
     return name
 endfunction
 " }}}
+
+" Internal echo for qis plugin
+function! s:echo(msg)
+    redraw
+    echomsg "Qis: " . a:msg
+endfunction

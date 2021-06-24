@@ -158,21 +158,12 @@ class QisTest extends BaseTestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         $args     = new Qi_Console_ArgV(array());
         $terminal = new Qi_Console_Terminal();
 
         $this->_object = new MockQis($args, $terminal);
-    }
-
-    /**
-     * Tear down after each test
-     *
-     * @return void
-     */
-    public function tearDown()
-    {
     }
 
     /**
@@ -259,7 +250,7 @@ class QisTest extends BaseTestCase
     {
         $root = $this->_object->getProjectQisRoot();
 
-        $this->assertContains('tests/.qis', $root);
+        $this->assertStringContainsString('tests/.qis', $root);
     }
 
     /**
@@ -415,7 +406,7 @@ class QisTest extends BaseTestCase
         unlink($file);
 
         $this->assertEquals(0, $count);
-        $this->assertContains('Class MockityMockMock not found', $result);
+        $this->assertStringContainsString('Class MockityMockMock not found', $result);
     }
 
     /**
@@ -430,7 +421,7 @@ class QisTest extends BaseTestCase
         $result = ob_get_contents();
         ob_end_clean();
 
-        $this->assertContains('No project config file found', $result);
+        $this->assertStringContainsString('No project config file found', $result);
     }
 
     /**
@@ -458,7 +449,7 @@ class QisTest extends BaseTestCase
         $result = ob_get_contents();
         ob_end_clean();
 
-        $this->assertContains('Failed to load module Mockmodule', $result);
+        $this->assertStringContainsString('Failed to load module Mockmodule', $result);
     }
 
     /**
@@ -483,7 +474,7 @@ class QisTest extends BaseTestCase
         $result = ob_get_contents();
         ob_end_clean();
 
-        $this->assertContains('Usage: qis', $result);
+        $this->assertStringContainsString('Usage: qis', $result);
     }
 
     /**
@@ -521,8 +512,8 @@ class QisTest extends BaseTestCase
         $result = ob_get_contents();
         ob_end_clean();
 
-        $this->assertContains('Usage: qis', $result);
-        $this->assertContains('testfoo', $result);
+        $this->assertStringContainsString('Usage: qis', $result);
+        $this->assertStringContainsString('testfoo', $result);
     }
 
     /**
@@ -558,8 +549,8 @@ class QisTest extends BaseTestCase
         $result = ob_get_contents();
         ob_end_clean();
 
-        $this->assertContains('Usage: qis', $result);
-        $this->assertNotContains('testfoo', $result);
+        $this->assertStringContainsString('Usage: qis', $result);
+        $this->assertStringNotContainsString('testfoo', $result);
     }
 
     /**
@@ -598,8 +589,8 @@ class QisTest extends BaseTestCase
         $result = ob_get_contents();
         ob_end_clean();
 
-        $this->assertContains('1.2.3', $result);
-        $this->assertNotContains('testfoo', $result);
+        $this->assertStringContainsString('1.2.3', $result);
+        $this->assertStringNotContainsString('testfoo', $result);
     }
 
     /**
@@ -622,7 +613,7 @@ class QisTest extends BaseTestCase
 
         $this->assertTrue($this->_object->isVerbose());
 
-        $this->assertContains('No project config file found', $result);
+        $this->assertStringContainsString('No project config file found', $result);
     }
 
     /**
@@ -644,6 +635,6 @@ class QisTest extends BaseTestCase
         $result = ob_get_contents();
         ob_end_clean();
 
-        $this->assertContains('A penny saved is a penny earned.', $result);
+        $this->assertStringContainsString('A penny saved is a penny earned.', $result);
     }
 }

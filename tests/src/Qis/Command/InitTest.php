@@ -135,7 +135,7 @@ class InitTest extends BaseTestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         $args     = new Qi_Console_ArgV(array());
         $terminal = new Qi_Console_Terminal();
@@ -152,7 +152,7 @@ class InitTest extends BaseTestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         passthru('rm -rf .qis');
     }
@@ -192,7 +192,7 @@ class InitTest extends BaseTestCase
 
         list($result, $status) = $this->_execute($args);
 
-        $this->assertContains('Initializing project...', $result);
+        $this->assertStringContainsString('Initializing project...', $result);
         $this->assertEquals(0, $status);
     }
 
@@ -209,7 +209,7 @@ class InitTest extends BaseTestCase
 
         list($result, $status) = $this->_execute($args);
 
-        $this->assertContains('Initializing project...', $result);
+        $this->assertStringContainsString('Initializing project...', $result);
         $this->assertEquals(0, $status);
     }
 

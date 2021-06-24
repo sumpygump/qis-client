@@ -26,18 +26,9 @@ class ConfigTest extends BaseTestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->_object = new Config();
-    }
-
-    /**
-     * Tear down after each test
-     *
-     * @return void
-     */
-    public function tearDown()
-    {
     }
 
     /**

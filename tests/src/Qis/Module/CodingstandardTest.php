@@ -91,7 +91,7 @@ class CodingstandardTest extends BaseTestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         $path = realpath('.') . DIRECTORY_SEPARATOR . '.qis';
         mkdir($path);
@@ -104,7 +104,7 @@ class CodingstandardTest extends BaseTestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $path = realpath('.') . DIRECTORY_SEPARATOR . '.qis';
         if (file_exists($path)) {
@@ -219,12 +219,12 @@ class CodingstandardTest extends BaseTestCase
         $result = ob_get_contents();
         ob_end_clean();
 
-        $this->assertContains('Running Codingstandard module', $result);
-        $this->assertContains(
+        $this->assertStringContainsString('Running Codingstandard module', $result);
+        $this->assertStringContainsString(
             'Sniffing code with \'PSR2\' standard...', $result
         );
-        $this->assertContains('Writing results to db...', $result);
-        $this->assertContains('Codingstandard results:', $result);
+        $this->assertStringContainsString('Writing results to db...', $result);
+        $this->assertStringContainsString('Codingstandard results:', $result);
     }
 
     /**
@@ -266,6 +266,7 @@ class CodingstandardTest extends BaseTestCase
         // The ls command doesn't output the version in the same format as
         // phpcs
         $this->_object->setOption('phpcsbin', 'ls');
+        $this->expectException(\Qis\Module\CodingStandardException::class);
         $result = $this->_object->checkVersion();
 
         $this->assertFalse($result);
@@ -290,7 +291,7 @@ class CodingstandardTest extends BaseTestCase
         $result = ob_get_contents();
         ob_end_clean();
 
-        $this->assertContains("Path `margarine' not found", $result);
+        $this->assertStringContainsString("Path `margarine' not found", $result);
     }
 
     /**
@@ -312,8 +313,8 @@ class CodingstandardTest extends BaseTestCase
         $result = ob_get_contents();
         ob_end_clean();
 
-        $this->assertContains("Sniffing code with", $result);
-        $this->assertContains("Codingstandard results:", $result);
+        $this->assertStringContainsString("Sniffing code with", $result);
+        $this->assertStringContainsString("Codingstandard results:", $result);
     }
 
     /**
@@ -335,7 +336,7 @@ class CodingstandardTest extends BaseTestCase
         $result = ob_get_contents();
         ob_end_clean();
 
-        $this->assertContains("Path `grab,bag,hag' not found", $result);
+        $this->assertStringContainsString("Path `grab,bag,hag' not found", $result);
     }
 
     /**
@@ -357,8 +358,8 @@ class CodingstandardTest extends BaseTestCase
         $result = ob_get_contents();
         ob_end_clean();
 
-        $this->assertNotContains("PHP CODE SNIFFER REPORT SUMMARY", $result);
-        $this->assertContains("Running Codingstandard module task...", $result);
+        $this->assertStringNotContainsString("PHP CODE SNIFFER REPORT SUMMARY", $result);
+        $this->assertStringContainsString("Running Codingstandard module task...", $result);
     }
 
     /**
@@ -369,7 +370,7 @@ class CodingstandardTest extends BaseTestCase
     public function testGetHelpMessage()
     {
         $message = $this->_object->getHelpMessage();
-        $this->assertContains('Run coding standard validation', $message);
+        $this->assertStringContainsString('Run coding standard validation', $message);
     }
 
     /**
@@ -380,8 +381,8 @@ class CodingstandardTest extends BaseTestCase
     public function testGetExtendedHelpMessage()
     {
         $message = $this->_object->getExtendedHelpMessage();
-        $this->assertContains('Usage: cs', $message);
-        $this->assertContains('Valid Options:', $message);
+        $this->assertStringContainsString('Usage: cs', $message);
+        $this->assertStringContainsString('Valid Options:', $message);
     }
 
     /**
@@ -393,7 +394,7 @@ class CodingstandardTest extends BaseTestCase
     {
         $summary = $this->_object->getSummary();
 
-        $this->assertNotContains('Codingstandard error level', $summary);
+        $this->assertStringNotContainsString('Codingstandard error level', $summary);
     }
 
     /**
@@ -405,7 +406,7 @@ class CodingstandardTest extends BaseTestCase
     {
         $summary = $this->_object->getSummary(true);
 
-        $this->assertContains('Codingstandard error level', $summary);
+        $this->assertStringContainsString('Codingstandard error level', $summary);
     }
 
     /**
@@ -417,8 +418,8 @@ class CodingstandardTest extends BaseTestCase
     {
         $defaultIni = $this->_object->getDefaultIni();
 
-        $this->assertContains('; Module to run codesniffs', $defaultIni);
-        $this->assertContains('codingstandard.standard=', $defaultIni);
+        $this->assertStringContainsString('; Module to run codesniffs', $defaultIni);
+        $this->assertStringContainsString('codingstandard.standard=', $defaultIni);
     }
 
     /**

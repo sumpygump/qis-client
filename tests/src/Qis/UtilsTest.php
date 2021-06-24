@@ -26,7 +26,7 @@ class UtilsTest extends BaseTestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         mkdir('testrglob');
         touch('testrglob/foo1.php');
@@ -41,7 +41,7 @@ class UtilsTest extends BaseTestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         unlink('testrglob/wunk/farse.txt1');
         unlink('testrglob/wunk/soody.php');

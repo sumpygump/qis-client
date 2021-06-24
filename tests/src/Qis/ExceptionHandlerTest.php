@@ -57,20 +57,11 @@ class MockQisExceptionHandler extends ExceptionHandler
 class ExceptionHandlerTest extends BaseTestCase
 {
     /**
-     * Setup before each test
-     *
-     * @return void
-     */
-    public function setUp()
-    {
-    }
-
-    /**
      * Tear down after each test
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         ExceptionHandler::restoreHandlers();
     }
@@ -168,7 +159,7 @@ class ExceptionHandlerTest extends BaseTestCase
         $result = ob_get_contents();
         ob_end_clean();
 
-        $this->assertContains('There was a problem.', $result);
+        $this->assertStringContainsString('There was a problem.', $result);
     }
 
     /**

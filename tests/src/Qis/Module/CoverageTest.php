@@ -40,7 +40,7 @@ class CoverageTest extends BaseTestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         $path = realpath('.') . DIRECTORY_SEPARATOR . '.qis';
         mkdir($path);
@@ -53,7 +53,7 @@ class CoverageTest extends BaseTestCase
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $path = realpath('.') . DIRECTORY_SEPARATOR . '.qis';
         if (file_exists($path)) {
@@ -82,10 +82,10 @@ class CoverageTest extends BaseTestCase
     {
         $defaultIni = Coverage::getDefaultIni();
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '; Module for code coverage of unit tests', $defaultIni
         );
-        $this->assertContains('coverage.ignorePaths=', $defaultIni);
+        $this->assertStringContainsString('coverage.ignorePaths=', $defaultIni);
     }
 
     /**
@@ -147,7 +147,7 @@ class CoverageTest extends BaseTestCase
     {
         $help = $this->_object->getHelpMessage();
 
-        $this->assertContains('Show code coverage for unit tests.', $help);
+        $this->assertStringContainsString('Show code coverage for unit tests.', $help);
     }
 
     /**
@@ -159,8 +159,8 @@ class CoverageTest extends BaseTestCase
     {
         $help = $this->_object->getExtendedHelpMessage();
 
-        $this->assertContains('Usage: coverage [OPTIONS] [filename]', $help);
-        $this->assertContains('Valid Options:', $help);
+        $this->assertStringContainsString('Usage: coverage [OPTIONS] [filename]', $help);
+        $this->assertStringContainsString('Valid Options:', $help);
     }
 
     /**
@@ -172,8 +172,8 @@ class CoverageTest extends BaseTestCase
     {
         $summary = $this->_object->getSummary();
 
-        $this->assertContains('Coverage results:', $summary);
-        $this->assertNotContains('Coverage: ', $summary);
+        $this->assertStringContainsString('Coverage results:', $summary);
+        $this->assertStringNotContainsString('Coverage: ', $summary);
     }
 
     /**
@@ -185,8 +185,8 @@ class CoverageTest extends BaseTestCase
     {
         $summary = $this->_object->getSummary(true);
 
-        $this->assertContains('Coverage: ', $summary);
-        $this->assertNotContains('Coverage results:', $summary);
+        $this->assertStringContainsString('Coverage: ', $summary);
+        $this->assertStringNotContainsString('Coverage results:', $summary);
     }
 
     /**

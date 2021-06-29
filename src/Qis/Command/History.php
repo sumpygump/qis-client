@@ -11,6 +11,7 @@ use Qis\CommandInterface;
 use Qis\Qis;
 use Qi_Console_ArgV;
 use Qi_Console_Tabular;
+use Qi_Console_Terminal;
 
 /**
  * History Command
@@ -28,6 +29,13 @@ class History implements CommandInterface
      * @var mixed
      */
     protected $_qis = null;
+
+    /**
+     * Terminal
+     *
+     * @var Qi_Console_Terminal
+     */
+    protected $_terminal;
 
     /**
      * Get Name of command

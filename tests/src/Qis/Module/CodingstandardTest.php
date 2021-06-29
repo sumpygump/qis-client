@@ -406,7 +406,7 @@ class CodingstandardTest extends BaseTestCase
     {
         $summary = $this->_object->getSummary(true);
 
-        $this->assertStringContainsString('Codingstandard error level', $summary);
+        $this->assertStringContainsString('Codingstandard: No data.', $summary);
     }
 
     /**
@@ -431,7 +431,7 @@ class CodingstandardTest extends BaseTestCase
     {
         $status = $this->_object->getStatus();
 
-        $this->assertTrue($status);
+        $this->assertFalse($status);
     }
 
     /**

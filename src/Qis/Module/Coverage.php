@@ -219,9 +219,9 @@ class Coverage implements ModuleInterface
             return $totalCoverageFloat;
         }
 
-        return array(
+        return [
             'coverage' => $totalCoverageFloat,
-        );
+        ];
     }
 
     /**

@@ -624,7 +624,7 @@ class CloverCoverageReport
      * @param string $pattern Pattern
      * @param int $flags Flags to pass to glob
      * @param string $path Path
-     * @return void
+     * @return array
      */
     public static function rglob($pattern, $flags = 0, $path = '')
     {

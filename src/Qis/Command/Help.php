@@ -11,6 +11,7 @@ use Qis\CommandInterface;
 use Qis\CommandException;
 use Qis\Qis;
 use Qi_Console_ArgV;
+use Qi_Console_Terminal;
 
 /**
  * Help command
@@ -28,6 +29,13 @@ class Help implements CommandInterface
      * @var mixed
      */
     protected $_qis = null;
+
+    /**
+     * _terminal
+     *
+     * @var Qi_Console_Terminal
+     */
+    protected $_terminal;
 
     /**
      * Get Name of command
@@ -116,7 +124,7 @@ class Help implements CommandInterface
     /**
      * Show help messages
      *
-     * @return void
+     * @return string
      */
     protected function _showHelp()
     {
@@ -177,11 +185,12 @@ class Help implements CommandInterface
      * Contextual help
      *
      * @param string $context Module or subcommand name
-     * @return void
+     * @return string
      */
     protected function _showContextualHelp($context)
     {
         $contextType = 'module';
+        $out = '';
 
         // First try to find module by name
         $contextObject = $this->_qis->getModule($context);
@@ -197,8 +206,9 @@ class Help implements CommandInterface
         }
 
         $this->_qis->prettyMessage("Help for $contextType '$context'", 8, 4);
-        echo $contextObject->getExtendedHelpMessage();
+        $out .= $contextObject->getExtendedHelpMessage();
 
-        echo $this->getGlobalOptions();
+        $out .= $this->getGlobalOptions();
+        return $out;
     }
 }

@@ -152,6 +152,8 @@ class MockQisModuleSummaryFalseStatus
  */
 class SummaryTest extends BaseTestCase
 {
+    public $_qis;
+
     /**
      * Setup before each test
      *
@@ -395,7 +397,7 @@ class SummaryTest extends BaseTestCase
      * Run execute on the object and return the buffered output and status
      *
      * @param Qi_Console_ArgV $args Arguments
-     * @return void
+     * @return array
      */
     protected function _execute($args)
     {

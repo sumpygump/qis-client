@@ -228,7 +228,7 @@ class CoverageTest extends BaseTestCase
      * Get default Qis object
      *
      * @param Qi_Console_ArgV $args Arguments
-     * @return void
+     * @return Qis
      */
     protected function _getDefaultQisObject($args = array())
     {

@@ -177,6 +177,8 @@ class MockQisModuleKk extends MockQisModuleBaseForAll
  */
 class AllTest extends BaseTestCase
 {
+    public $_qis;
+
     /**
      * Setup before each test
      *

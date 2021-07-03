@@ -130,6 +130,8 @@ class MockQisModuleBaseForInit implements ModuleInterface
  */
 class InitTest extends BaseTestCase
 {
+    public $_qis;
+
     /**
      * Setup before each test
      *

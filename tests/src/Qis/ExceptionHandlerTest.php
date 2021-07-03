@@ -38,7 +38,7 @@ class MockQisExceptionHandler extends ExceptionHandler
      * Error code
      *
      * @param int $code Code
-     * @return void
+     * @return int
      */
     public static function errorCode($code)
     {

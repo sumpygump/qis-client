@@ -130,6 +130,8 @@ class MockQisModuleBaseForModules implements ModuleInterface
  */
 class ModulesTest extends BaseTestCase
 {
+    public $_qis;
+
     /**
      * Setup before each test
      *
@@ -232,7 +234,7 @@ class ModulesTest extends BaseTestCase
      * Run execute on the object and return the buffered output and status
      *
      * @param Qis_Console_ArgV $args Arguments
-     * @return void
+     * @return array
      */
     protected function _execute($args)
     {

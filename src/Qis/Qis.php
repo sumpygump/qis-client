@@ -14,7 +14,6 @@ use Qi_Console_ArgV;
  *
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class Qis
 {
@@ -23,7 +22,7 @@ class Qis
      *
      * @var string
      */
-    const VERSION = '1.2.3';
+    const VERSION = '1.2.4';
 
     /**
      * Configuration

@@ -191,7 +191,7 @@ class CloverCoverageReport
      *     </project>
      * </coverage>
      *
-     * @return void
+     * @return bool
      */
     public function gatherFileMetrics()
     {
@@ -208,6 +208,8 @@ class CloverCoverageReport
                 $this->gatherFileMetricsFromGroup($package->file);
             }
         }
+
+        return true;
     }
 
     /**
@@ -315,7 +317,7 @@ class CloverCoverageReport
      *
      * @param string $file Path to file to analyze
      * @param string $root Root path
-     * @return void
+     * @return bool
      */
     public function generateFileAnalysis($file, $root = null)
     {
@@ -364,6 +366,8 @@ class CloverCoverageReport
 
             $this->append($prepend . rtrim($line));
         }
+
+        return true;
     }
 
     /**
@@ -412,7 +416,7 @@ class CloverCoverageReport
      * Find a specific file's node in the XML
      *
      * @param string $filename Filename
-     * @return string
+     * @return object|null
      */
     public function findTargetFile($filename)
     {
@@ -435,6 +439,8 @@ class CloverCoverageReport
                 }
             }
         }
+
+        return null;
     }
 
     /**

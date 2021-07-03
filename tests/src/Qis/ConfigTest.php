@@ -119,14 +119,15 @@ class ConfigTest extends BaseTestCase
      */
     public function testAddArrayOverwrite()
     {
-        $data = array(
+        $data = [
             'colony' => 'original',
-            'colony' => array(
-                'population' => 144450,
-                'altitude'   => 26.5,
-                'location'   => 'AA23',
-            ),
-        );
+        ];
+
+        $data['colony'] = [
+            'population' => 144450,
+            'altitude'   => 26.5,
+            'location'   => 'AA23',
+        ];
 
         $this->_object->loadArray($data);
 

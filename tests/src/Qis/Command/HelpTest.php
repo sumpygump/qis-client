@@ -130,6 +130,8 @@ class MockQisModuleBaseForHelp implements ModuleInterface
  */
 class HelpTest extends BaseTestCase
 {
+    public $_qis;
+
     /**
      * Setup before each test
      *

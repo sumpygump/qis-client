@@ -92,6 +92,8 @@ class Command implements CommandInterface
  */
 class CommandInterfaceTest extends BaseTestCase
 {
+    public $_qis;
+
     /**
      * Test get name
      *

@@ -482,7 +482,7 @@ class CodingstandardTest extends BaseTestCase
      * Get default qis object
      *
      * @param Qi_Console_ArgV $args Arguments
-     * @return void
+     * @return Qis
      */
     protected function _getDefaultQisObject($args = array())
     {

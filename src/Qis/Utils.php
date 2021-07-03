@@ -22,21 +22,21 @@ class Utils
      * @param string $pattern Pattern
      * @param int $flags Flags to pass to glob
      * @param string $path Path to glob in
-     * @return void
+     * @return array
      */
     public static function rglob($pattern, $flags = 0, $path = '')
     {
         if ($path == '\\' || $path == '/') {
             // We don't want to try to find all the paths from root
             // It takes too long
-            return array();
+            return [];
         }
 
         if (!$path && ($dir = dirname($pattern)) != '.') {
             if ($dir == '\\' || $dir == '/') {
                 // This means the pattern starts with root
                 // This takes too long
-                return array();
+                return [];
             }
             return self::rglob(
                 basename($pattern),
@@ -67,7 +67,7 @@ class Utils
         $longest = 0;
 
         if (!is_array($list)) {
-            $list = array($list);
+            $list = [$list];
         }
 
         if (empty($list)) {
@@ -87,7 +87,7 @@ class Utils
         // Inspect each item by character until we find a difference, then
         // return the previous
         for ($i = 1; $i <= $longest; $i++) {
-            $common = array();
+            $common = [];
             foreach ($list as $item) {
                 $common[] = substr($item, 0, $i);
             }

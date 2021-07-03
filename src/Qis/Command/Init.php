@@ -144,7 +144,7 @@ class Init implements CommandInterface
     /**
      * Prompt for a project name
      *
-     * @return void
+     * @return string
      */
     protected function _promptProjectName()
     {

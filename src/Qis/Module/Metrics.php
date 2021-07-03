@@ -203,7 +203,7 @@ class Metrics implements ModuleInterface
      * Show metrics for class
      *
      * @param string $class
-     * @return void
+     * @return null
      */
     public function showMetricsForClass($targetClass)
     {
@@ -264,12 +264,14 @@ class Metrics implements ModuleInterface
 
         $table->display();
         print "Use `qis metrics --explain` to show an explanation of each metric.\n";
+
+        return null;
     }
 
     /**
      * Print out an explanation of the metrics
      *
-     * @return void
+     * @return null
      */
     public function showExplain()
     {
@@ -288,6 +290,8 @@ class Metrics implements ModuleInterface
         print "HD: Halstead Difficulty. Difficulty of the program to write or understand, e.g. when doing code review. HD = (n1 / 2) * (N2 / n2)\n";
         print "HE: Halstead Effort. Aount of mental activity needed to translate the existing algorithm into implementation. HE = HV * HD\n";
         print "HB: Halstead Bugs. Estimated number of errors in the implementation HB = POW(HE, 2/3) / 3000\n";
+
+        return null;
     }
 
     /**

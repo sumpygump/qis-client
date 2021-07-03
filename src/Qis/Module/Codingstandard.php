@@ -303,6 +303,11 @@ class Codingstandard implements ModuleInterface
     public function getSummary($short = false)
     {
         if ($short) {
+            $results = $this->getMetrics();
+            if (!$results) {
+                return "Codingstandard: No data.";
+            }
+
             return 'Codingstandard error level: '
                 . $this->getErrorLevel() . '%';
         }
@@ -317,7 +322,12 @@ class Codingstandard implements ModuleInterface
      */
     public function getStatus()
     {
-        if ($this->getErrorLevel() < 3) {
+        $errorLevel = $this->getErrorLevel();
+        if ($errorLevel === null) {
+            return false;
+        }
+
+        if ($errorLevel < 3) {
             return true;
         }
 
@@ -555,14 +565,17 @@ class Codingstandard implements ModuleInterface
     public function getMetrics($onlyPrimary = false)
     {
         $project = $this->getProjectSummary();
+        if ($project['error_level'] === null) {
+            return [];
+        }
 
-        $results = array(
+        $results = [
             'SLOC'        => $project['sloc'],
             'Comments'    => $project['comment_lines'],
             'Errors'      => $project['errors'],
             'Warnings'    => $project['warnings'],
             'Error Level' => $project['error_level'] . '%',
-        );
+        ];
 
         if ($onlyPrimary) {
             return 100 - $project['error_level'];
@@ -902,7 +915,7 @@ class Codingstandard implements ModuleInterface
      * Write to filelist for globbed path
      *
      * @param string $path Path to start globbing
-     * @return void
+     * @return array
      */
     protected function _createFileList($path)
     {

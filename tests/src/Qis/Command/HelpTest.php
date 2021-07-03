@@ -130,12 +130,14 @@ class MockQisModuleBaseForHelp implements ModuleInterface
  */
 class HelpTest extends BaseTestCase
 {
+    public $_qis;
+
     /**
      * Setup before each test
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         $args     = new Qi_Console_ArgV(array());
         $terminal = new Qi_Console_Terminal();
@@ -145,15 +147,6 @@ class HelpTest extends BaseTestCase
         $settings = array();
 
         $this->_object = new Help($this->_qis, $settings);
-    }
-
-    /**
-     * Tear down after each test
-     *
-     * @return void
-     */
-    public function tearDown()
-    {
     }
 
     /**
@@ -191,8 +184,8 @@ class HelpTest extends BaseTestCase
 
         list($result, $status) = $this->_execute($args);
 
-        $this->assertContains('Usage: qis <subcommand', $result);
-        $this->assertContains('Global Options:', $result);
+        $this->assertStringContainsString('Usage: qis <subcommand', $result);
+        $this->assertStringContainsString('Global Options:', $result);
         $this->assertEquals(0, $status);
     }
 
@@ -209,29 +202,29 @@ class HelpTest extends BaseTestCase
 
         list($result, $status) = $this->_execute($args);
 
-        $this->assertContains('Usage: qis <subcommand', $result);
-        $this->assertContains("Modules:", $result);
-        $this->assertContains("foobar : help message", $result);
-        $this->assertContains("Global Options:", $result);
+        $this->assertStringContainsString('Usage: qis <subcommand', $result);
+        $this->assertStringContainsString("Modules:", $result);
+        $this->assertStringContainsString("foobar : help message", $result);
+        $this->assertStringContainsString("Global Options:", $result);
         $this->assertEquals(0, $status);
     }
 
     /**
      * If the module doesn't exist, it will throw an exception
      *
-     * @expectedException Qis\CommandException
      * @return void
      */
     public function testExecuteContextualHelpModuleNotFound()
     {
-        $argv = array(
+        $argv = [
             './qis',
             'help',
             'foobar',
-        );
+        ];
 
         $args = new Qi_Console_ArgV($argv);
 
+        $this->expectException(\Qis\CommandException::class);
         $status = $this->_object->execute($args);
     }
 
@@ -254,8 +247,8 @@ class HelpTest extends BaseTestCase
 
         list($result, $status) = $this->_execute($args);
 
-        $this->assertContains("Help for module 'foobar'", $result);
-        $this->assertContains("extended help message", $result);
+        $this->assertStringContainsString("Help for module 'foobar'", $result);
+        $this->assertStringContainsString("extended help message", $result);
         $this->assertEquals(0, $status);
     }
 

@@ -22,21 +22,11 @@ use StdClass;
 final class CloverCoverageReportTest extends BaseTestCase
 {
     /**
-     * Setup before each test
-     *
-     * @return void
-     */
-    public function setUp()
-    {
-        //$this->_createXmlFile();
-    }
-
-    /**
      * Tear down after each test
      *
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         @unlink('samplecoverage.xml');
     }
@@ -79,8 +69,8 @@ final class CloverCoverageReportTest extends BaseTestCase
 
         $result = $this->_bufferOutput();
 
-        $this->assertContains('Coverage report generated', $result);
-        $this->assertContains('Total Coverage', $result);
+        $this->assertStringContainsString('Coverage report generated', $result);
+        $this->assertStringContainsString('Total Coverage', $result);
     }
 
     /**
@@ -94,20 +84,20 @@ final class CloverCoverageReportTest extends BaseTestCase
 
         $result = $this->_bufferOutput();
 
-        $this->assertContains('Coverage report generated', $result);
-        $this->assertContains('/ 152 |   0%  [', $result);
-        $this->assertContains('Total Coverage', $result);
+        $this->assertStringContainsString('Coverage report generated', $result);
+        $this->assertStringContainsString('/ 152 |   0%  [', $result);
+        $this->assertStringContainsString('Total Coverage', $result);
     }
 
     /**
      * Passing in a file when no coverage xml
      *
-     * @expectedException Qis\CloverCoverageReportException
      * @return void
      */
     public function testReportFileAnalysisWhenNoXml()
     {
         $this->_createXmlFile('');
+        $this->expectException(\Qis\CloverCoverageReportException::class);
 
         $this->_object = new CloverCoverageReport(
             'samplecoverage.xml', 'foobar.php', null, array('vendor')
@@ -124,7 +114,7 @@ final class CloverCoverageReportTest extends BaseTestCase
         $this->_createXmlFile();
 
         $result = $this->_bufferOutput('foobar.php');
-        $this->assertContains("No coverage information available", $result);
+        $this->assertStringContainsString("No coverage information available", $result);
     }
 
     /**
@@ -140,7 +130,7 @@ final class CloverCoverageReportTest extends BaseTestCase
         $result = $this->_bufferOutput(
             'src/Qis/Qis.php'
         );
-        $this->assertContains('    1          : <' . '?php', $result);
+        $this->assertStringContainsString('    1          : <' . '?php', $result);
     }
 
     /**
@@ -175,7 +165,7 @@ final class CloverCoverageReportTest extends BaseTestCase
         $this->_createXmlFile();
         $result = $this->_bufferOutput();
 
-        $this->assertNotContains('tests/foobar.php', $result);
+        $this->assertStringNotContainsString('tests/foobar.php', $result);
 
         unlink($file);
     }
@@ -207,7 +197,7 @@ final class CloverCoverageReportTest extends BaseTestCase
         $list = 'foobar/baz/';
 
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage("Argument 1 passed");
+        $this->expectExceptionMessage("must be of type array, string given");
         $commonRoot = CloverCoverageReport::findCommonRoot($list);
     }
 
@@ -223,7 +213,7 @@ final class CloverCoverageReportTest extends BaseTestCase
         $list->foo = 'bar';
 
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage("Argument 1 passed");
+        $this->expectExceptionMessage("must be of type array, stdClass given");
         $commonRoot = CloverCoverageReport::findCommonRoot($list);
     }
 

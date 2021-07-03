@@ -18,10 +18,10 @@ if (version_compare(PHP_VERSION, '5.3.0') < 0) {
 // Find where the composer autoload is
 // This tool was installed as a composed dependency or directly
 $root = realpath(dirname(__DIR__));
-$autoloadLocations = array(
+$autoloadLocations = [
     __DIR__ . '/../../../autoload.php',
     $root . DIRECTORY_SEPARATOR . 'vendor/autoload.php'
-);
+];
 foreach ($autoloadLocations as $file) {
     if (file_exists($file)) {
         define('QIS_COMPOSER_AUTOLOAD', $file);
@@ -44,7 +44,7 @@ $autoload = require_once QIS_COMPOSER_AUTOLOAD;
 // And fetch args passed in by invocation
 $args = new \Qi_Console_ArgV(
     $argv,
-    array(
+    [
         'arg:action' => 'Subcommand',
         'help|h'     => 'Show help',
         'direct|d'   => 'Show results directly in console',
@@ -52,7 +52,7 @@ $args = new \Qi_Console_ArgV(
         'quiet|q'    => 'Print less messages',
         'version'    => 'Show version',
         'no-color'   => 'Don\'t use color output',
-    )
+    ]
 );
 $terminal = new \Qi_Console_Terminal();
 

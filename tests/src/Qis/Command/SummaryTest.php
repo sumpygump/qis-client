@@ -152,12 +152,14 @@ class MockQisModuleSummaryFalseStatus
  */
 class SummaryTest extends BaseTestCase
 {
+    public $_qis;
+
     /**
      * Setup before each test
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         $args     = new Qi_Console_ArgV(array());
         $terminal = new Qi_Console_Terminal();
@@ -167,15 +169,6 @@ class SummaryTest extends BaseTestCase
         $settings = array();
 
         $this->_object = new Summary($this->_qis, $settings);
-    }
-
-    /**
-     * Tear down after each test
-     *
-     * @return void
-     */
-    public function tearDown()
-    {
     }
 
     /**
@@ -255,7 +248,7 @@ class SummaryTest extends BaseTestCase
 
         $expected = str_repeat('-', 32) . "\n";
 
-        $this->assertContains($expected, $result);
+        $this->assertStringContainsString($expected, $result);
         $this->assertEquals(0, $status);
     }
 
@@ -272,8 +265,8 @@ class SummaryTest extends BaseTestCase
 
         list($result, $status) = $this->_execute($args);
 
-        $this->assertContains('long summary', $result);
-        $this->assertContains('short summary', $result);
+        $this->assertStringContainsString('long summary', $result);
+        $this->assertStringContainsString('short summary', $result);
         $this->assertEquals(0, $status);
     }
 
@@ -295,8 +288,8 @@ class SummaryTest extends BaseTestCase
 
         list($result, $status) = $this->_execute($args);
 
-        $this->assertContains('long summary', $result);
-        $this->assertContains('short summary', $result);
+        $this->assertStringContainsString('long summary', $result);
+        $this->assertStringContainsString('short summary', $result);
         $this->assertEquals(0, $status);
     }
 
@@ -319,10 +312,10 @@ class SummaryTest extends BaseTestCase
         list($result, $status) = $this->_execute($args);
 
         $expected = str_repeat('-', 32) . "\n";
-        $this->assertContains($expected, $result);
+        $this->assertStringContainsString($expected, $result);
 
-        $this->assertNotContains('long summary', $result);
-        $this->assertContains('short summary', $result);
+        $this->assertStringNotContainsString('long summary', $result);
+        $this->assertStringContainsString('short summary', $result);
         $this->assertEquals(0, $status);
     }
 
@@ -346,10 +339,10 @@ class SummaryTest extends BaseTestCase
         list($result, $status) = $this->_execute($args);
 
         $expected = str_repeat('-', 32) . "\n";
-        $this->assertContains($expected, $result);
+        $this->assertStringContainsString($expected, $result);
 
-        $this->assertNotContains('long summary', $result);
-        $this->assertContains('short summary', $result);
+        $this->assertStringNotContainsString('long summary', $result);
+        $this->assertStringContainsString('short summary', $result);
         $this->assertEquals(0, $status);
     }
 
@@ -371,8 +364,8 @@ class SummaryTest extends BaseTestCase
 
         list($result, $status) = $this->_execute($args);
 
-        $this->assertContains('long summary', $result);
-        $this->assertContains('short summary', $result);
+        $this->assertStringContainsString('long summary', $result);
+        $this->assertStringContainsString('short summary', $result);
         $this->assertEquals(0, $status);
     }
 
@@ -404,7 +397,7 @@ class SummaryTest extends BaseTestCase
      * Run execute on the object and return the buffered output and status
      *
      * @param Qi_Console_ArgV $args Arguments
-     * @return void
+     * @return array
      */
     protected function _execute($args)
     {

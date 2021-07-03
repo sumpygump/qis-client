@@ -177,12 +177,14 @@ class MockQisModuleKk extends MockQisModuleBaseForAll
  */
 class AllTest extends BaseTestCase
 {
+    public $_qis;
+
     /**
      * Setup before each test
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         $args     = new Qi_Console_ArgV(array());
         $terminal = new Qi_Console_Terminal();
@@ -192,15 +194,6 @@ class AllTest extends BaseTestCase
         $settings = array();
 
         $this->_object = new All($this->_qis, $settings);
-    }
-
-    /**
-     * Tear down after each test
-     *
-     * @return void
-     */
-    public function tearDown()
-    {
     }
 
     /**
@@ -278,8 +271,8 @@ class AllTest extends BaseTestCase
 
         list($result, $status) = $this->_execute($args);
 
-        $this->assertContains('execute aa', $result);
-        $this->assertContains('execute kk', $result);
+        $this->assertStringContainsString('execute aa', $result);
+        $this->assertStringContainsString('execute kk', $result);
     }
 
     /**
@@ -300,8 +293,8 @@ class AllTest extends BaseTestCase
 
         list($result, $status) = $this->_execute($args);
 
-        $this->assertContains('execute aa', $result);
-        $this->assertNotContains('execute kk', $result);
+        $this->assertStringContainsString('execute aa', $result);
+        $this->assertStringNotContainsString('execute kk', $result);
     }
 
     /**
@@ -322,8 +315,8 @@ class AllTest extends BaseTestCase
 
         list($result, $status) = $this->_execute($args);
 
-        $this->assertContains('execute aa', $result);
-        $this->assertContains('execute kk', $result);
+        $this->assertStringContainsString('execute aa', $result);
+        $this->assertStringContainsString('execute kk', $result);
     }
 
     /**
@@ -344,8 +337,8 @@ class AllTest extends BaseTestCase
 
         list($result, $status) = $this->_execute($args);
 
-        $this->assertNotContains('execute aa', $result);
-        $this->assertNotContains('execute kk', $result);
+        $this->assertStringNotContainsString('execute aa', $result);
+        $this->assertStringNotContainsString('execute kk', $result);
     }
 
     /**
@@ -369,8 +362,8 @@ class AllTest extends BaseTestCase
 
         list($result, $status) = $this->_execute($args);
 
-        $this->assertNotContains('execute aa', $result);
-        $this->assertNotContains('execute kk', $result);
+        $this->assertStringNotContainsString('execute aa', $result);
+        $this->assertStringNotContainsString('execute kk', $result);
     }
 
     /**
@@ -391,8 +384,8 @@ class AllTest extends BaseTestCase
 
         list($result, $status) = $this->_execute($args);
 
-        $this->assertContains('execute aa', $result);
-        $this->assertContains('execute kk', $result);
+        $this->assertStringContainsString('execute aa', $result);
+        $this->assertStringContainsString('execute kk', $result);
     }
 
     /**
@@ -413,8 +406,8 @@ class AllTest extends BaseTestCase
 
         list($result, $status) = $this->_execute($args);
 
-        $this->assertContains('execute aa', $result);
-        $this->assertContains('execute kk', $result);
+        $this->assertStringContainsString('execute aa', $result);
+        $this->assertStringContainsString('execute kk', $result);
     }
 
     /**
@@ -435,8 +428,8 @@ class AllTest extends BaseTestCase
 
         list($result, $status) = $this->_execute($args);
 
-        $this->assertContains('execute aa', $result);
-        $this->assertContains('execute kk', $result);
+        $this->assertStringContainsString('execute aa', $result);
+        $this->assertStringContainsString('execute kk', $result);
     }
 
     /**
@@ -454,7 +447,7 @@ class AllTest extends BaseTestCase
 
         $expected = str_repeat('%', 80);
 
-        $this->assertContains($expected, $result);
+        $this->assertStringContainsString($expected, $result);
     }
 
     /**

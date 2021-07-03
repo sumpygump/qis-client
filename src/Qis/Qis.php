@@ -14,7 +14,6 @@ use Qi_Console_ArgV;
  *
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class Qis
 {
@@ -23,7 +22,7 @@ class Qis
      *
      * @var string
      */
-    const VERSION = '1.2.3';
+    const VERSION = '1.2.4';
 
     /**
      * Configuration
@@ -58,14 +57,14 @@ class Qis
      *
      * @var array
      */
-    protected $_commands = array();
+    protected $_commands = [];
 
     /**
      * Modules
      *
      * @var array
      */
-    protected $_modules = array();
+    protected $_modules = [];
 
     /**
      * Qis root
@@ -176,9 +175,9 @@ class Qis
         foreach ($files as $file) {
             include_once $file;
             $classname   = 'Qis\\Command\\' . pathinfo($file, PATHINFO_FILENAME);
-            $commandName = call_user_func(array($classname, 'getName'));
+            $commandName = call_user_func([$classname, 'getName']);
 
-            $this->_commands[$commandName] = new $classname($this, array());
+            $this->_commands[$commandName] = new $classname($this, []);
         }
     }
 
@@ -237,7 +236,7 @@ class Qis
         try {
             $module = new $className($this, $settings);
             $module->initialize();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->warningMessage(
                 "Failed to load module $name. "
                 . "Error message: " . $e->getMessage()
@@ -425,14 +424,14 @@ class Qis
 
         $index = date('Y-m-d H:i:s');
 
-        $history[] = array(
+        $history[] = [
             'module'  => $moduleName,
             'date'    => $index,
             'status'  => $module->getStatus(),
             'summary' => $module->getSummary(true),
             'metric'  => json_encode($module->getMetrics(true)),
             'metrics' => json_encode($module->getMetrics()),
-        );
+        ];
 
         file_put_contents(
             $this->getHistoryFilepath(), json_encode($history)
@@ -449,7 +448,7 @@ class Qis
         $historyFile = $this->getHistoryFilepath();
 
         if (!file_exists($historyFile)) {
-            $history = array();
+            $history = [];
         } else {
             $history = file_get_contents($historyFile);
             $history = json_decode($history);

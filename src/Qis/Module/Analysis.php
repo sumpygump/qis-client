@@ -162,14 +162,19 @@ class Analysis implements ModuleInterface
             $paths = $path_override;
         }
 
+        $option_autoload = "";
+        if (isset($this->_settings['autoload_file']) && $this->_settings['autoload_file'] !== '') {
+            $option_autoload = " --autoload-file=" . $this->_settings['autoload_file'];
+        }
+
         if ($raw_output) {
-            $cmd = sprintf('%s analyse --level=%s --no-progress %s', $bin, $level, $paths);
+            $cmd = sprintf('%s analyse --level=%s %s --no-progress %s', $bin, $level, $option_autoload, $paths);
             $this->_qis->log($cmd);
             passthru($cmd);
             return false;
         }
 
-        $cmd = sprintf('%s analyse --level=%s --error-format=prettyJson --memory-limit 200M --no-progress %s', $bin, $level, $paths);
+        $cmd = sprintf('%s analyse --level=%s --error-format=prettyJson --memory-limit 200M %s --no-progress %s', $bin, $level, $option_autoload, $paths);
 
         $this->_qis->log($cmd);
 
@@ -192,11 +197,21 @@ class Analysis implements ModuleInterface
             throw new \Exception("File '$filename' not found.");
         }
 
-        $data = file_get_contents($filename);
+        $data = trim(file_get_contents($filename));
 
         if (!$data) {
             throw new \Exception("No data in results file $filename.");
         }
+
+        if (substr($data, 0, 1) !== "{") {
+            print("\nError reading json data in '$filename'\n");
+            print("First 255 chars of content for your inspection:\n");
+            print("--------\n");
+            print substr($data, 0, 255);
+            print("\n--------\n");
+            throw new \Exception("Error reading results json. Perhaps it is malformed?");
+        }
+
         return json_decode($data);
     }
 
@@ -572,6 +587,7 @@ class Analysis implements ModuleInterface
         return "; Perform static analysis on project classes and methods\n"
             . "analysis.command=analysis\n"
             . "analysis.class=" . get_called_class() . "\n"
+            . "analysis.autoload_file=\n"
             . "analysis.bin=vendor/bin/phpstan\n"
             . "analysis.level=0\n"
             . "analysis.paths=src,tests\n"

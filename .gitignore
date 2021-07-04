@@ -2,3 +2,4 @@ composer.lock
 .qis
 vendor
 tests/.phpunit.result.cache
+tags

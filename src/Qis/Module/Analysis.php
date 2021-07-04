@@ -109,15 +109,19 @@ class Analysis implements ModuleInterface
         }
 
         if ($args->results) {
-            return $this->showResults();
+            if ($args->file) {
+                return $this->showResultsForFile($args->file);
+            } else {
+                return $this->showResults();
+            }
         }
 
         if ($args->file) {
-            $file = $args->file;
             if ($args->raw) {
-                return $this->analyzeProject($level, true, $file);
+                return $this->analyzeProject($level, true, $args->file);
             } else {
-                return $this->showResultsForFile($file);
+                $this->analyzeProject($level, false, $args->file);
+                return $this->showResultsForFile($args->file);
             }
         }
 
@@ -165,7 +169,7 @@ class Analysis implements ModuleInterface
             return false;
         }
 
-        $cmd = sprintf('%s analyse --level=%s --error-format=prettyJson --no-progress %s', $bin, $level, $paths);
+        $cmd = sprintf('%s analyse --level=%s --error-format=prettyJson --memory-limit 200M --no-progress %s', $bin, $level, $paths);
 
         $this->_qis->log($cmd);
 
@@ -299,7 +303,7 @@ class Analysis implements ModuleInterface
                     self::wrap($message_data->message, $col_2_width)
                 );
             }
-            print($hr_line);
+            print("\n");
         }
     }
 

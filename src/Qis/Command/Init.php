@@ -129,7 +129,6 @@ class Init implements CommandInterface
             . ' v' . $this->_qis->getVersion() . "\n"
             . "project_name=$projectName\n"
             . "project_root=\"" . realpath(dirname('.')) . "\"\n"
-            . "\nphpunit_bin=\"phpunit\"\n"
             . "\nbuild_order=cs,test,coverage\n";
 
         $contents .= $this->_addModuleConfigDefaults();

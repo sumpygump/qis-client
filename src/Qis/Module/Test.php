@@ -288,7 +288,7 @@ class Test implements ModuleInterface
             $executionOutputFormat = '--testdox ';
         }
 
-        $phpunitBin = $this->_qis->getConfig()->get('phpunit_bin');
+        $phpunitBin = $this->_settings['bin'];
 
         // If phpunit binary path is not in config file, default to 'phpunit'
         $isEmptyPhpunitBin = (array) $phpunitBin;
@@ -354,6 +354,7 @@ class Test implements ModuleInterface
         return "; Run unit and integration tests for a project\n"
             . "test.command=test\n"
             . "test.class=" . get_called_class() . "\n"
+            . "test.bin=../vendor/bin/phpunit\n"
             . "test.bootstrap=\n"
             . "test.configuration=\n"
             . "test.coverage-html=true\n"
@@ -521,6 +522,9 @@ class Test implements ModuleInterface
         }
 
         $this->_qis->qecho("\nTest environment initialized. Now run `qis test` to run your first test.\n");
+        $this->_qis->qecho("Note that the phpunit.xml file defined assumes that the source\n");
+        $this->_qis->qecho("for this project is at `src`. If it needs to change, update the\n");
+        $this->_qis->qecho("value in coverage.include.directory in tests/phpunit.xml\n");
 
         return 0;
     }
@@ -529,25 +533,26 @@ class Test implements ModuleInterface
     {
         return <<<EOF
 <?xml version="1.0" encoding="UTF-8"?>
-
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         bootstrap="../vendor/autoload.php"
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+    backupGlobals="false"
+    backupStaticAttributes="false"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    bootstrap="../vendor/autoload.php"
 >
-    <testsuites>
-        <testsuite name="Unit Tests">
-            <directory>.</directory>
-        </testsuite>
-    </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory>../src</directory>
-        </whitelist>
-    </filter>
+  <coverage processUncoveredFiles="true">
+    <include>
+      <directory>../src</directory>
+    </include>
+  </coverage>
+  <testsuites>
+    <testsuite name="Unit Tests">
+      <directory>.</directory>
+    </testsuite>
+  </testsuites>
 </phpunit>
 EOF;
     }

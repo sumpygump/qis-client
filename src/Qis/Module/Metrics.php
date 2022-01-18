@@ -149,7 +149,8 @@ class Metrics implements ModuleInterface
     {
         foreach ($show_metrics as $metric_id) {
             $metric = $group[$metric_id];
-            if (isset($thresholds[$prefix . $metric_id])
+            if (
+                isset($thresholds[$prefix . $metric_id])
                 && $metric > $thresholds[$prefix . $metric_id]
             ) {
                 $row[] = $escapes['white-bgred'] . $group[$metric_id] . $escapes['op'];

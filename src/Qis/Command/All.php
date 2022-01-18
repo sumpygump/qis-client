@@ -1,4 +1,5 @@
 <?php
+
 /**
  * All command class file
  *
@@ -145,7 +146,8 @@ class All implements CommandInterface
 
         $defaultBuildOrder = 'cs,test,coverage';
 
-        if (empty($order) || !is_string($order)
+        if (
+            empty($order) || !is_string($order)
             || trim($order) == ''
         ) {
             return $defaultBuildOrder;
@@ -163,7 +165,10 @@ class All implements CommandInterface
     {
         echo "\n";
         $this->_qis->displayMessage(
-            str_repeat('%', 80), true, 8, 4
+            str_repeat('%', 80),
+            true,
+            8,
+            4
         );
         echo "\n";
     }

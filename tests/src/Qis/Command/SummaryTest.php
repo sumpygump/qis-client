@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Qis Command Summary test class file
  *
@@ -7,7 +8,7 @@
 
 namespace Qis\Tests\Command;
 
-use \BaseTestCase;
+use BaseTestCase;
 use Qis\Command\Summary;
 use Qis\ModuleInterface;
 use Qis\Qis;
@@ -128,8 +129,7 @@ class MockQisModuleBaseForSummary implements ModuleInterface
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
-class MockQisModuleSummaryFalseStatus
-    extends MockQisModuleBaseForSummary
+class MockQisModuleSummaryFalseStatus extends MockQisModuleBaseForSummary
 {
     /**
      * Get status

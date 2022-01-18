@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Base Test Case class file
  *
@@ -9,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Base Test Case
- * 
+ *
  * @uses PHPUnit_Framework_TestCase
  * @package Qis
  * @subpackage Tests

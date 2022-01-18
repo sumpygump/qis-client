@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Init command class file
  *
@@ -15,9 +16,9 @@ use Qi_Console_Std;
 /**
  * Init command class
  *
- * @uses QisModuleInterface
+ * @uses    QisModuleInterface
  * @package Qis
- * @author Jansen Price <jansen.price@gmail.com>
+ * @author  Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
 class Init implements CommandInterface
@@ -42,8 +43,8 @@ class Init implements CommandInterface
     /**
      * Constructor
      *
-     * @param object $qis Qis object
-     * @param mixed $settings Configuration settings
+     * @param  object $qis      Qis object
+     * @param  mixed  $settings Configuration settings
      * @return void
      */
     public function __construct(Qis $qis, $settings)
@@ -63,7 +64,7 @@ class Init implements CommandInterface
     /**
      * Execute main logic
      *
-     * @param Qi_Console_ArgV $args Arguments object
+     * @param  Qi_Console_ArgV $args Arguments object
      * @return void
      */
     public function execute(Qi_Console_ArgV $args)
@@ -172,6 +173,9 @@ class Init implements CommandInterface
         echo "Do you want to re-init [All data will be lost] (y/n)? ";
         $response = Qi_Console_Std::in();
 
+        if (null === $response) {
+            $response = '';
+        }
         if (strtolower(trim($response)) == 'y') {
             return true;
         }
@@ -213,8 +217,8 @@ class Init implements CommandInterface
     /**
      * Check existence of directory
      *
-     * @param string $dir Directory to check
-     * @param bool $create Whether to create if not exists
+     * @param  string $dir    Directory to check
+     * @param  bool   $create Whether to create if not exists
      * @return bool
      */
     protected function _verifyDirExists($dir, $create = false)
@@ -234,5 +238,4 @@ class Init implements CommandInterface
 
         return true;
     }
-
 }

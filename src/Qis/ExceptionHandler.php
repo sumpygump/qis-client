@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Qis Exception Handler class file
  *

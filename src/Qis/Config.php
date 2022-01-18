@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Qis Config class file
  *
@@ -139,7 +140,8 @@ class Config
                 $value = $this->_data[$var];
             }
         } else {
-            if (isset($this->_data[$section])
+            if (
+                isset($this->_data[$section])
                 && isset($this->_data[$section][$var])
             ) {
                 $value = $this->_data[$section][$var];
@@ -150,7 +152,8 @@ class Config
             return (object) $value;
         }
 
-        return $value;;
+        return $value;
+        ;
     }
 
     /**

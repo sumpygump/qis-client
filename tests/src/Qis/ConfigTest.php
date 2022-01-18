@@ -1,4 +1,5 @@
 <?php
+
 /**
  * QisConfig Test class file
  *
@@ -176,7 +177,8 @@ class ConfigTest extends BaseTestCase
 
         $this->_object->loadArray($data);
         $this->assertEquals(
-            68.128004, $this->_object->colony->location['location']
+            68.128004,
+            $this->_object->colony->location['location']
         );
     }
 
@@ -204,7 +206,8 @@ class ConfigTest extends BaseTestCase
 
         $this->_object->loadArray($data);
         $this->assertEquals(
-            $expected, $this->_object->get('location', 'colony')
+            $expected,
+            $this->_object->get('location', 'colony')
         );
     }
 

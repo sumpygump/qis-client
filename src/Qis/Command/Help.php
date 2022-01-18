@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Help command class file
  *

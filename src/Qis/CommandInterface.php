@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Qis Command Interface class file
  *

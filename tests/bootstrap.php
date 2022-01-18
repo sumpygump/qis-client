@@ -1,9 +1,11 @@
 <?php
+
 /**
  * Tests bootstrap
  *
  * @package Qis
  */
+
 date_default_timezone_set('America/Chicago');
 
 sprintf("PHP Version: %s\n", PHP_VERSION);

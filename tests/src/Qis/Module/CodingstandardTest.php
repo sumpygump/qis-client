@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Test codingstandard module
  *
@@ -148,7 +149,8 @@ class CodingstandardTest extends BaseTestCase
         $settings = array();
 
         $this->_object = new Codingstandard(
-            $this->_getDefaultQisObject(), $settings
+            $this->_getDefaultQisObject(),
+            $settings
         );
 
         $this->assertInstanceOf('Qis\Module\Codingstandard', $this->_object);
@@ -167,7 +169,8 @@ class CodingstandardTest extends BaseTestCase
         );
 
         $this->_object = new MockQisModuleCodingstandard(
-            $this->_getDefaultQisObject(), $settings
+            $this->_getDefaultQisObject(),
+            $settings
         );
 
         $this->assertEquals('Foox', $this->_object->getStandard());
@@ -221,7 +224,8 @@ class CodingstandardTest extends BaseTestCase
 
         $this->assertStringContainsString('Running Codingstandard module', $result);
         $this->assertStringContainsString(
-            'Sniffing code with \'PSR2\' standard...', $result
+            'Sniffing code with \'PSR2\' standard...',
+            $result
         );
         $this->assertStringContainsString('Writing results to db...', $result);
         $this->assertStringContainsString('Codingstandard results:', $result);
@@ -447,7 +451,8 @@ class CodingstandardTest extends BaseTestCase
         );
 
         $this->_object = new MockQisModuleCodingstandardErrorLevel(
-            $this->_getDefaultQisObject(array()), $settings
+            $this->_getDefaultQisObject(array()),
+            $settings
         );
 
         $status = $this->_object->getStatus();
@@ -470,7 +475,8 @@ class CodingstandardTest extends BaseTestCase
         );
 
         $this->_object = new MockQisModuleCodingstandard(
-            $this->_getDefaultQisObject($args), $settings
+            $this->_getDefaultQisObject($args),
+            $settings
         );
 
         if ($initialize) {

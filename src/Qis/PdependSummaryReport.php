@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Pdepend Summary Report class file
  *

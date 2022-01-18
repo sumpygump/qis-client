@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Utils class
  *
@@ -40,7 +41,8 @@ class Utils
             }
             return self::rglob(
                 basename($pattern),
-                $flags, $dir . DIRECTORY_SEPARATOR
+                $flags,
+                $dir . DIRECTORY_SEPARATOR
             );
         }
 
@@ -49,7 +51,8 @@ class Utils
 
         foreach ($paths as $p) {
             $files = array_merge(
-                $files, self::rglob($pattern, $flags, $p . DIRECTORY_SEPARATOR)
+                $files,
+                self::rglob($pattern, $flags, $p . DIRECTORY_SEPARATOR)
             );
         }
 

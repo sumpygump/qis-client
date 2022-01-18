@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Qis class file
  *
@@ -13,7 +14,7 @@ use Qi_Console_ArgV;
  * Qis: Quantal Integration System
  *
  * @package Qis
- * @author Jansen Price <jansen.price@gmail.com>
+ * @author  Jansen Price <jansen.price@gmail.com>
  */
 class Qis
 {
@@ -83,8 +84,8 @@ class Qis
     /**
      * Constructor
      *
-     * @param object $args ArgV object
-     * @param object $terminal Terminal object
+     * @param  object $args     ArgV object
+     * @param  object $terminal Terminal object
      * @return void
      */
     public function __construct(Qi_Console_ArgV $args, $terminal)
@@ -121,7 +122,7 @@ class Qis
     /**
      * Set config object
      *
-     * @param Config $config Config object
+     * @param  Config $config Config object
      * @return object
      */
     public function setConfig(Config $config)
@@ -184,7 +185,7 @@ class Qis
     /**
      * Register modules
      *
-     * @param array $modules Modules config array
+     * @param  array $modules Modules config array
      * @return void
      */
     public function registerModules($modules)
@@ -204,8 +205,8 @@ class Qis
     /**
      * Register module
      *
-     * @param mixed $name Name to register
-     * @param mixed $settings Settings for module
+     * @param  mixed $name     Name to register
+     * @param  mixed $settings Settings for module
      * @return void
      */
     public function registerModule($name, $settings)
@@ -252,7 +253,11 @@ class Qis
 
     protected function getAction()
     {
-        $action = trim($this->_args->action);
+        if (null === $this->_args->action) {
+            $action = '';
+        } else {
+            $action = trim($this->_args->action);
+        }
 
         if ($action != '') {
             return $action;
@@ -363,7 +368,7 @@ class Qis
     /**
      * Get module by name
      *
-     * @param string $name Name of module
+     * @param  string $name Name of module
      * @return object
      */
     public function getModule($name)
@@ -388,7 +393,7 @@ class Qis
     /**
      * Get command by name
      *
-     * @param string $name Name of command
+     * @param  string $name Name of command
      * @return QisCommandInterface|false
      */
     public function getCommand($name)
@@ -414,8 +419,8 @@ class Qis
     /**
      * Save history
      *
-     * @param string $moduleName Module name
-     * @param QisModuleInterface $module Module
+     * @param  string             $moduleName Module name
+     * @param  QisModuleInterface $module     Module
      * @return void
      */
     public function saveHistory($moduleName, $module)
@@ -434,7 +439,8 @@ class Qis
         ];
 
         file_put_contents(
-            $this->getHistoryFilepath(), json_encode($history)
+            $this->getHistoryFilepath(),
+            json_encode($history)
         );
     }
 
@@ -460,7 +466,7 @@ class Qis
     /**
      * Log message
      *
-     * @param string $message Message
+     * @param  string $message Message
      * @return void
      */
     public function log($message)
@@ -506,8 +512,8 @@ class Qis
     /**
      * Exit with error message
      *
-     * @param mixed $message Message
-     * @param int $status Exit status to send
+     * @param  mixed $message Message
+     * @param  int   $status  Exit status to send
      * @return void
      */
     public function halt($message, $status = 2)
@@ -524,7 +530,7 @@ class Qis
     /**
      * Echo text but only if --quiet is not an argument
      *
-     * @param string $text Text to echo
+     * @param  string $text Text to echo
      * @return mixed
      */
     public function qecho($text)
@@ -538,8 +544,8 @@ class Qis
     /**
      * Display a warning message
      *
-     * @param string $message Message
-     * @param bool $ensureNewline Whether to ensure a newline at end of message
+     * @param  string $message       Message
+     * @param  bool   $ensureNewline Whether to ensure a newline at end of message
      * @return void
      */
     public function warningMessage($message, $ensureNewline = true)
@@ -550,7 +556,7 @@ class Qis
     /**
      * Display an error message
      *
-     * @param string $message Message text
+     * @param  string $message Message text
      * @return void
      */
     public function displayError($message)
@@ -563,15 +569,18 @@ class Qis
     /**
      * Display a message
      *
-     * @param mixed $message Message text
-     * @param bool $ensureNewline Include a new line at end
-     * @param int $color Foreground color
-     * @param int $background Background color
+     * @param  mixed $message       Message text
+     * @param  bool  $ensureNewline Include a new line at end
+     * @param  int   $color         Foreground color
+     * @param  int   $background    Background color
      * @return void
      */
-    public function displayMessage($message,
-        $ensureNewline = true, $color = 2, $background = 0)
-    {
+    public function displayMessage(
+        $message,
+        $ensureNewline = true,
+        $color = 2,
+        $background = 0
+    ) {
 
         $this->_terminal->setaf($color);
         $this->_terminal->setab($background);
@@ -587,9 +596,9 @@ class Qis
     /**
      * Display pretty message
      *
-     * @param string $message Message text
-     * @param int $fg Foreground color (1-7)
-     * @param int $bg Background color (1-7)
+     * @param  string $message Message text
+     * @param  int    $fg      Foreground color (1-7)
+     * @param  int    $bg      Background color (1-7)
      * @return void
      */
     public function prettyMessage($message, $fg, $bg)

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Qis Command Modules test class file
  *
@@ -7,7 +8,7 @@
 
 namespace Qis\Tests\Command;
 
-use \BaseTestCase;
+use BaseTestCase;
 use Qis\Command\Modules;
 use Qis\ModuleInterface;
 use Qis\Qis;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Coding Standard Module class file
  *
@@ -111,14 +112,16 @@ class Codingstandard implements ModuleInterface
     {
         $this->_qis = $qis;
 
-        if (isset($settings['standard'])
+        if (
+            isset($settings['standard'])
             && $settings['standard'] != ''
         ) {
             $this->_standard = $settings['standard'];
         }
 
         // Store the project path
-        if (isset($settings['path'])
+        if (
+            isset($settings['path'])
             && $settings['path'] != ''
         ) {
             $this->_path = $settings['path'];
@@ -200,7 +203,9 @@ class Codingstandard implements ModuleInterface
         $this->_qis->log($result[0]);
 
         $foundMatch = preg_match(
-            "/version (\d).(\d).(\d)/", $result[0], $matches
+            "/version (\d).(\d).(\d)/",
+            $result[0],
+            $matches
         );
 
         if (!$foundMatch) {
@@ -521,20 +526,22 @@ class Codingstandard implements ModuleInterface
         $warningTotal = 0;
 
         foreach ($rows as $row) {
-            switch($row['severity']) {
-            case 'error':
-                $errorTotal = $row['count'];
-                break;
-            case 'warning':
-                $warningTotal = $row['count'];
-                break;
+            switch ($row['severity']) {
+                case 'error':
+                    $errorTotal = $row['count'];
+                    break;
+                case 'warning':
+                    $warningTotal = $row['count'];
+                    break;
             }
         }
 
         $project    = $this->getProjectSummary();
         $errorLevel = $this->calculateErrorLevel(
-            $errorTotal, $warningTotal,
-            $project['sloc'], $project['comment_lines']
+            $errorTotal,
+            $warningTotal,
+            $project['sloc'],
+            $project['comment_lines']
         );
 
         $sql = "update project set errors=$errorTotal, "
@@ -705,9 +712,12 @@ class Codingstandard implements ModuleInterface
      * @param int $comments The comment lines count
      * @return float
      */
-    public function calculateErrorLevel($errors, $warnings, $sloc,
-        $comments = 0)
-    {
+    public function calculateErrorLevel(
+        $errors,
+        $warnings,
+        $sloc,
+        $comments = 0
+    ) {
         $errorPoints = $errors + ($warnings / 2);
 
         if ($sloc > 0) {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Summary command class file
  *
@@ -104,12 +105,13 @@ class Summary implements CommandInterface
                     echo $summary . "\n";
                 } else {
                     $this->_displayStatusMessage(
-                        $summary, $module->getStatus()
+                        $summary,
+                        $module->getStatus()
                     );
                 }
             } else {
                 if ($this->_noColor) {
-                    echo "\n" . $summary. "\n"
+                    echo "\n" . $summary . "\n"
                         . $module->getSummary(true) . "\n";
                 } else {
                     $fg = 8;

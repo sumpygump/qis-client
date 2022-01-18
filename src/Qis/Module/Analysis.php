@@ -523,7 +523,6 @@ class Analysis implements ModuleInterface
         }
 
         return $this->displaySummary();
-
     }
 
     public function displaySummary()

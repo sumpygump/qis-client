@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Qis Module Interface class file
  *

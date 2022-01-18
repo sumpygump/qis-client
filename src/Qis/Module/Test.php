@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Test module class file
  *
@@ -252,14 +253,16 @@ class Test implements ModuleInterface
         }
 
         $bootstrap = '';
-        if (isset($this->_settings['bootstrap'])
+        if (
+            isset($this->_settings['bootstrap'])
             && $this->_settings['bootstrap']
         ) {
             $bootstrap = '--bootstrap=' . $this->_settings['bootstrap'] . ' ';
         }
 
         $configuration = '';
-        if (isset($this->_settings['configuration'])
+        if (
+            isset($this->_settings['configuration'])
             && $this->_settings['configuration']
         ) {
             $configuration = '--configuration='

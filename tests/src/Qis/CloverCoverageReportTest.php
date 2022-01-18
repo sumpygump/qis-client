@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Clover Coverage Report test class file
  *
@@ -7,7 +8,7 @@
 
 namespace Qis\Tests;
 
-use \BaseTestCase;
+use BaseTestCase;
 use Qis\CloverCoverageReport;
 use StdClass;
 
@@ -100,7 +101,10 @@ final class CloverCoverageReportTest extends BaseTestCase
         $this->expectException(\Qis\CloverCoverageReportException::class);
 
         $this->_object = new CloverCoverageReport(
-            'samplecoverage.xml', 'foobar.php', null, array('vendor')
+            'samplecoverage.xml',
+            'foobar.php',
+            null,
+            array('vendor')
         );
     }
 
@@ -313,7 +317,10 @@ final class CloverCoverageReportTest extends BaseTestCase
     {
         ob_start();
         $this->_object = new CloverCoverageReport(
-            'samplecoverage.xml', $targetFile, null, array('vendor')
+            'samplecoverage.xml',
+            $targetFile,
+            null,
+            array('vendor')
         );
 
         $result = ob_get_contents();

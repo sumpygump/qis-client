@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Qis Coverage module test
  *
@@ -7,7 +8,7 @@
 
 namespace Qis\Tests\Module;
 
-use \BaseTestCase;
+use BaseTestCase;
 use Qis\Module\Coverage;
 use Qis\Qis;
 use Qi_Console_ArgV;
@@ -83,7 +84,8 @@ class CoverageTest extends BaseTestCase
         $defaultIni = Coverage::getDefaultIni();
 
         $this->assertStringContainsString(
-            '; Module for code coverage of unit tests', $defaultIni
+            '; Module for code coverage of unit tests',
+            $defaultIni
         );
         $this->assertStringContainsString('coverage.ignorePaths=', $defaultIni);
     }
@@ -216,7 +218,8 @@ class CoverageTest extends BaseTestCase
         );
 
         $this->_object = new MockQisModuleCoverage(
-            $this->_getDefaultQisObject($args), $settings
+            $this->_getDefaultQisObject($args),
+            $settings
         );
 
         if ($initialize) {

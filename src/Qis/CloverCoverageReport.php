@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Clover Coverage Report class file
  *
@@ -18,7 +19,7 @@ use StdClass;
  * findings in ASCII format.
  *
  * @package Qis
- * @author Jansen Price <jansen.price@gmail.com>
+ * @author  Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
 class CloverCoverageReport
@@ -54,18 +55,22 @@ class CloverCoverageReport
     /**
      * Constructor
      *
-     * @param string $xmlFilename Filename to XML file
-     * @param string $targetFile Optional PHP file for report
-     * @param string $root Root directory to use for file paths
-     * @param array $ignorePaths Paths (regex) to ignore in report
+     * @param  string $xmlFilename Filename to XML file
+     * @param  string $targetFile  Optional PHP file for report
+     * @param  string $root        Root directory to use for file paths
+     * @param  array  $ignorePaths Paths (regex) to ignore in report
      * @return void
      */
-    public function __construct($xmlFilename, $targetFile = '',
-        $root = null, $ignorePaths = array())
-    {
+    public function __construct(
+        $xmlFilename,
+        $targetFile = '',
+        $root = null,
+        $ignorePaths = array()
+    ) {
         if (!file_exists($xmlFilename)) {
             throw new CloverCoverageReportException(
-                "File '$xmlFilename' not found or is not readable.", 64
+                "File '$xmlFilename' not found or is not readable.",
+                64
             );
         }
 
@@ -101,7 +106,7 @@ class CloverCoverageReport
     /**
      * Run the logic to generate the report
      *
-     * @param string $root The root path to target
+     * @param  string $root The root path to target
      * @return void
      */
     public function generateReport($root = null)
@@ -161,7 +166,7 @@ class CloverCoverageReport
     /**
      * Get sloc (source lines of code for a file)
      *
-     * @param string $file Path to file
+     * @param  string $file Path to file
      * @return int
      */
     protected function _getSloc($file)
@@ -215,7 +220,7 @@ class CloverCoverageReport
     /**
      * Gather file metrics from grouping in XML
      *
-     * @param array $group File grouping in XML
+     * @param  array $group File grouping in XML
      * @return void
      */
     public function gatherFileMetricsFromGroup($group)
@@ -226,7 +231,7 @@ class CloverCoverageReport
             // Use simple regex to filter out unwanted filenames
             if (!empty($this->_ignorePaths)) {
                 $ignoreRegex = implode('|', $this->_ignorePaths);
-                if (preg_match("#" . $ignoreRegex. "#", $name)) {
+                if (preg_match("#" . $ignoreRegex . "#", $name)) {
                     continue;
                 }
             }
@@ -248,7 +253,7 @@ class CloverCoverageReport
     /**
      * Add file metrics to report text
      *
-     * @param string $root The path root
+     * @param  string $root The path root
      * @return void
      */
     public function addFileMetrics($root = '')
@@ -286,11 +291,17 @@ class CloverCoverageReport
             $line = str_pad($name, $longestNameLength);
 
             $coveredStatements = str_pad(
-                $metrics['coveredstatements'], $lineCountPad, ' ', STR_PAD_LEFT
+                $metrics['coveredstatements'],
+                $lineCountPad,
+                ' ',
+                STR_PAD_LEFT
             );
 
             $statements = str_pad(
-                $metrics['statements'], $lineCountPad, ' ', STR_PAD_LEFT
+                $metrics['statements'],
+                $lineCountPad,
+                ' ',
+                STR_PAD_LEFT
             );
 
             if ($metrics['statements'] != 0) {
@@ -315,8 +326,8 @@ class CloverCoverageReport
      * Shows the lines of code for the given file with line numbers and counts
      * for coverage for each line
      *
-     * @param string $file Path to file to analyze
-     * @param string $root Root path
+     * @param  string $file Path to file to analyze
+     * @param  string $root Root path
      * @return bool
      */
     public function generateFileAnalysis($file, $root = null)
@@ -357,7 +368,10 @@ class CloverCoverageReport
             // space
             if (isset($stats[$lineNumber])) {
                 $prepend .= str_pad(
-                    $stats[$lineNumber]->count, 8, ' ', STR_PAD_LEFT
+                    $stats[$lineNumber]->count,
+                    8,
+                    ' ',
+                    STR_PAD_LEFT
                 )
                     . " : ";
             } else {
@@ -373,7 +387,7 @@ class CloverCoverageReport
     /**
      * Gather the line statistics for a given PHP file
      *
-     * @param string $filename Filename
+     * @param  string $filename Filename
      * @return array
      */
     public function gatherFileStatistics($filename)
@@ -415,7 +429,7 @@ class CloverCoverageReport
     /**
      * Find a specific file's node in the XML
      *
-     * @param string $filename Filename
+     * @param  string $filename Filename
      * @return object|null
      */
     public function findTargetFile($filename)
@@ -446,7 +460,7 @@ class CloverCoverageReport
     /**
      * Find common root from a list of file paths
      *
-     * @param array $list A list of file paths
+     * @param  array $list A list of file paths
      * @return string
      */
     public static function findCommonRoot(array $list)
@@ -511,13 +525,13 @@ class CloverCoverageReport
     /**
      * Create a percentage bar with ascii
      *
-     * @param mixed $percent The percent value
+     * @param  mixed $percent The percent value
      * @return string
      */
     protected function _bar($percent)
     {
         $width = 10;
-        $val   = $percent / $width;
+        $val   = (int) ($percent / $width);
 
         $text = "["
             . str_pad(str_repeat("*", $val), $width)
@@ -557,7 +571,8 @@ class CloverCoverageReport
         }
 
         $totalCoveragePercentage = round(
-            ($coveredStatements / $totalStatements) * 100, 2
+            ($coveredStatements / $totalStatements) * 100,
+            2
         );
 
         return $totalCoveragePercentage;
@@ -579,7 +594,8 @@ class CloverCoverageReport
 
         if ($totalStatements != 0) {
             $totalCoveragePercentage = round(
-                ($coveredStatements / $totalStatements) * 100, 2
+                ($coveredStatements / $totalStatements) * 100,
+                2
             );
         } else {
             $totalCoveragePercentage = 0.0;
@@ -616,7 +632,7 @@ class CloverCoverageReport
     /**
      * Append text to the report text accumulator
      *
-     * @param mixed $text Text to append
+     * @param  mixed $text Text to append
      * @return void
      */
     public function append($text)
@@ -627,9 +643,9 @@ class CloverCoverageReport
     /**
      * Recursive Glob
      *
-     * @param string $pattern Pattern
-     * @param int $flags Flags to pass to glob
-     * @param string $path Path
+     * @param  string $pattern Pattern
+     * @param  int    $flags   Flags to pass to glob
+     * @param  string $path    Path
      * @return array
      */
     public static function rglob($pattern, $flags = 0, $path = '')
@@ -646,7 +662,8 @@ class CloverCoverageReport
 
         foreach ($paths as $p) {
             $files = array_merge(
-                $files, self::rglob($pattern, $flags, $p . '/')
+                $files,
+                self::rglob($pattern, $flags, $p . '/')
             );
         }
 
@@ -657,9 +674,9 @@ class CloverCoverageReport
 /**
  * CloverCoverageReportException
  *
- * @uses Exception
+ * @uses    Exception
  * @package Qis
- * @author Jansen Price <jansen.price@gmail.com>
+ * @author  Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
 class CloverCoverageReportException extends Exception

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Qis Exception Handler test file
  *
@@ -120,7 +121,10 @@ class ExceptionHandlerTest extends BaseTestCase
 
         ob_start();
         ExceptionHandler::handle_error(
-            $errorNumber, $message, $filename, $line
+            $errorNumber,
+            $message,
+            $filename,
+            $line
         );
         $result = ob_get_contents();
         ob_end_clean();

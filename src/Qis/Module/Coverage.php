@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Coverage Module class
  *
@@ -60,7 +61,7 @@ class Coverage implements ModuleInterface
     {
         return "; Module for code coverage of unit tests.\n"
             . "coverage.command=coverage\n"
-            . "coverage.class=" . get_called_class() ."\n"
+            . "coverage.class=" . get_called_class() . "\n"
             . "coverage.root=.\n"
             . "coverage.ignorePaths=vendor,SymfonyComponents\n"
             ;
@@ -271,7 +272,10 @@ class Coverage implements ModuleInterface
 
         $this->_qis->log('Parsing clover coverage report...');
         $report = new CloverCoverageReport(
-            $file, $targetFile, $this->_root, $this->_ignorePaths
+            $file,
+            $targetFile,
+            $this->_root,
+            $this->_ignorePaths
         );
 
         $totalCoverage = $report->getTotalCoverage();

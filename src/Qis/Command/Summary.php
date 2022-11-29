@@ -114,7 +114,7 @@ class Summary implements CommandInterface
                     echo "\n" . $summary . "\n"
                         . $module->getSummary(true) . "\n";
                 } else {
-                    $fg = 8;
+                    $fg = 15;
                     $bg = 4;
                     $this->_qis->prettyMessage(trim($summary), $fg, $bg);
                     $this->_displayStatusMessage(
@@ -145,7 +145,7 @@ class Summary implements CommandInterface
             $fg = 0;
             $bg = 2;
         } else {
-            $fg = 8;
+            $fg = 15;
             $bg = 1;
         }
 

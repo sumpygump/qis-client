@@ -268,9 +268,9 @@ class Analysis implements ModuleInterface
         $table->display();
 
         if ($this->getStatus()) {
-            print($terminal->do_setaf(8) . $terminal->do_setab(2));
+            print($terminal->do_setaf(15) . $terminal->do_setab(2));
         } else {
-            print($terminal->do_setaf(8) . $terminal->do_setab(1));
+            print($terminal->do_setaf(15) . $terminal->do_setab(1));
         }
         printf("Total errors: %s", $results->totals->file_errors);
         print($terminal->do_op());

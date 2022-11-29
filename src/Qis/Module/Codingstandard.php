@@ -615,7 +615,7 @@ class Codingstandard implements ModuleInterface
         }
 
         if ($pretty) {
-            $this->_qis->prettyMessage(trim($out), 8, 4);
+            $this->_qis->prettyMessage(trim($out), 15, 4);
         } else {
             return $out;
         }

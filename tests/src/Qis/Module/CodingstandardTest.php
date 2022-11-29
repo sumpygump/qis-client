@@ -73,7 +73,7 @@ class MockQisModuleCodingstandardErrorLevel extends MockQisModuleCodingstandard
      */
     public function getProjectSummary()
     {
-        return array('error_level' => 4);
+        return ['error_level' => 4];
     }
 }
 
@@ -97,7 +97,7 @@ class CodingstandardTest extends BaseTestCase
         $path = realpath('.') . DIRECTORY_SEPARATOR . '.qis';
         mkdir($path);
 
-        $this->_createObject();
+        $this->createObject();
     }
 
     /**
@@ -122,7 +122,7 @@ class CodingstandardTest extends BaseTestCase
     {
         $this->expectException(\ArgumentCountError::class);
         $this->expectExceptionMessage("Too few arguments");
-        $this->_object = new Codingstandard();
+        $this->object = new Codingstandard();
     }
 
     /**
@@ -134,8 +134,8 @@ class CodingstandardTest extends BaseTestCase
     {
         $this->expectException(\ArgumentCountError::class);
         $this->expectExceptionMessage("Too few arguments");
-        $this->_object = new Codingstandard(
-            $this->_getDefaultQisObject()
+        $this->object = new Codingstandard(
+            $this->getDefaultQisObject()
         );
     }
 
@@ -146,14 +146,14 @@ class CodingstandardTest extends BaseTestCase
      */
     public function testConstructor()
     {
-        $settings = array();
+        $settings = [];
 
-        $this->_object = new Codingstandard(
-            $this->_getDefaultQisObject(),
+        $this->object = new Codingstandard(
+            $this->getDefaultQisObject(),
             $settings
         );
 
-        $this->assertInstanceOf('Qis\Module\Codingstandard', $this->_object);
+        $this->assertInstanceOf('Qis\Module\Codingstandard', $this->object);
     }
 
     /**
@@ -163,18 +163,18 @@ class CodingstandardTest extends BaseTestCase
      */
     public function testConstructorSetDefaults()
     {
-        $settings = array(
+        $settings = [
             'standard' => 'Foox',
             'path'     => 'vvvvv',
-        );
+        ];
 
-        $this->_object = new MockQisModuleCodingstandard(
-            $this->_getDefaultQisObject(),
+        $this->object = new MockQisModuleCodingstandard(
+            $this->getDefaultQisObject(),
             $settings
         );
 
-        $this->assertEquals('Foox', $this->_object->getStandard());
-        $this->assertEquals('vvvvv', $this->_object->getPath());
+        $this->assertEquals('Foox', $this->object->getStandard());
+        $this->assertEquals('vvvvv', $this->object->getPath());
     }
 
     /**
@@ -184,9 +184,9 @@ class CodingstandardTest extends BaseTestCase
      */
     public function testInitialize()
     {
-        $this->_createObject(false);
+        $this->createObject(false);
 
-        $this->_object->initialize();
+        $this->object->initialize();
 
         $path = realpath('.') . DIRECTORY_SEPARATOR . '.qis/codingstandard/';
         // This should have created files in the directory.
@@ -205,7 +205,7 @@ class CodingstandardTest extends BaseTestCase
     {
         $this->expectException(\ArgumentCountError::class);
         $this->expectExceptionMessage("Too few arguments");
-        $this->_object->execute();
+        $this->object->execute();
     }
 
     /**
@@ -215,10 +215,10 @@ class CodingstandardTest extends BaseTestCase
      */
     public function testExecute()
     {
-        $args = new Qi_Console_ArgV(array());
+        $args = new Qi_Console_ArgV([]);
 
         ob_start();
-        $this->_object->execute($args);
+        $this->object->execute($args);
         $result = ob_get_contents();
         ob_end_clean();
 
@@ -240,8 +240,8 @@ class CodingstandardTest extends BaseTestCase
     {
         $this->expectException(CodingStandardException::class);
 
-        $this->_object->setOption('phpcsbin', 'ffffffff');
-        $this->_object->checkVersion();
+        $this->object->setOption('phpcsbin', 'ffffffff');
+        $this->object->checkVersion();
     }
 
     /**
@@ -254,8 +254,8 @@ class CodingstandardTest extends BaseTestCase
         // The : command will output nothing and return status 0
         // This means no version output will be found so checkVersion will
         // return false
-        $this->_object->setOption('phpcsbin', ':');
-        $result = $this->_object->checkVersion();
+        $this->object->setOption('phpcsbin', ':');
+        $result = $this->object->checkVersion();
 
         $this->assertFalse($result);
     }
@@ -269,9 +269,9 @@ class CodingstandardTest extends BaseTestCase
     {
         // The ls command doesn't output the version in the same format as
         // phpcs
-        $this->_object->setOption('phpcsbin', 'ls');
+        $this->object->setOption('phpcsbin', 'ls');
         $this->expectException(\Qis\Module\CodingStandardException::class);
-        $result = $this->_object->checkVersion();
+        $result = $this->object->checkVersion();
 
         $this->assertFalse($result);
     }
@@ -283,15 +283,15 @@ class CodingstandardTest extends BaseTestCase
      */
     public function testExecuteWithPathNotFound()
     {
-        $args = array(
+        $args = [
             'cs',
             'foo',
             'margarine',
-        );
+        ];
         $args = new Qi_Console_ArgV($args);
 
         ob_start();
-        $this->_object->execute($args);
+        $this->object->execute($args);
         $result = ob_get_contents();
         ob_end_clean();
 
@@ -305,15 +305,15 @@ class CodingstandardTest extends BaseTestCase
      */
     public function testExecuteWithValidPath()
     {
-        $args = array(
+        $args = [
             'cs',
             'foo',
             'src/Qis/Command/AllTest.php',
-        );
+        ];
         $args = new Qi_Console_ArgV($args);
 
         ob_start();
-        $this->_object->execute($args);
+        $this->object->execute($args);
         $result = ob_get_contents();
         ob_end_clean();
 
@@ -328,15 +328,15 @@ class CodingstandardTest extends BaseTestCase
      */
     public function testExecuteWithMultiplePaths()
     {
-        $args = array(
+        $args = [
             'cs',
             'foo',
             'grab,bag,hag',
-        );
+        ];
         $args = new Qi_Console_ArgV($args);
 
         ob_start();
-        $this->_object->execute($args);
+        $this->object->execute($args);
         $result = ob_get_contents();
         ob_end_clean();
 
@@ -350,15 +350,15 @@ class CodingstandardTest extends BaseTestCase
      */
     public function testExecuteWithListCommand()
     {
-        $args = array(
+        $args = [
             'cs',
             '--list',
-        );
+        ];
 
         $args = new Qi_Console_ArgV($args);
 
         ob_start();
-        $this->_object->execute($args);
+        $this->object->execute($args);
         $result = ob_get_contents();
         ob_end_clean();
 
@@ -373,7 +373,7 @@ class CodingstandardTest extends BaseTestCase
      */
     public function testGetHelpMessage()
     {
-        $message = $this->_object->getHelpMessage();
+        $message = $this->object->getHelpMessage();
         $this->assertStringContainsString('Run coding standard validation', $message);
     }
 
@@ -384,7 +384,7 @@ class CodingstandardTest extends BaseTestCase
      */
     public function testGetExtendedHelpMessage()
     {
-        $message = $this->_object->getExtendedHelpMessage();
+        $message = $this->object->getExtendedHelpMessage();
         $this->assertStringContainsString('Usage: cs', $message);
         $this->assertStringContainsString('Valid Options:', $message);
     }
@@ -396,7 +396,7 @@ class CodingstandardTest extends BaseTestCase
      */
     public function testGetSummary()
     {
-        $summary = $this->_object->getSummary();
+        $summary = $this->object->getSummary();
 
         $this->assertStringNotContainsString('Codingstandard error level', $summary);
     }
@@ -408,7 +408,7 @@ class CodingstandardTest extends BaseTestCase
      */
     public function testGetSummaryShort()
     {
-        $summary = $this->_object->getSummary(true);
+        $summary = $this->object->getSummary(true);
 
         $this->assertStringContainsString('Codingstandard: No data.', $summary);
     }
@@ -420,7 +420,7 @@ class CodingstandardTest extends BaseTestCase
      */
     public function testGetDefaultIni()
     {
-        $defaultIni = $this->_object->getDefaultIni();
+        $defaultIni = $this->object->getDefaultIni();
 
         $this->assertStringContainsString('; Module to run codesniffs', $defaultIni);
         $this->assertStringContainsString('codingstandard.standard=', $defaultIni);
@@ -433,7 +433,7 @@ class CodingstandardTest extends BaseTestCase
      */
     public function testGetStatus()
     {
-        $status = $this->_object->getStatus();
+        $status = $this->object->getStatus();
 
         $this->assertFalse($status);
     }
@@ -445,17 +445,17 @@ class CodingstandardTest extends BaseTestCase
      */
     public function testGetStatusError()
     {
-        $settings = array(
+        $settings = [
             'standard' => 'PSR2',
             'path'     => '.',
-        );
+        ];
 
-        $this->_object = new MockQisModuleCodingstandardErrorLevel(
-            $this->_getDefaultQisObject(array()),
+        $this->object = new MockQisModuleCodingstandardErrorLevel(
+            $this->getDefaultQisObject([]),
             $settings
         );
 
-        $status = $this->_object->getStatus();
+        $status = $this->object->getStatus();
 
         $this->assertFalse($status);
     }
@@ -467,20 +467,20 @@ class CodingstandardTest extends BaseTestCase
      * @param Qi_Console_ArgV $args Arguments to pass to object
      * @return Codingstandard
      */
-    protected function _createObject($initialize = true, $args = array())
+    protected function createObject($initialize = true, $args = [])
     {
-        $settings = array(
+        $settings = [
             'standard' => 'PSR2',
             'path'     => '.',
-        );
+        ];
 
-        $this->_object = new MockQisModuleCodingstandard(
-            $this->_getDefaultQisObject($args),
+        $this->object = new MockQisModuleCodingstandard(
+            $this->getDefaultQisObject($args),
             $settings
         );
 
         if ($initialize) {
-            $this->_object->initialize();
+            $this->object->initialize();
         }
     }
 
@@ -490,7 +490,7 @@ class CodingstandardTest extends BaseTestCase
      * @param Qi_Console_ArgV $args Arguments
      * @return Qis
      */
-    protected function _getDefaultQisObject($args = array())
+    protected function getDefaultQisObject($args = [])
     {
         $args     = new Qi_Console_ArgV($args);
         $terminal = new Qi_Console_Terminal();

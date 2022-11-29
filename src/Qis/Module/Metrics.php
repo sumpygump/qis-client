@@ -175,7 +175,7 @@ class Metrics implements ModuleInterface
         $headers = $this->getHeader(['Class'], $show_metrics);
         $aligns = ['L', 'R', 'R', 'R', 'R'];
         $escapes = [
-            'white-bgred' => $terminal->do_setaf(8) . $terminal->do_setab(1),
+            'white-bgred' => $terminal->do_setaf(15) . $terminal->do_setab(1),
             'op' => $terminal->do_op(),
         ];
 
@@ -214,12 +214,12 @@ class Metrics implements ModuleInterface
         $show_metrics = ['loc', 'ccn2', 'npath', 'hnt', 'hnd', 'hd', 'he', 'hb'];
 
         $headers = $this->getHeader(['Method'], $show_metrics);
-        $aligns = array_merge(['L'], array_fill(0, 8, 'R'));
+        $aligns = array_merge(['L'], array_fill(0, 15, 'R'));
 
         // We need to track all the escape sequences for colors so we can pass
         // it into tabular so it can calc the right col widths
         $escapes = [
-            'white-bgred' => $terminal->do_setaf(8) . $terminal->do_setab(1),
+            'white-bgred' => $terminal->do_setaf(15) . $terminal->do_setab(1),
             'blue' => $terminal->do_setaf(4),
             'bold' => $terminal->do_bold(),
             'unbold' => $terminal->do_sgr0(),

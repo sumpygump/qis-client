@@ -133,7 +133,8 @@ class Config
      */
     public function get($var, $section = null)
     {
-        $value = new StdClass();
+        //$value = new StdClass();
+        $value = null;
 
         if (null == $section) {
             if (isset($this->_data[$var])) {
@@ -153,7 +154,6 @@ class Config
         }
 
         return $value;
-        ;
     }
 
     /**

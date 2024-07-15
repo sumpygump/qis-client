@@ -11,7 +11,7 @@
     "require": {
         "php": ">=8.0",
         "sumpygump/qi-console": "1.*",
-        "sumpygump/qi-db": "1.*",
+        "sumpygump/qi-db": "^1.3",
         "phploc/phploc": "*",
         "phpmd/phpmd" : "2.6.*"
     },

@@ -8,12 +8,12 @@
 
 namespace Qis\Module;
 
+use Qi_Console_ArgV;
+use Qi_Console_Tabular;
+use Qi\Db\PdoSqlite;
 use Qis\ModuleInterface;
 use Qis\Qis;
 use Qis\Utils;
-use Qi_Console_ArgV;
-use Qi_Db_PdoSqlite;
-use Qi_Console_Tabular;
 use SebastianBergmann\PHPLOC\Analyser;
 use Exception;
 
@@ -806,7 +806,7 @@ class Codingstandard implements ModuleInterface
             $createSchema = true;
         }
 
-        $this->_db = new Qi_Db_PdoSqlite($cfg);
+        $this->_db = new PdoSqlite($cfg);
 
         if ($createSchema) {
             // First time db setup

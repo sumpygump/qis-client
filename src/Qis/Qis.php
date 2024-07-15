@@ -488,7 +488,7 @@ class Qis
     {
         echo $this->renderTitle();
 
-        if ($this->_config && !empty($this->_config->project_name)) {
+        if ($this->_config && $this->_config->project_name != '') {
             echo "Project: " . $this->_config->project_name . "\n";
         }
 

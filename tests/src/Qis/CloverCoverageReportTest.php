@@ -41,7 +41,7 @@ final class CloverCoverageReportTest extends BaseTestCase
     {
         $this->expectException(\ArgumentCountError::class);
         $this->expectExceptionMessage("Too few arguments");
-        $this->_object = new CloverCoverageReport();
+        $this->object = new CloverCoverageReport();
     }
 
     /**
@@ -53,7 +53,7 @@ final class CloverCoverageReportTest extends BaseTestCase
     {
         $this->expectException(\Qis\CloverCoverageReportException::class);
         $this->expectExceptionMessage("not found or is not readable");
-        $this->_object = new CloverCoverageReport('nofile.xml');
+        $this->object = new CloverCoverageReport('nofile.xml');
     }
 
     /**
@@ -100,7 +100,7 @@ final class CloverCoverageReportTest extends BaseTestCase
         $this->_createXmlFile('');
         $this->expectException(\Qis\CloverCoverageReportException::class);
 
-        $this->_object = new CloverCoverageReport(
+        $this->object = new CloverCoverageReport(
             'samplecoverage.xml',
             'foobar.php',
             null,
@@ -150,7 +150,7 @@ final class CloverCoverageReportTest extends BaseTestCase
         $this->_createXmlFile($contents);
         $report = $this->_bufferOutput('Crank.php');
 
-        $result = $this->_object->generateFileAnalysis('Crankshaft.php');
+        $result = $this->object->generateFileAnalysis('Crankshaft.php');
         $this->assertEquals('', $report);
         $this->assertFalse($result);
     }
@@ -316,7 +316,7 @@ final class CloverCoverageReportTest extends BaseTestCase
     protected function _bufferOutput($targetFile = null)
     {
         ob_start();
-        $this->_object = new CloverCoverageReport(
+        $this->object = new CloverCoverageReport(
             'samplecoverage.xml',
             $targetFile,
             null,

@@ -29,7 +29,7 @@ class ConfigTest extends BaseTestCase
      */
     public function setUp(): void
     {
-        $this->_object = new Config();
+        $this->object = new Config();
     }
 
     /**
@@ -44,9 +44,9 @@ class ConfigTest extends BaseTestCase
             . "project_name=test786T464";
         file_put_contents($file, $contents);
 
-        $this->_object = new Config($file);
+        $this->object = new Config($file);
 
-        $this->assertEquals('test786T464', $this->_object->project_name);
+        $this->assertEquals('test786T464', $this->object->project_name);
         unlink($file);
     }
 
@@ -62,10 +62,10 @@ class ConfigTest extends BaseTestCase
             'secret' => 'buffalo',
         );
 
-        $this->_object->loadArray($array);
+        $this->object->loadArray($array);
 
-        $this->assertEquals('test893##re', $this->_object->project_name);
-        $this->assertEquals('buffalo', $this->_object->secret);
+        $this->assertEquals('test893##re', $this->object->project_name);
+        $this->assertEquals('buffalo', $this->object->secret);
     }
 
     /**
@@ -84,9 +84,9 @@ class ConfigTest extends BaseTestCase
             . "height=480\n";
         file_put_contents($file, $contents);
 
-        $this->_object = new Config($file);
+        $this->object = new Config($file);
 
-        $this->assertEquals('640', $this->_object->images->width);
+        $this->assertEquals('640', $this->object->images->width);
 
         unlink($file);
     }
@@ -106,9 +106,9 @@ class ConfigTest extends BaseTestCase
             ),
         );
 
-        $this->_object->loadArray($data);
+        $this->object->loadArray($data);
 
-        $this->assertEquals('AA23', $this->_object->colony->location);
+        $this->assertEquals('AA23', $this->object->colony->location);
     }
 
     /**
@@ -130,10 +130,10 @@ class ConfigTest extends BaseTestCase
             'location'   => 'AA23',
         ];
 
-        $this->_object->loadArray($data);
+        $this->object->loadArray($data);
 
-        $this->assertNotEquals('original', $this->_object->colony);
-        $this->assertEquals('AA23', $this->_object->colony->location);
+        $this->assertNotEquals('original', $this->object->colony);
+        $this->assertEquals('AA23', $this->object->colony->location);
     }
 
     /**
@@ -152,8 +152,8 @@ class ConfigTest extends BaseTestCase
             ),
         );
 
-        $this->_object->loadArray($data);
-        $this->assertEquals(44.545144, $this->_object->colony->location['lat']);
+        $this->object->loadArray($data);
+        $this->assertEquals(44.545144, $this->object->colony->location['lat']);
     }
 
     /**
@@ -175,10 +175,10 @@ class ConfigTest extends BaseTestCase
             ),
         );
 
-        $this->_object->loadArray($data);
+        $this->object->loadArray($data);
         $this->assertEquals(
             68.128004,
-            $this->_object->colony->location['location']
+            $this->object->colony->location['location']
         );
     }
 
@@ -204,10 +204,10 @@ class ConfigTest extends BaseTestCase
 
         $expected->{'lng.estimated'} = 68.128004;
 
-        $this->_object->loadArray($data);
+        $this->object->loadArray($data);
         $this->assertEquals(
             $expected,
-            $this->_object->get('location', 'colony')
+            $this->object->get('location', 'colony')
         );
     }
 
@@ -222,7 +222,18 @@ class ConfigTest extends BaseTestCase
 
         $expected->name = 'Geordi';
 
-        $this->_object->set('name', 'Geordi', 'characters');
-        $this->assertEquals($expected, $this->_object->characters);
+        $this->object->set('name', 'Geordi', 'characters');
+        $this->assertEquals($expected, $this->object->characters);
+    }
+
+    /**
+     * Test attempting to get a value that is not set in the config
+     *
+     * @return void
+     */
+    public function testGetValueNotSet()
+    {
+        $value = $this->object->foobar;
+        $this->assertEquals(null, $value);
     }
 }

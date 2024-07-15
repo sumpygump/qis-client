@@ -24,5 +24,5 @@ class BaseTestCase extends TestCase
      *
      * @var object
      */
-    protected $_object;
+    protected $object;
 }

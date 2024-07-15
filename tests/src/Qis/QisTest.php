@@ -140,7 +140,7 @@ class MockModule implements ModuleInterface
      */
     public function getMetrics()
     {
-        return array();
+        return [];
     }
 }
 
@@ -161,10 +161,10 @@ class QisTest extends BaseTestCase
      */
     public function setUp(): void
     {
-        $args     = new Qi_Console_ArgV(array());
+        $args     = new Qi_Console_ArgV([]);
         $terminal = new Qi_Console_Terminal();
 
-        $this->_object = new MockQis($args, $terminal);
+        $this->object = new MockQis($args, $terminal);
     }
 
     /**
@@ -174,11 +174,11 @@ class QisTest extends BaseTestCase
      */
     public function testConstructBothArgs()
     {
-        $args     = new Qi_Console_ArgV(array());
+        $args     = new Qi_Console_ArgV([]);
         $terminal = new Qi_Console_Terminal();
 
-        $this->_object = new Qis($args, $terminal);
-        $this->assertTrue(is_object($this->_object));
+        $this->object = new Qis($args, $terminal);
+        $this->assertTrue(is_object($this->object));
     }
 
     /**
@@ -188,7 +188,7 @@ class QisTest extends BaseTestCase
      */
     public function testGetVersion()
     {
-        $version = $this->_object->getVersion();
+        $version = $this->object->getVersion();
 
         $this->assertStringContainsString('1.2', $version);
     }
@@ -200,7 +200,7 @@ class QisTest extends BaseTestCase
      */
     public function testIsVerboseDefaultSetting()
     {
-        $verbose = $this->_object->isVerbose();
+        $verbose = $this->object->isVerbose();
 
         $this->assertFalse($verbose);
     }
@@ -212,7 +212,7 @@ class QisTest extends BaseTestCase
      */
     public function testGetTerminal()
     {
-        $terminal = $this->_object->getTerminal();
+        $terminal = $this->object->getTerminal();
 
         $this->assertTrue(is_object($terminal));
     }
@@ -225,7 +225,7 @@ class QisTest extends BaseTestCase
     public function testGetConfig()
     {
         $expected = new Config();
-        $config   = $this->_object->getConfig();
+        $config   = $this->object->getConfig();
         $this->assertEquals($expected, $config);
     }
 
@@ -237,8 +237,8 @@ class QisTest extends BaseTestCase
     public function testSetConfig()
     {
         $config = new Config();
-        $this->_object->setConfig($config);
-        $actual = $this->_object->getConfig();
+        $this->object->setConfig($config);
+        $actual = $this->object->getConfig();
         $this->assertEquals($config, $actual);
     }
 
@@ -249,7 +249,7 @@ class QisTest extends BaseTestCase
      */
     public function testGetProjectQisRoot()
     {
-        $root = $this->_object->getProjectQisRoot();
+        $root = $this->object->getProjectQisRoot();
 
         $this->assertStringContainsString('tests/.qis', $root);
     }
@@ -261,13 +261,13 @@ class QisTest extends BaseTestCase
      */
     public function testRegisterCommands()
     {
-        $this->_object->registerCommands();
+        $this->object->registerCommands();
 
-        $commands = $this->_object->getCommands();
+        $commands = $this->object->getCommands();
 
-        $expected = array(
+        $expected = [
             'all', 'help', 'history', 'init', 'modules', 'summary',
-        );
+        ];
 
         $keys = array_keys($commands);
 
@@ -287,7 +287,7 @@ class QisTest extends BaseTestCase
     {
         $modules = 'Codingstandard';
 
-        $count = $this->_object->registerModules($modules);
+        $count = $this->object->registerModules($modules);
         $this->assertFalse($count);
     }
 
@@ -300,7 +300,7 @@ class QisTest extends BaseTestCase
     {
         $modules = new StdClass();
 
-        $count = $this->_object->registerModules($modules);
+        $count = $this->object->registerModules($modules);
         $this->assertEquals(0, $count);
     }
 
@@ -311,12 +311,12 @@ class QisTest extends BaseTestCase
      */
     public function testRegisterModulesFailsSilently()
     {
-        $modules = array(
-            'Abc' => array(),
-        );
+        $modules = [
+            'Abc' => [],
+        ];
 
         ob_start();
-        $count  = $this->_object->registerModules($modules);
+        $count  = $this->object->registerModules($modules);
         $result = ob_get_contents();
         ob_end_clean();
 
@@ -330,13 +330,13 @@ class QisTest extends BaseTestCase
      */
     public function testRegisterModule()
     {
-        $modules = array(
-            'Mockmodule' => array(
+        $modules = [
+            'Mockmodule' => [
                 'class' => 'Qis\\Tests\\MockModule',
-            ),
-        );
+            ],
+        ];
 
-        $count = $this->_object->registerModules($modules);
+        $count = $this->object->registerModules($modules);
 
         $this->assertEquals(1, $count);
     }
@@ -348,14 +348,14 @@ class QisTest extends BaseTestCase
      */
     public function testRegisterModuleWithCommand()
     {
-        $modules = array(
-            'Mockmodule' => array(
+        $modules = [
+            'Mockmodule' => [
                 'class' => 'Qis\\Tests\\MockModule',
                 'command' => 'mock',
-            ),
-        );
+            ],
+        ];
 
-        $count = $this->_object->registerModules($modules);
+        $count = $this->object->registerModules($modules);
 
         $this->assertEquals(1, $count);
     }
@@ -367,15 +367,15 @@ class QisTest extends BaseTestCase
      */
     public function testRegisterModuleWithNoClassFile()
     {
-        $modules = array(
-            'Mockmodule' => array(
+        $modules = [
+            'Mockmodule' => [
                 'class'   => 'MockityMockMock',
                 'command' => 'mock',
-            ),
-        );
+            ],
+        ];
 
         ob_start();
-        $count  = $this->_object->registerModules($modules);
+        $count  = $this->object->registerModules($modules);
         $result = ob_get_contents();
         ob_end_clean();
 
@@ -392,15 +392,15 @@ class QisTest extends BaseTestCase
         $file = 'Mockmodule.php';
         file_put_contents($file, '<' . '?php //nothing');
 
-        $modules = array(
-            'Mockmodule' => array(
+        $modules = [
+            'Mockmodule' => [
                 'class' => 'MockityMockMock',
                 'command' => 'mock',
-            ),
-        );
+            ],
+        ];
 
         ob_start();
-        $count  = $this->_object->registerModules($modules);
+        $count  = $this->object->registerModules($modules);
         $result = ob_get_contents();
         ob_end_clean();
 
@@ -418,7 +418,7 @@ class QisTest extends BaseTestCase
     public function testExecuteWithoutInitializedProject()
     {
         ob_start();
-        $this->_object->execute();
+        $this->object->execute();
         $result = ob_get_contents();
         ob_end_clean();
 
@@ -434,19 +434,19 @@ class QisTest extends BaseTestCase
     {
         $config = new Config();
 
-        $config->project_name = 'testfoo';
+        $config->set('project_name', 'testfoo');
 
-        $config->modules = array(
-            'Mockmodule' => array(
+        $config->set('modules', [
+            'Mockmodule' => [
                 'class'   => 'MockQisModule',
                 'command' => 'mock',
-            ),
-        );
+            ],
+        ]);
 
-        $this->_object->setConfig($config);
+        $this->object->setConfig($config);
 
         ob_start();
-        $this->_object->execute();
+        $this->object->execute();
         $result = ob_get_contents();
         ob_end_clean();
 
@@ -460,18 +460,18 @@ class QisTest extends BaseTestCase
      */
     public function testExecuteShowHelp()
     {
-        $argv = array(
+        $argv = [
             'command',
             '--help',
-        );
+        ];
 
         $args     = new Qi_Console_ArgV($argv);
         $terminal = new Qi_Console_Terminal();
 
-        $this->_object = new MockQis($args, $terminal);
+        $this->object = new MockQis($args, $terminal);
 
         ob_start();
-        $this->_object->execute();
+        $this->object->execute();
         $result = ob_get_contents();
         ob_end_clean();
 
@@ -485,36 +485,36 @@ class QisTest extends BaseTestCase
      */
     public function testExecuteShowHelpWithProjectName()
     {
-        $argv = array(
+        $argv = [
             'command',
             '--help',
-        );
+        ];
 
         $args     = new Qi_Console_ArgV($argv);
         $terminal = new Qi_Console_Terminal();
 
-        $this->_object = new MockQis($args, $terminal);
+        $this->object = new MockQis($args, $terminal);
 
         // Setup and attach config
         $config = new Config();
 
-        $config->project_name = 'testfoo';
+        $config->set('project_name', 'testfoo');
 
-        $config->modules = array(
-            'Mockmodule' => array(
-                'class'   => 'MockQisModule',
+        $config->set('modules', [
+            'Mockmodule' => [
+                'class'   => '\\Qis\\Tests\\MockModule',
                 'command' => 'mock',
-            ),
-        );
-        $this->_object->setConfig($config);
+            ],
+        ]);
+        $this->object->setConfig($config);
 
         ob_start();
-        $this->_object->execute();
+        $this->object->execute();
         $result = ob_get_contents();
         ob_end_clean();
 
         $this->assertStringContainsString('Usage: qis', $result);
-        $this->assertStringContainsString('testfoo', $result);
+        $this->assertStringContainsString('Project: testfoo', $result);
     }
 
     /**
@@ -524,29 +524,29 @@ class QisTest extends BaseTestCase
      */
     public function testExecuteShowHelpWithConfigButNoProjectName()
     {
-        $argv = array(
+        $argv = [
             'command',
             '--help',
-        );
+        ];
 
         $args     = new Qi_Console_ArgV($argv);
         $terminal = new Qi_Console_Terminal();
 
-        $this->_object = new MockQis($args, $terminal);
+        $this->object = new MockQis($args, $terminal);
 
         // Setup and attach config
         $config = new Config();
 
-        $config->modules = array(
-            'Mockmodule' => array(
+        $config->set('modules', [
+            'Mockmodule' => [
                 'class'   => 'MockQisModule',
                 'command' => 'mock',
-            ),
-        );
-        $this->_object->setConfig($config);
+            ],
+        ]);
+        $this->object->setConfig($config);
 
         ob_start();
-        $this->_object->execute();
+        $this->object->execute();
         $result = ob_get_contents();
         ob_end_clean();
 
@@ -561,32 +561,32 @@ class QisTest extends BaseTestCase
      */
     public function testExecuteShowVersion()
     {
-        $argv = array(
+        $argv = [
             'command',
             '--version',
-        );
+        ];
 
         $args     = new Qi_Console_ArgV($argv);
         $terminal = new Qi_Console_Terminal();
 
-        $this->_object = new MockQis($args, $terminal);
+        $this->object = new MockQis($args, $terminal);
 
         // Setup and attach config
         $config = new Config();
 
-        $config->project_name = 'testfoo';
+        $config->set('project_name', 'testfoo');
 
-        $config->modules = array(
-            'Mockmodule' => array(
+        $config->set('modules', [
+            'Mockmodule' => [
                 'class'   => 'MockQisModule',
                 'command' => 'mock',
-            ),
-        );
+            ],
+        ]);
 
-        $this->_object->setConfig($config);
+        $this->object->setConfig($config);
 
         ob_start();
-        $this->_object->execute();
+        $this->object->execute();
         $result = ob_get_contents();
         ob_end_clean();
 
@@ -601,18 +601,18 @@ class QisTest extends BaseTestCase
      */
     public function testExecuteVerboseMode()
     {
-        $rules    = array('verbose|v' => 'verbose');
-        $args     = new Qi_Console_ArgV(array('cmd', '-v'), $rules);
+        $rules    = ['verbose|v' => 'verbose'];
+        $args     = new Qi_Console_ArgV(['cmd', '-v'], $rules);
         $terminal = new Qi_Console_Terminal();
 
-        $this->_object = new MockQis($args, $terminal);
+        $this->object = new MockQis($args, $terminal);
 
         ob_start();
-        $this->_object->execute();
+        $this->object->execute();
         $result = ob_get_contents();
         ob_end_clean();
 
-        $this->assertTrue($this->_object->isVerbose());
+        $this->assertTrue($this->object->isVerbose());
 
         $this->assertStringContainsString('No project config file found', $result);
     }
@@ -624,15 +624,15 @@ class QisTest extends BaseTestCase
      */
     public function testLog()
     {
-        $rules    = array('verbose|v' => 'verbose');
-        $args     = new Qi_Console_ArgV(array('cmd', '-v'), $rules);
+        $rules    = ['verbose|v' => 'verbose'];
+        $args     = new Qi_Console_ArgV(['cmd', '-v'], $rules);
         $terminal = new Qi_Console_Terminal();
 
-        $this->_object = new MockQis($args, $terminal);
+        $this->object = new MockQis($args, $terminal);
 
         ob_start();
-        $this->_object->execute();
-        $this->_object->log('A penny saved is a penny earned.');
+        $this->object->execute();
+        $this->object->log('A penny saved is a penny earned.');
         $result = ob_get_contents();
         ob_end_clean();
 

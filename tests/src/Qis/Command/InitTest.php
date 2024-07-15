@@ -147,7 +147,7 @@ class InitTest extends BaseTestCase
 
         $settings = array();
 
-        $this->_object = new Init($this->_qis, $settings);
+        $this->object = new Init($this->_qis, $settings);
     }
 
     /**
@@ -179,7 +179,7 @@ class InitTest extends BaseTestCase
      */
     public function testInitialize()
     {
-        $this->_object->initialize();
+        $this->object->initialize();
 
         $this->assertTrue(true);
     }
@@ -223,7 +223,7 @@ class InitTest extends BaseTestCase
      */
     public function testGetHelpMessage()
     {
-        $message = $this->_object->getHelpMessage();
+        $message = $this->object->getHelpMessage();
 
         $this->assertTrue(is_string($message));
     }
@@ -235,7 +235,7 @@ class InitTest extends BaseTestCase
      */
     public function testGetExtendedHelpMessage()
     {
-        $result = $this->_object->getExtendedHelpMessage();
+        $result = $this->object->getExtendedHelpMessage();
 
         $this->assertTrue(is_string($result));
     }
@@ -249,7 +249,7 @@ class InitTest extends BaseTestCase
     protected function _execute($args)
     {
         ob_start();
-        $status = $this->_object->execute($args);
+        $status = $this->object->execute($args);
         $result = ob_get_contents();
         ob_end_clean();
 

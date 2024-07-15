@@ -71,7 +71,7 @@ class CoverageTest extends BaseTestCase
     {
         $this->expectException(\ArgumentCountError::class);
         $this->expectExceptionMessage("Too few arguments");
-        $this->_object = new Coverage();
+        $this->object = new Coverage();
     }
 
     /**
@@ -100,7 +100,7 @@ class CoverageTest extends BaseTestCase
         $this->expectException(\ArgumentCountError::class);
         $this->expectExceptionMessage("Too few arguments");
 
-        $this->_object->execute();
+        $this->object->execute();
     }
 
     /**
@@ -116,7 +116,7 @@ class CoverageTest extends BaseTestCase
         $args = array();
         $args = new Qi_Console_ArgV($args);
 
-        $this->_object->execute($args);
+        $this->object->execute($args);
     }
 
     /**
@@ -137,7 +137,7 @@ class CoverageTest extends BaseTestCase
 
         $args = new Qi_Console_ArgV($args);
 
-        $this->_object->execute($args);
+        $this->object->execute($args);
     }
 
     /**
@@ -147,7 +147,7 @@ class CoverageTest extends BaseTestCase
      */
     public function testGetHelpMessage()
     {
-        $help = $this->_object->getHelpMessage();
+        $help = $this->object->getHelpMessage();
 
         $this->assertStringContainsString('Show code coverage for unit tests.', $help);
     }
@@ -159,7 +159,7 @@ class CoverageTest extends BaseTestCase
      */
     public function testGetExtendedHelpMessage()
     {
-        $help = $this->_object->getExtendedHelpMessage();
+        $help = $this->object->getExtendedHelpMessage();
 
         $this->assertStringContainsString('Usage: coverage [OPTIONS] [filename]', $help);
         $this->assertStringContainsString('Valid Options:', $help);
@@ -172,7 +172,7 @@ class CoverageTest extends BaseTestCase
      */
     public function testGetSummary()
     {
-        $summary = $this->_object->getSummary();
+        $summary = $this->object->getSummary();
 
         $this->assertStringContainsString('Coverage results:', $summary);
         $this->assertStringNotContainsString('Coverage: ', $summary);
@@ -185,7 +185,7 @@ class CoverageTest extends BaseTestCase
      */
     public function testGetShortSummary()
     {
-        $summary = $this->_object->getSummary(true);
+        $summary = $this->object->getSummary(true);
 
         $this->assertStringContainsString('Coverage: ', $summary);
         $this->assertStringNotContainsString('Coverage results:', $summary);
@@ -198,7 +198,7 @@ class CoverageTest extends BaseTestCase
      */
     public function testGetStatus()
     {
-        $status = $this->_object->getStatus();
+        $status = $this->object->getStatus();
 
         $this->assertEquals(false, $status);
     }
@@ -217,13 +217,13 @@ class CoverageTest extends BaseTestCase
             'ignorePaths' => 'foo,bar',
         );
 
-        $this->_object = new MockQisModuleCoverage(
+        $this->object = new MockQisModuleCoverage(
             $this->_getDefaultQisObject($args),
             $settings
         );
 
         if ($initialize) {
-            $this->_object->initialize();
+            $this->object->initialize();
         }
     }
 

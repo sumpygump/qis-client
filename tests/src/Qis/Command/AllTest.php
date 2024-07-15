@@ -194,7 +194,7 @@ class AllTest extends BaseTestCase
 
         $settings = array();
 
-        $this->_object = new All($this->_qis, $settings);
+        $this->object = new All($this->_qis, $settings);
     }
 
     /**
@@ -216,7 +216,7 @@ class AllTest extends BaseTestCase
      */
     public function testInitialize()
     {
-        $this->_object->initialize();
+        $this->object->initialize();
 
         $this->assertTrue(true);
     }
@@ -230,7 +230,7 @@ class AllTest extends BaseTestCase
     {
         $args = new Qi_Console_ArgV(array());
 
-        $result = $this->_object->execute($args);
+        $result = $this->object->execute($args);
 
         $this->assertEquals(0, $result);
     }
@@ -242,7 +242,7 @@ class AllTest extends BaseTestCase
      */
     public function testGetHelpMessage()
     {
-        $result = $this->_object->getHelpMessage();
+        $result = $this->object->getHelpMessage();
 
         $this->assertTrue(is_string($result));
     }
@@ -254,7 +254,7 @@ class AllTest extends BaseTestCase
      */
     public function testGetExtendedHelpMessage()
     {
-        $result = $this->_object->getExtendedHelpMessage();
+        $result = $this->object->getExtendedHelpMessage();
 
         $this->assertTrue(is_string($result));
     }
@@ -460,7 +460,7 @@ class AllTest extends BaseTestCase
     protected function _execute($args)
     {
         ob_start();
-        $status = $this->_object->execute($args);
+        $status = $this->object->execute($args);
         $result = ob_get_contents();
         ob_end_clean();
 

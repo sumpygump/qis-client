@@ -98,7 +98,7 @@ class Codingstandard implements ModuleInterface
      * @var array
      */
     protected $_options = array(
-        'phpcsbin'   => 'phpcs',
+        'bin'   => 'phpcs',
     );
 
     /**
@@ -124,6 +124,13 @@ class Codingstandard implements ModuleInterface
             && $settings['standard'] != ''
         ) {
             $this->_standard = $settings['standard'];
+        }
+
+        if (
+            isset($settings['bin'])
+            && $settings['bin'] != ''
+        ) {
+            $this->setOption('bin', $settings['bin']);
         }
 
         // Store the project path
@@ -189,14 +196,16 @@ class Codingstandard implements ModuleInterface
      */
     protected function _checkVersion()
     {
-        $cmd = $this->_options['phpcsbin'] . ' --version 2>&1';
+        $cmd = $this->_options['bin'] . ' --version 2>&1';
         exec($cmd, $result, $status);
 
         $this->_qis->log('Checking version of phpcs');
 
         if ($status != 0) {
             throw new CodingStandardException(
-                "PHPCodeSniffer (phpcs) not installed. Please install with command `composer global require \"squizlabs/php_codesniffer\"`"
+                "PHPCodeSniffer (phpcs) not installed. Please install with "
+                . "command `composer global require squizlabs/php_codesniffer` "
+                . "(codingstandard.bin is set to '" . $this->_options['bin'] . "')"
             );
         }
 
@@ -210,7 +219,7 @@ class Codingstandard implements ModuleInterface
         $this->_qis->log($result[0]);
 
         $foundMatch = preg_match(
-            "/version (\d).(\d).(\d)/",
+            "/version (\d).(\d+).(\d+)/",
             $result[0],
             $matches
         );
@@ -218,6 +227,10 @@ class Codingstandard implements ModuleInterface
         if (!$foundMatch) {
             $this->_qis->log("Version: " . $result[0]);
             $this->_qis->log("Couldn't detect version of phpcs");
+            throw new CodingStandardException(
+                "Couldn't detect version of phpcs "
+                . "(codingstandard.bin is set to '" . $this->_options['bin'] . "')"
+            );
             return false;
         }
 
@@ -387,7 +400,7 @@ class Codingstandard implements ModuleInterface
             echo "\n";
         }
 
-        $cmd = $this->_options['phpcsbin']
+        $cmd = $this->_options['bin']
             . ' --standard=' . $sniffStandard
             . ' -p'
             . ' --extensions=php';
@@ -772,6 +785,7 @@ class Codingstandard implements ModuleInterface
         return "; Module to run codesniffs to check coding standards.\n"
             . "codingstandard.command=cs\n"
             . "codingstandard.class=" . get_called_class() . "\n"
+            . "codingstandard.bin=vendor/bin/phpcs\n"
             . "codingstandard.standard=PSR2\n"
             . "codingstandard.path=.\n"
             . "codingstandard.ignore=vendor\n"

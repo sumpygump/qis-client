@@ -240,7 +240,7 @@ class CodingstandardTest extends BaseTestCase
     {
         $this->expectException(CodingStandardException::class);
 
-        $this->object->setOption('phpcsbin', 'ffffffff');
+        $this->object->setOption('bin', 'ffffffff');
         $this->object->checkVersion();
     }
 
@@ -254,7 +254,7 @@ class CodingstandardTest extends BaseTestCase
         // The : command will output nothing and return status 0
         // This means no version output will be found so checkVersion will
         // return false
-        $this->object->setOption('phpcsbin', ':');
+        $this->object->setOption('bin', ':');
         $result = $this->object->checkVersion();
 
         $this->assertFalse($result);
@@ -269,7 +269,7 @@ class CodingstandardTest extends BaseTestCase
     {
         // The ls command doesn't output the version in the same format as
         // phpcs
-        $this->object->setOption('phpcsbin', 'ls');
+        $this->object->setOption('bin', 'ls');
         $this->expectException(\Qis\Module\CodingStandardException::class);
         $result = $this->object->checkVersion();
 

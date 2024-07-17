@@ -142,6 +142,16 @@ class MockModule implements ModuleInterface
     {
         return [];
     }
+
+    /**
+     * Get args from last invocation
+     *
+     * @return string
+     */
+    public function getArgs()
+    {
+        return '';
+    }
 }
 
 /**

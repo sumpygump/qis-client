@@ -120,6 +120,16 @@ class MockQisModuleBaseForAll implements ModuleInterface
     {
         return array();
     }
+
+    /**
+     * Get args from last invocation
+     *
+     * @return string
+     */
+    public function getArgs()
+    {
+        return '';
+    }
 }
 
 /**

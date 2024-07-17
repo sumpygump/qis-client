@@ -53,6 +53,13 @@ class Coverage implements ModuleInterface
     protected $_ignorePaths = array();
 
     /**
+     * Args from last execution
+     *
+     * @var array<string, string>
+     */
+    protected $args = [];
+
+    /**
      * Get default ini settings for this module
      *
      * @return string
@@ -118,6 +125,7 @@ class Coverage implements ModuleInterface
         } else {
             $targetFile = null;
         }
+        $this->args = $args->toArray();
 
         $this->_saveTimeStamp();
         try {
@@ -143,6 +151,16 @@ class Coverage implements ModuleInterface
         $this->_qis->qecho("\nCompleted coverage module task.\n");
 
         return 0;
+    }
+
+    /**
+     * Get args from last invocation
+     *
+     * @return string
+     */
+    public function getArgs()
+    {
+        return $this->args['__arg2'] ?? '';
     }
 
     /**

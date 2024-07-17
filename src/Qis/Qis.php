@@ -23,7 +23,7 @@ class Qis
      *
      * @var string
      */
-    const VERSION = '1.2.5';
+    const VERSION = '1.2.6';
 
     /**
      * Configuration
@@ -431,6 +431,7 @@ class Qis
 
         $history[] = [
             'module'  => $moduleName,
+            'args'    => $module->getArgs(),
             'date'    => $index,
             'status'  => $module->getStatus(),
             'summary' => $module->getSummary(true),

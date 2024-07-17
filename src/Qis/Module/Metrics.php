@@ -44,6 +44,13 @@ class Metrics implements ModuleInterface
     protected $_path = 'src';
 
     /**
+     * Args from last execution
+     *
+     * @var array<string, string>
+     */
+    protected $args = [];
+
+    /**
      * Constructor
      *
      * @param Qis $qis Qis object
@@ -85,6 +92,7 @@ class Metrics implements ModuleInterface
      */
     public function execute(Qi_Console_ArgV $args)
     {
+        $this->args = $args->toArray();
         $this->_qis->qecho("\nRunning Metrics module task...\n");
 
         if ($args->explain) {
@@ -105,6 +113,16 @@ class Metrics implements ModuleInterface
 
         $this->_qis->qecho("\nCompleted Metrics module task.\n");
         return ModuleInterface::RETURN_SUCCESS;
+    }
+
+    /**
+     * Get args from last invocation
+     *
+     * @return string
+     */
+    public function getArgs()
+    {
+        return $this->args['__arg2'] ?? '';
     }
 
     /**

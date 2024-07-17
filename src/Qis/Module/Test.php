@@ -57,6 +57,13 @@ class Test implements ModuleInterface
     protected $_path = '.';
 
     /**
+     * Args from last execution
+     *
+     * @var array<string, string>
+     */
+    protected $args = [];
+
+    /**
      * Constructor
      *
      * @param Qis $qis Qis object
@@ -98,6 +105,7 @@ class Test implements ModuleInterface
      */
     public function execute(Qi_Console_ArgV $args)
     {
+        $this->args = $args->toArray();
         $this->_qis->qecho("\nRunning Test (unit tests) module task...\n");
 
         if ($args->__arg2) {
@@ -126,6 +134,16 @@ class Test implements ModuleInterface
 
         $this->_qis->qecho("\nCompleted Test module task.\n");
         return 0;
+    }
+
+    /**
+     * Get args from last invocation
+     *
+     * @return string
+     */
+    public function getArgs()
+    {
+        return $this->args['__arg2'] ?? '';
     }
 
     /**

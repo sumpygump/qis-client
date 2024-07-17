@@ -43,6 +43,13 @@ class Analysis implements ModuleInterface
     protected $_paths = ['src'];
 
     /**
+     * Args from last execution
+     *
+     * @var array<string, string>
+     */
+    protected $args = [];
+
+    /**
      * Constructor
      *
      * @param Qis $qis Qis object
@@ -92,6 +99,7 @@ class Analysis implements ModuleInterface
      */
     public function execute(Qi_Console_ArgV $args)
     {
+        $this->args = $args->toArray();
         $this->_qis->qecho("\nRunning Analysis module task...\n");
 
         // Add specific options/params to args for this task
@@ -102,6 +110,7 @@ class Analysis implements ModuleInterface
         $level = null;
         if ($args->level) {
             $level = $args->level;
+            $this->_settings['level'] = $level;
         }
 
         if ($args->explain) {
@@ -132,6 +141,16 @@ class Analysis implements ModuleInterface
 
         $this->_qis->qecho("\nCompleted Analysis module task.\n");
         return ModuleInterface::RETURN_SUCCESS;
+    }
+
+    /**
+     * Get args from last invocation
+     *
+     * @return string
+     */
+    public function getArgs()
+    {
+        return $this->args['__arg2'] ?? '';
     }
 
     /**

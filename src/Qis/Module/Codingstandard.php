@@ -102,6 +102,13 @@ class Codingstandard implements ModuleInterface
     );
 
     /**
+     * Args from last execution
+     *
+     * @var array<string, string>
+     */
+    protected $args = [];
+
+    /**
      * Constructor
      *
      * @param object $qis Qis object
@@ -234,6 +241,7 @@ class Codingstandard implements ModuleInterface
      */
     public function execute(Qi_Console_ArgV $args)
     {
+        $this->args = $args->toArray();
         $this->_qis->qecho("\nRunning Codingstandard module task...\n");
         $this->_checkRequirements();
 
@@ -261,6 +269,16 @@ class Codingstandard implements ModuleInterface
         $this->displaySummary();
 
         return 0;
+    }
+
+    /**
+     * Get args from last invocation
+     *
+     * @return string
+     */
+    public function getArgs()
+    {
+        return $this->args['__arg2'] ?? '';
     }
 
     /**
@@ -364,7 +382,7 @@ class Codingstandard implements ModuleInterface
             $validPaths[] = $path;
         }
 
-        $this->_qis->qecho("Sniffing code with '$sniffStandard' standard...");
+        $this->_qis->qecho("Sniffing code with '$sniffStandard' standard...\n");
         if ($this->_qis->isVerbose()) {
             echo "\n";
         }

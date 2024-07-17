@@ -91,7 +91,14 @@ interface ModuleInterface
     /**
      * Get metrics for current status
      *
-     * @return void
+     * @return mixed
      */
     public function getMetrics();
+
+    /**
+     * Get args from last invocation
+     *
+     * @return string
+     */
+    public function getArgs();
 }

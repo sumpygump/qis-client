@@ -101,7 +101,7 @@ class History implements CommandInterface
         }
 
         $headers = array(
-            'Date', 'Module', 'Status', 'Summary', 'Metric',
+            'Date', 'Module', 'Args', 'Status', 'Summary', 'Metric',
         );
 
         $rows = array();
@@ -110,6 +110,7 @@ class History implements CommandInterface
             $row = array(
                 'date'    => $item->date,
                 'module'  => $item->module,
+                'args'    => $item->args ?? '',
                 'status'  => $item->status ? 'PASS' : 'FAIL',
                 'summary' => $item->summary,
                 'metric'  => $item->metric,

@@ -16,10 +16,9 @@ use Qi_Console_Std;
 /**
  * Init command class
  *
- * @uses    QisModuleInterface
+ * @uses \Qis\CommandInterface
  * @package Qis
- * @author  Jansen Price <jansen.price@gmail.com>
- * @version $Id$
+ * @author Jansen Price <jansen.price@gmail.com>
  */
 class Init implements CommandInterface
 {

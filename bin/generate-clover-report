@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 /**
- * This tool is a standalone script to display the findings from the 
+ * This tool is a standalone script to display the findings from the
  * code-coverage XML file generated.
  *
  * Usage: generate-clover-report <coverage.xml> [targetfile]

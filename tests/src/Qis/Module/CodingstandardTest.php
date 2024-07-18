@@ -20,10 +20,9 @@ use Qi_Console_Terminal;
 /**
  * Mock Qis Module coding standard
  *
- * @uses Qis_Module_Codingstandard
+ * @uses Qis\Module\Codingstandard
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class MockQisModuleCodingstandard extends Codingstandard
 {
@@ -56,6 +55,11 @@ class MockQisModuleCodingstandard extends Codingstandard
     {
         return $this->checkVersion();
     }
+
+    public function publicRunCodeSniff($paths, $options = [])
+    {
+        return $this->runCodeSniff($paths, $options);
+    }
 }
 
 /**
@@ -64,7 +68,6 @@ class MockQisModuleCodingstandard extends Codingstandard
  * @uses MockQisModuleCodingstandard
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class MockQisModuleCodingstandardErrorLevel extends MockQisModuleCodingstandard
 {
@@ -85,10 +88,16 @@ class MockQisModuleCodingstandardErrorLevel extends MockQisModuleCodingstandard
  * @uses \Qis\Tests\BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class CodingstandardTest extends BaseTestCase
 {
+    /**
+     * Example file for sniffing
+     *
+     * @var string
+     */
+    public $sampleFile = 'example.php';
+
     /**
      * Setup before each test
      *
@@ -113,6 +122,7 @@ class CodingstandardTest extends BaseTestCase
         if (file_exists($path)) {
             passthru("rm -rf $path");
         }
+        @unlink($this->sampleFile);
     }
 
     /**
@@ -462,6 +472,71 @@ class CodingstandardTest extends BaseTestCase
         $this->assertFalse($status);
     }
 
+    public function testRunCodeSniff()
+    {
+        $this->makeSampleFile('<?php class funbar() { const LMNOP = 1; };');
+
+        ob_start();
+        $this->object->publicRunCodeSniff([$this->sampleFile]);
+        $result = ob_get_contents();
+        ob_end_clean();
+
+        $this->assertStringContainsString('FOUND 8 ERRORS AND 1 WARNING', $result);
+    }
+
+    public function testRunCodeSniffFileNoExist()
+    {
+        ob_start();
+        $this->object->publicRunCodeSniff(['broccoli.php']);
+        $result = ob_get_contents();
+        ob_end_clean();
+
+        $this->assertStringContainsString("File 'broccoli.php' doesn't exist.", $result);
+    }
+
+    public function testRunCodeSniffFileVerbose()
+    {
+        $this->createObject(true, ['ignore' => 'vendor'], ['qis', 'cs', '-v']);
+        $this->makeSampleFile('<?php class funbar() { const LMNOP = 1; };');
+
+        ob_start();
+        $this->object->publicRunCodeSniff([$this->sampleFile]);
+        $result = ob_get_contents();
+        ob_end_clean();
+
+        $this->assertStringContainsString("phpcs --standard=PSR2", $result);
+        $this->assertStringContainsString("--ignore='vendor'", $result);
+        $this->assertStringContainsString('FOUND 8 ERRORS AND 1 WARNING', $result);
+    }
+
+    public function testRunCodeSniffFileDisplayFile()
+    {
+        $this->makeSampleFile('<?php class funbar() { const LMNOP = 1; };');
+
+        ob_start();
+        $this->object->publicRunCodeSniff([$this->sampleFile]);
+        $this->object->displayList();
+        $result = ob_get_contents();
+        ob_end_clean();
+
+        $this->assertStringContainsString('|  file         |  errors  |  warnings  |', $result);
+        $this->assertStringContainsString('|  example.php  |       8  |         1  |', $result);
+    }
+
+    public function testGetSummaryWithErrors()
+    {
+        $this->makeSampleFile('<?php class funbar() { const LMNOP = 1; };');
+
+        ob_start();
+        $this->object->publicRunCodeSniff([$this->sampleFile]);
+        $result = ob_get_contents();
+        ob_end_clean();
+
+        $result = $this->object->getSummary(true);
+
+        $this->assertStringContainsString('level: 0.13%', $result);
+    }
+
     /**
      * Create object
      *
@@ -469,12 +544,14 @@ class CodingstandardTest extends BaseTestCase
      * @param Qi_Console_ArgV $args Arguments to pass to object
      * @return Codingstandard
      */
-    protected function createObject($initialize = true, $args = [])
+    protected function createObject($initialize = true, $settings = null, $args = [])
     {
-        $settings = [
-            'standard' => 'PSR2',
-            'path'     => '.',
-        ];
+        if (null == $settings) {
+            $settings = [
+                'standard' => 'PSR2',
+                'path'     => '.',
+            ];
+        }
 
         $this->object = new MockQisModuleCodingstandard(
             $this->getDefaultQisObject($args),
@@ -494,10 +571,24 @@ class CodingstandardTest extends BaseTestCase
      */
     protected function getDefaultQisObject($args = [])
     {
-        $args     = new Qi_Console_ArgV($args);
+        $rules = [
+            'arg:action' => 'Subcommand',
+            'help|h'     => 'Show help',
+            'direct|d'   => 'Show results directly in console',
+            'verbose|v'  => 'Include more verbose output',
+            'quiet|q'    => 'Print less messages',
+            'version'    => 'Show version',
+            'no-color'   => 'Don\'t use color output',
+        ];
+        $argv     = new Qi_Console_ArgV($args, $rules);
         $terminal = new Qi_Console_Terminal();
 
         Qis::$exit = false;
-        return new Qis($args, $terminal);
+        return new Qis($argv, $terminal);
+    }
+
+    protected function makeSampleFile($text)
+    {
+        file_put_contents($this->sampleFile, $text);
     }
 }

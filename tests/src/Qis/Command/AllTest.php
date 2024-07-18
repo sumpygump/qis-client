@@ -21,10 +21,9 @@ use Qi_Console_Terminal;
 /**
  * Mock Qis Module for All subcommand tests
  *
- * @uses QisModuleInterface
+ * @uses \Qis\ModuleInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class MockQisModuleBaseForAll implements ModuleInterface
 {
@@ -140,7 +139,6 @@ class MockQisModuleBaseForAll implements ModuleInterface
  * @uses MockQisModuleBaseForAll
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class MockQisModuleAa extends MockQisModuleBaseForAll
 {
@@ -163,7 +161,6 @@ class MockQisModuleAa extends MockQisModuleBaseForAll
  * @uses MockQisModuleBaseForAll
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class MockQisModuleKk extends MockQisModuleBaseForAll
 {
@@ -186,7 +183,6 @@ class MockQisModuleKk extends MockQisModuleBaseForAll
  * @uses \Qis\Tests\BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class AllTest extends BaseTestCase
 {

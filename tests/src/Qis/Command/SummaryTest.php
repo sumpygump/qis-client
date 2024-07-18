@@ -20,10 +20,9 @@ use Qi_Console_Terminal;
 /**
  * Mock Module class for Summary subcommand
  *
- * @uses QisModuleInterface
+ * @uses \Qis\ModuleInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class MockQisModuleBaseForSummary implements ModuleInterface
 {

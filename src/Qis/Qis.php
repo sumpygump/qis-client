@@ -13,8 +13,10 @@ use Qi_Console_ArgV;
 /**
  * Qis: Quantal Integration System
  *
+ * This is the kernel class for Qis
+ *
  * @package Qis
- * @author  Jansen Price <jansen.price@gmail.com>
+ * @author Jansen Price <jansen.price@gmail.com>
  */
 class Qis
 {
@@ -94,6 +96,10 @@ class Qis
         $this->terminal = $terminal;
 
         $this->projectQisRoot = realpath('.') . DIRECTORY_SEPARATOR . '.qis';
+
+        if ($this->args->v) {
+            $this->verbose = true;
+        }
     }
 
     /**
@@ -268,10 +274,6 @@ class Qis
 
     protected function preinit()
     {
-        if ($this->args->v) {
-            $this->verbose = true;
-        }
-
         $this->registerCommands();
         $this->loadProjectConfig();
         if ($this->config) {

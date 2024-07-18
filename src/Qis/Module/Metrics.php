@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Metrics module class
+ *
+ * @package Qis
+ */
+
 namespace Qis\Module;
 
 use Qis\ModuleInterface;
@@ -9,6 +15,13 @@ use Qi_Console_Tabular;
 use Qis\PdependSummaryReport;
 use Exception;
 
+/**
+ * Metrics
+ *
+ * @uses \Qis\ModuleInterface
+ * @package Qis
+ * @author Jansen Price <jansen.price@gmail.com>
+ */
 class Metrics implements ModuleInterface
 {
     /**

@@ -18,7 +18,6 @@ use StdClass;
  * @uses \Qis\Tests\BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class ConfigTest extends BaseTestCase
 {

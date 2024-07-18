@@ -20,10 +20,9 @@ use Qi_Console_Terminal;
 /**
  * Mock Module class for Init subcommand
  *
- * @uses QisModuleInterface
+ * @uses \Qis\ModuleInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class MockQisModuleBaseForModules implements ModuleInterface
 {
@@ -139,7 +138,6 @@ class MockQisModuleBaseForModules implements ModuleInterface
  * @uses \Qis\Tests\BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class ModulesTest extends BaseTestCase
 {

@@ -17,10 +17,9 @@ use Qi_Console_Terminal;
 /**
  * Help command
  *
- * @uses QisModuleInterface
+ * @uses \Qis\CommandInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class Help implements CommandInterface
 {

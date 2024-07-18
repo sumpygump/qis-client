@@ -16,10 +16,9 @@ use Qi_Console_Tabular;
 /**
  * Modules command class
  *
- * @uses QisModuleInterface
+ * @uses \Qis\CommandInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class Modules implements CommandInterface
 {

@@ -15,7 +15,6 @@ use Exception;
  *
  * @package Qis
  * @author Jansen Price <jansen.price@nerdery.com>
- * @version $Id$
  */
 class ExceptionHandler
 {

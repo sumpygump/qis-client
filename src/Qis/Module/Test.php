@@ -17,10 +17,9 @@ use Exception;
 /**
  * Test runner module
  *
- * @uses QisModuleInterface
+ * @uses \Qis\ModuleInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class Test implements ModuleInterface
 {

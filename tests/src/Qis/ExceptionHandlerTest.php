@@ -20,10 +20,9 @@ use Exception;
 /**
  * Mock Qis Exception Handler
  *
- * @uses QisExceptionHandler
+ * @uses \Qis\ExceptionHandler
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class MockQisExceptionHandler extends ExceptionHandler
 {
@@ -55,7 +54,6 @@ class MockQisExceptionHandler extends ExceptionHandler
  * @uses \Qis\Tests\BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class ExceptionHandlerTest extends BaseTestCase
 {

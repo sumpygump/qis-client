@@ -22,10 +22,9 @@ use Exception;
 /**
  * Coding Standard Module
  *
- * @uses QisModuleInterface
+ * @uses \Qis\ModuleInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class Codingstandard implements ModuleInterface
 {
@@ -372,11 +371,7 @@ class Codingstandard implements ModuleInterface
      */
     protected function runCodeSniff($paths = ['.'], $options = [])
     {
-        if ($this->standard) {
-            $sniffStandard = $this->standard;
-        } else {
-            $sniffStandard = 'PSR2';
-        }
+        $sniffStandard = $this->standard;
 
         $direct = isset($options['direct']) && $options['direct'];
 
@@ -1035,10 +1030,9 @@ class Codingstandard implements ModuleInterface
 /**
  * Qis Module CodingStandardException
  *
- * @uses Exception
+ * @uses \Exception
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class CodingStandardException extends Exception
 {

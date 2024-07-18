@@ -15,10 +15,9 @@ use Qi_Console_ArgV;
 /**
  * Summary command class
  *
- * @uses QisCommandInterface
+ * @uses \Qis\CommandInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class Summary implements CommandInterface
 {

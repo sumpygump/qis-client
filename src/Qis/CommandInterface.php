@@ -20,7 +20,6 @@ use Exception;
  *
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 interface CommandInterface
 {
@@ -73,10 +72,9 @@ interface CommandInterface
 /**
  * CommandException
  *
- * @uses Exception
+ * @uses \Exception
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class CommandException extends Exception
 {

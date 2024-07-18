@@ -13,11 +13,9 @@ use PHPUnit\Framework\TestCase;
 /**
  * Base Test Case
  *
- * @uses PHPUnit_Framework_TestCase
+ * @uses \PHPUnit\Framework\TestCase
  * @package Qis
- * @subpackage Tests
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class BaseTestCase extends TestCase
 {

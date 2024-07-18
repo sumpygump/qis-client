@@ -8,6 +8,12 @@
 
 namespace Qis;
 
+/**
+ * PdependSummaryReport
+ *
+ * @package Qis
+ * @author Jansen Price <jansen.price@gmail.com>
+ */
 class PdependSummaryReport
 {
     /**
@@ -17,6 +23,11 @@ class PdependSummaryReport
      */
     protected $xml = null;
 
+    /**
+     * Internal data
+     *
+     * @var mixed
+     */
     protected $data = [];
 
     public function __construct($xmlFilename)

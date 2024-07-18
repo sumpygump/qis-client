@@ -19,10 +19,9 @@ use Exception;
 /**
  * Coverage Module class
  *
- * @uses QisModuleInterface
+ * @uses \Qis\ModuleInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class Coverage implements ModuleInterface
 {
@@ -360,10 +359,9 @@ class Coverage implements ModuleInterface
 /**
  * Qis Module CoverageException
  *
- * @uses Exception
+ * @uses \Exception
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class CoverageException extends Exception
 {

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Analysis module file
+ *
+ * @package Qis
+ */
+
 namespace Qis\Module;
 
 use Qis\ModuleInterface;
@@ -8,6 +14,13 @@ use Qi_Console_ArgV;
 use Qi_Console_Tabular;
 use Exception;
 
+/**
+ * Analysis qis module
+ *
+ * @uses \Qis\ModuleInterface
+ * @package Qis
+ * @author Jansen Price <jansen.price@gmail.com>
+ */
 class Analysis implements ModuleInterface
 {
     /**

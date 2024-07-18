@@ -22,7 +22,6 @@ use StdClass;
  *
  * @package Qis
  * @author  Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class CloverCoverageReport
 {
@@ -676,10 +675,9 @@ class CloverCoverageReport
 /**
  * CloverCoverageReportException
  *
- * @uses    Exception
+ * @uses    \Exception
  * @package Qis
  * @author  Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class CloverCoverageReportException extends Exception
 {

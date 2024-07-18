@@ -19,10 +19,9 @@ use Qi_Console_Terminal;
 /**
  * Qis Command
  *
- * @uses CommandInterface
+ * @uses \Qis\CommandInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class Command implements CommandInterface
 {
@@ -91,7 +90,6 @@ class Command implements CommandInterface
  * @uses \Qis\Tests\BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@nerdery.com>
- * @version $Id$
  */
 class CommandInterfaceTest extends BaseTestCase
 {

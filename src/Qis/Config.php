@@ -15,7 +15,6 @@ use StdClass;
  *
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class Config
 {

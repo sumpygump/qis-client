@@ -18,7 +18,6 @@ use Qi_Console_ArgV;
  * @uses \Qis\CommandInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class All implements CommandInterface
 {

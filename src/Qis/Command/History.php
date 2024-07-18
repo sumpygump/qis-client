@@ -17,10 +17,9 @@ use Qi_Console_Terminal;
 /**
  * History Command
  *
- * @uses CommandInterface
+ * @uses \Qis\CommandInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class History implements CommandInterface
 {

@@ -23,10 +23,9 @@ use StdClass;
  *
  * Exposes protected methods for testing
  *
- * @uses Qis
+ * @uses \Qis\Qis
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class MockQis extends Qis
 {
@@ -44,10 +43,9 @@ class MockQis extends Qis
 /**
  * Mock Qis Module
  *
- * @uses QisModuleInterface
+ * @uses \Qis\ModuleInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class MockModule implements ModuleInterface
 {
@@ -162,7 +160,6 @@ class MockModule implements ModuleInterface
  * @uses \Qis\Tests\BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class QisTest extends BaseTestCase
 {

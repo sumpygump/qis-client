@@ -19,10 +19,9 @@ use Qi_Console_Terminal;
 /**
  * Mock Qis Module Coverage
  *
- * @uses Qis_Module_Coverage
+ * @uses Qis\Module\Coverage
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class MockQisModuleCoverage extends Coverage
 {
@@ -34,7 +33,6 @@ class MockQisModuleCoverage extends Coverage
  * @uses \Qis\Tests\BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
- * @version $Id$
  */
 class CoverageTest extends BaseTestCase
 {

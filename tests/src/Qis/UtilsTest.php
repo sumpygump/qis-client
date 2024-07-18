@@ -61,10 +61,10 @@ class UtilsTest extends BaseTestCase
     {
         $result = Utils::rglob('*.txt1');
 
-        $expected = array(
+        $expected = [
             'testrglob/foo2.txt1',
             'testrglob/wunk/farse.txt1',
-        );
+        ];
 
         $this->assertEquals($expected, $result);
     }
@@ -78,10 +78,10 @@ class UtilsTest extends BaseTestCase
     {
         $result = Utils::rglob('../*.txt1');
 
-        $expected = array(
+        $expected = [
             '../tests/testrglob/foo2.txt1',
             '../tests/testrglob/wunk/farse.txt1',
-        );
+        ];
 
         $this->assertEquals($expected, $result);
     }
@@ -95,7 +95,7 @@ class UtilsTest extends BaseTestCase
     {
         $result = Utils::rglob('foo/*.txt');
 
-        $expected = array();
+        $expected = [];
 
         $this->assertEquals($expected, $result);
     }
@@ -120,7 +120,7 @@ class UtilsTest extends BaseTestCase
     public function testRglobWithRoot()
     {
         $result = Utils::rglob('reqwrewqrewqrewqrewqrewqrewq.txt', 0, '/');
-        $this->assertEquals(array(), $result);
+        $this->assertEquals([], $result);
     }
 
     /**
@@ -131,7 +131,7 @@ class UtilsTest extends BaseTestCase
     public function testRglobWithRootInPattern()
     {
         $result = Utils::rglob('/foo.txt');
-        $this->assertEquals(array(), $result);
+        $this->assertEquals([], $result);
     }
 
     /**
@@ -141,13 +141,13 @@ class UtilsTest extends BaseTestCase
      */
     public function testFindCommonRoot()
     {
-        $list = array(
+        $list = [
             'foo/bar/baz/wunk/cat/x',
             'foo/bar/baz/y',
             'foo/bar/baz/z',
             'foo/bar/baz/can/a',
             'foo/bar/baz/zork/z/z/z/z/z',
-        );
+        ];
 
         $expected = 'foo/bar/baz/';
 
@@ -163,10 +163,10 @@ class UtilsTest extends BaseTestCase
      */
     public function testFindCommonRootOnlyLastCharDiffers()
     {
-        $list = array(
+        $list = [
             'abcdef',
             'abcdex',
-        );
+        ];
 
         $expected = 'abcde';
 
@@ -182,7 +182,7 @@ class UtilsTest extends BaseTestCase
      */
     public function testFindCommonRootEmptyArray()
     {
-        $list = array();
+        $list = [];
 
         $expected = '';
 
@@ -214,9 +214,9 @@ class UtilsTest extends BaseTestCase
      */
     public function testFindCommonRootOneItem()
     {
-        $list = array(
+        $list = [
             'foo/bar/',
-        );
+        ];
 
         $expected = 'foo/bar/';
 
@@ -232,10 +232,10 @@ class UtilsTest extends BaseTestCase
      */
     public function testFindCommonRootTwoItems()
     {
-        $list = array(
+        $list = [
             'abcdef',
             'axxxxx',
-        );
+        ];
 
         $expected = 'a';
 
@@ -269,10 +269,10 @@ class UtilsTest extends BaseTestCase
      */
     public function testFindCommonRootWithInts()
     {
-        $list = array(
+        $list = [
             1113,
             1112,
-        );
+        ];
 
         $expected = '111';
 
@@ -288,10 +288,10 @@ class UtilsTest extends BaseTestCase
      */
     public function testFindCommonRootMixedArray()
     {
-        $list = array(
+        $list = [
             '98ff',
             9871,
-        );
+        ];
 
         $expected = '98';
 

@@ -199,7 +199,7 @@ class ExceptionHandlerTest extends BaseTestCase
      */
     protected function getDefaultQisObject()
     {
-        $args     = new Qi_Console_ArgV(array());
+        $args     = new Qi_Console_ArgV([]);
         $terminal = new Qi_Console_Terminal();
 
         return new Qis($args, $terminal);

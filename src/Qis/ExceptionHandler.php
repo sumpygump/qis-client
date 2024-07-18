@@ -36,8 +36,8 @@ class ExceptionHandler
     {
         self::setQis($qis);
 
-        set_exception_handler(array('Qis\ExceptionHandler', 'handle'));
-        set_error_handler(array('Qis\ExceptionHandler', 'handleError'));
+        set_exception_handler(['Qis\ExceptionHandler', 'handle']);
+        set_error_handler(['Qis\ExceptionHandler', 'handleError']);
     }
 
     /**
@@ -104,7 +104,7 @@ class ExceptionHandler
      */
     protected static function getErrorCode($code)
     {
-        $error_levels = array(
+        $error_levels = [
             1     => 'E_ERROR',
             2     => 'E_WARNING',
             4     => 'E_PARSE',
@@ -120,7 +120,7 @@ class ExceptionHandler
             4096  => 'E_RECOVERABLE_ERROR',
             8192  => 'E_DEPRECATED',
             16384 => 'E_USER_DEPRECATED',
-        );
+        ];
 
         if (!isset($error_levels[$code])) {
             return '';

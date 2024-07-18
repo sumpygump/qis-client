@@ -94,7 +94,7 @@ class Summary implements CommandInterface
         if ($module == 'all') {
             $modules = $this->qis->getModules();
         } else {
-            $modules = array($this->qis->getModule($module));
+            $modules = [$this->qis->getModule($module)];
         }
 
         foreach ($modules as $command => $module) {

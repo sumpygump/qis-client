@@ -30,7 +30,7 @@ class Metrics implements ModuleInterface
      *
      * @var array
      */
-    protected $settings = array();
+    protected $settings = [];
 
     /**
      * Path (root of project to analyze)
@@ -211,7 +211,7 @@ class Metrics implements ModuleInterface
 
         $table = new Qi_Console_Tabular(
             $rows,
-            array('headers' => $headers, 'cellalign' => $aligns, 'escapes' => $escapes)
+            ['headers' => $headers, 'cellalign' => $aligns, 'escapes' => $escapes]
         );
 
         $table->display();

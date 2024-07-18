@@ -104,12 +104,12 @@ class CommandInterfaceTest extends BaseTestCase
      */
     public function testGetName()
     {
-        $args     = new Qi_Console_ArgV(array());
+        $args     = new Qi_Console_ArgV([]);
         $terminal = new Qi_Console_Terminal();
 
         $this->qis = new Qis($args, $terminal);
 
-        $command = new Command($this->qis, array());
+        $command = new Command($this->qis, []);
 
         $name = $command->getName();
         $this->assertEquals('name', $name);

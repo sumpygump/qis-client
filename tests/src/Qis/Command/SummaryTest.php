@@ -119,7 +119,7 @@ class MockQisModuleBaseForSummary implements ModuleInterface
      */
     public function getMetrics()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -173,12 +173,12 @@ class SummaryTest extends BaseTestCase
      */
     public function setUp(): void
     {
-        $args     = new Qi_Console_ArgV(array());
+        $args     = new Qi_Console_ArgV([]);
         $terminal = new Qi_Console_Terminal();
 
         $this->qis = new Qis($args, $terminal);
 
-        $settings = array();
+        $settings = [];
 
         $this->object = new Summary($this->qis, $settings);
     }
@@ -214,7 +214,7 @@ class SummaryTest extends BaseTestCase
      */
     public function testExecuteDefault()
     {
-        $args = new Qi_Console_ArgV(array());
+        $args = new Qi_Console_ArgV([]);
 
         list($result, $status) = $this->execute($args);
 
@@ -229,11 +229,11 @@ class SummaryTest extends BaseTestCase
      */
     public function testExecuteSetNoColor()
     {
-        $argv = array(
+        $argv = [
             './qis',
             'summary',
             '--no-color',
-        );
+        ];
         $args = new Qi_Console_ArgV($argv);
 
         list($result, $status) = $this->execute($args);
@@ -249,11 +249,11 @@ class SummaryTest extends BaseTestCase
      */
     public function testExecuteSetShort()
     {
-        $argv = array(
+        $argv = [
             './qis',
             'summary',
             '--short',
-        );
+        ];
         $args = new Qi_Console_ArgV($argv);
 
         list($result, $status) = $this->execute($args);
@@ -273,7 +273,7 @@ class SummaryTest extends BaseTestCase
     {
         $this->setupSomeDefaultModules();
 
-        $args = new Qi_Console_ArgV(array());
+        $args = new Qi_Console_ArgV([]);
 
         list($result, $status) = $this->execute($args);
 
@@ -291,11 +291,11 @@ class SummaryTest extends BaseTestCase
     {
         $this->setupSomeDefaultModules();
 
-        $argv = array(
+        $argv = [
             './qis',
             'summary',
             '--no-color',
-        );
+        ];
         $args = new Qi_Console_ArgV($argv);
 
         list($result, $status) = $this->execute($args);
@@ -314,11 +314,11 @@ class SummaryTest extends BaseTestCase
     {
         $this->setupSomeDefaultModules();
 
-        $argv = array(
+        $argv = [
             './qis',
             'summary',
             '--short',
-        );
+        ];
         $args = new Qi_Console_ArgV($argv);
 
         list($result, $status) = $this->execute($args);
@@ -340,12 +340,12 @@ class SummaryTest extends BaseTestCase
     {
         $this->setupSomeDefaultModules();
 
-        $argv = array(
+        $argv = [
             './qis',
             'summary',
             '--short',
             '--no-color',
-        );
+        ];
         $args = new Qi_Console_ArgV($argv);
 
         list($result, $status) = $this->execute($args);
@@ -367,11 +367,11 @@ class SummaryTest extends BaseTestCase
     {
         $this->setupSomeDefaultModules();
 
-        $argv = array(
+        $argv = [
             './qis',
             'summary',
             'mockmock',
-        );
+        ];
         $args = new Qi_Console_ArgV($argv);
 
         list($result, $status) = $this->execute($args);
@@ -418,7 +418,7 @@ class SummaryTest extends BaseTestCase
         $result = ob_get_contents();
         ob_end_clean();
 
-        return array($result, $status);
+        return [$result, $status];
     }
 
     /**
@@ -428,16 +428,16 @@ class SummaryTest extends BaseTestCase
      */
     protected function setupSomeDefaultModules()
     {
-        $modules = array(
-            'mock' => array(
+        $modules = [
+            'mock' => [
                 'class' => 'Qis\\Tests\\Command\\MockQisModuleBaseForSummary',
                 'command' => 'mockmock',
-            ),
-            'mfalse' => array(
+            ],
+            'mfalse' => [
                 'class' => 'Qis\\Tests\\Command\\MockQisModuleSummaryFalseStatus',
                 'command' => 'mfalse',
-            ),
-        );
+            ],
+        ];
 
         $this->qis->registerModules($modules);
     }

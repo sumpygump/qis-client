@@ -71,18 +71,18 @@ class Modules implements CommandInterface
     {
         $modules = $this->qis->getModules();
 
-        $data = array();
+        $data = [];
         foreach ($modules as $command => $module) {
-            $data[] = array(
+            $data[] = [
                 get_class($module),
                 $command,
                 $module->getHelpMessage(),
-            );
+            ];
         }
 
-        $options = array(
-            'headers' => array('Module', 'Command', 'Description'),
-        );
+        $options = [
+            'headers' => ['Module', 'Command', 'Description'],
+        ];
 
         $table = new Qi_Console_Tabular($data, $options);
         $table->display();

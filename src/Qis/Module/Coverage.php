@@ -52,7 +52,7 @@ class Coverage implements ModuleInterface
      *
      * @var array
      */
-    protected $ignorePaths = array();
+    protected $ignorePaths = [];
 
     /**
      * Args from last execution

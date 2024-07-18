@@ -115,7 +115,7 @@ class CoverageTest extends BaseTestCase
         $this->expectException(\Qis\Module\CoverageException::class);
         $this->expectExceptionMessage("Cannot find file");
 
-        $args = array();
+        $args = [];
         $args = new Qi_Console_ArgV($args);
 
         $this->object->execute($args);
@@ -131,11 +131,11 @@ class CoverageTest extends BaseTestCase
         $this->expectException(\Qis\Module\CoverageException::class);
         $this->expectExceptionMessage("Cannot find file");
 
-        $args = array(
+        $args = [
             'coverage',
             'foo',
             'wong.txt',
-        );
+        ];
 
         $args = new Qi_Console_ArgV($args);
 
@@ -212,12 +212,12 @@ class CoverageTest extends BaseTestCase
      * @param Qi_Console_ArgV $args Arguments
      * @return Coverage
      */
-    protected function createObject($initialize = true, $args = array())
+    protected function createObject($initialize = true, $args = [])
     {
-        $settings = array(
+        $settings = [
             'root'        => '.',
             'ignorePaths' => 'foo,bar',
-        );
+        ];
 
         $this->object = new MockQisModuleCoverage(
             $this->getDefaultQisObject($args),
@@ -235,7 +235,7 @@ class CoverageTest extends BaseTestCase
      * @param Qi_Console_ArgV $args Arguments
      * @return Qis
      */
-    protected function getDefaultQisObject($args = array())
+    protected function getDefaultQisObject($args = [])
     {
         $args     = new Qi_Console_ArgV($args);
         $terminal = new Qi_Console_Terminal();

@@ -104,7 +104,7 @@ final class CloverCoverageReportTest extends BaseTestCase
             'samplecoverage.xml',
             'foobar.php',
             null,
-            array('vendor')
+            ['vendor']
         );
     }
 
@@ -181,11 +181,11 @@ final class CloverCoverageReportTest extends BaseTestCase
      */
     public function testFindCommonRoot()
     {
-        $list = array(
+        $list = [
             'foo/bar/baz/woof',
             'foo/bar/baz/qoof',
             'foo/bar/cackle/quux',
-        );
+        ];
 
         $commonRoot = CloverCoverageReport::findCommonRoot($list);
         $this->assertEquals('foo/bar/', $commonRoot);
@@ -228,9 +228,9 @@ final class CloverCoverageReportTest extends BaseTestCase
      */
     public function testFindCommonRootOneItem()
     {
-        $list = array(
+        $list = [
             'foo/bar/baz/quux.php',
-        );
+        ];
 
         $commonRoot = CloverCoverageReport::findCommonRoot($list);
         $this->assertEquals('foo/bar/baz/', $commonRoot);

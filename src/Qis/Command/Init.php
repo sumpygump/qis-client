@@ -206,9 +206,7 @@ class Init implements CommandInterface
             include_once $file;
             $classname = 'Qis\\Module\\' . pathinfo($file, PATHINFO_FILENAME);
             echo "  Initializing " . $classname . "\n";
-            $contents .= call_user_func(
-                array($classname, 'getDefaultIni')
-            ) . "\n";
+            $contents .= call_user_func([$classname, 'getDefaultIni']) . "\n";
         }
 
         return $contents;

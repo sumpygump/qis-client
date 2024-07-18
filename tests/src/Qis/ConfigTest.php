@@ -57,10 +57,10 @@ class ConfigTest extends BaseTestCase
      */
     public function testLoadArray()
     {
-        $array = array(
+        $array = [
             'project_name' => 'test893##re',
             'secret' => 'buffalo',
-        );
+        ];
 
         $this->object->loadArray($array);
 
@@ -98,13 +98,13 @@ class ConfigTest extends BaseTestCase
      */
     public function testAddArray()
     {
-        $data = array(
-            'colony' => array(
+        $data = [
+            'colony' => [
                 'population' => 144450,
                 'altitude'   => 26.5,
                 'location'   => 'AA23',
-            ),
-        );
+            ],
+        ];
 
         $this->object->loadArray($data);
 
@@ -143,14 +143,14 @@ class ConfigTest extends BaseTestCase
      */
     public function testAddArrayWithSubSections()
     {
-        $data = array(
-            'colony' => array(
+        $data = [
+            'colony' => [
                 'population' => 144450,
                 'altitude'   => 26.5,
                 'location.lat'   => 44.545144,
                 'location.lng'   => 68.128004,
-            ),
-        );
+            ],
+        ];
 
         $this->object->loadArray($data);
         $this->assertEquals(44.545144, $this->object->colony->location['lat']);
@@ -166,14 +166,14 @@ class ConfigTest extends BaseTestCase
      */
     public function testAddArrayWithValueEndingInDot()
     {
-        $data = array(
-            'colony' => array(
+        $data = [
+            'colony' => [
                 'population'   => 144450,
                 'altitude'     => 26.5,
                 'location.lat' => 44.545144,
                 'location.'    => 68.128004,
-            ),
-        );
+            ],
+        ];
 
         $this->object->loadArray($data);
         $this->assertEquals(
@@ -189,14 +189,14 @@ class ConfigTest extends BaseTestCase
      */
     public function testAddArrayWithMultipleDotsInKeyName()
     {
-        $data = array(
-            'colony' => array(
+        $data = [
+            'colony' => [
                 'population'             => 144450,
                 'altitude'               => 26.5,
                 'location.lat'           => 44.545144,
                 'location.lng.estimated' => 68.128004,
-            ),
-        );
+            ],
+        ];
 
         $expected = new StdClass();
 

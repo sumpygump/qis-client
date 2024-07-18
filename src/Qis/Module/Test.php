@@ -43,7 +43,7 @@ class Test implements ModuleInterface
      *
      * @var array
      */
-    protected $settings = array();
+    protected $settings = [];
 
     /**
      * Path (root of tests to run)
@@ -123,7 +123,7 @@ class Test implements ModuleInterface
             return $this->showList();
         }
 
-        $options = array();
+        $options = [];
 
         if ($args->testdox) {
             $options['testdox'] = true;
@@ -242,7 +242,7 @@ class Test implements ModuleInterface
      * @param array $options Array of options
      * @return void
      */
-    public function runTest($path = '.', $options = array())
+    public function runTest($path = '.', $options = [])
     {
         $coverageReportFilename = $this->outputPath
             . 'coverage.xml';
@@ -394,8 +394,8 @@ class Test implements ModuleInterface
         }
 
         $table = new Qi_Console_Tabular(
-            array(array_values($results)),
-            array('headers' => array_keys($results))
+            [array_values($results)],
+            ['headers' => array_keys($results)]
         );
 
         $fg = 8;
@@ -470,12 +470,12 @@ class Test implements ModuleInterface
 
         $suite = $data->testsuite;
 
-        $results = array(
+        $results = [
             'tests'      => (string) $suite['tests'],
             'assertions' => (string) $suite['assertions'],
             'failures'   => (string) $suite['failures'],
             'errors'     => (string) $suite['errors'],
-        );
+        ];
 
         return $results;
     }

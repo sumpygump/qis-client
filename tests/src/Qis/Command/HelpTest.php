@@ -119,7 +119,7 @@ class MockQisModuleBaseForHelp implements ModuleInterface
      */
     public function getMetrics()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -152,12 +152,12 @@ class HelpTest extends BaseTestCase
      */
     public function setUp(): void
     {
-        $args     = new Qi_Console_ArgV(array());
+        $args     = new Qi_Console_ArgV([]);
         $terminal = new Qi_Console_Terminal();
 
         $this->qis = new Qis($args, $terminal);
 
-        $settings = array();
+        $settings = [];
 
         $this->object = new Help($this->qis, $settings);
     }
@@ -193,7 +193,7 @@ class HelpTest extends BaseTestCase
      */
     public function testExecuteRegularHelp()
     {
-        $args = new Qi_Console_ArgV(array());
+        $args = new Qi_Console_ArgV([]);
 
         list($result, $status) = $this->execute($args);
 
@@ -211,7 +211,7 @@ class HelpTest extends BaseTestCase
     {
         $this->setupSomeDefaultModules();
 
-        $args = new Qi_Console_ArgV(array());
+        $args = new Qi_Console_ArgV([]);
 
         list($result, $status) = $this->execute($args);
 
@@ -248,11 +248,11 @@ class HelpTest extends BaseTestCase
      */
     public function testExecuteContextualHelpModuleExists()
     {
-        $argv = array(
+        $argv = [
             './qis',
             'help',
             'foobar',
-        );
+        ];
 
         $this->setupSomeDefaultModules();
 
@@ -302,7 +302,7 @@ class HelpTest extends BaseTestCase
         $result = ob_get_contents();
         ob_end_clean();
 
-        return array($result, $status);
+        return [$result, $status];
     }
 
     /**
@@ -312,12 +312,12 @@ class HelpTest extends BaseTestCase
      */
     protected function setupSomeDefaultModules()
     {
-        $modules = array(
-            'mock' => array(
+        $modules = [
+            'mock' => [
                 'class' => 'Qis\\Tests\\Command\\MockQisModuleBaseForHelp',
                 'command' => 'foobar',
-            ),
-        );
+            ],
+        ];
 
         $this->qis->registerModules($modules);
     }

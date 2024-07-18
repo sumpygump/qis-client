@@ -563,8 +563,8 @@ class Analysis implements ModuleInterface
         }
 
         $table = new Qi_Console_Tabular(
-            array(array_values($results)),
-            array('headers' => array_keys($results))
+            [array_values($results)],
+            ['headers' => array_keys($results)]
         );
         $out = "Analysis results:\n" . $table->display(true);
 

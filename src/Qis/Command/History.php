@@ -84,7 +84,7 @@ class History implements CommandInterface
             $targetModule = $args->__arg2;
             printf("Module filter: %s\n", $targetModule);
 
-            $filteredHistory = array();
+            $filteredHistory = [];
             foreach ($history as $item) {
                 if ($item->module == $targetModule) {
                     $filteredHistory[] = $item;
@@ -100,28 +100,28 @@ class History implements CommandInterface
             return 0;
         }
 
-        $headers = array(
+        $headers = [
             'Date', 'Module', 'Args', 'Status', 'Summary', 'Metric',
-        );
+        ];
 
-        $rows = array();
+        $rows = [];
 
         foreach ($history as $item) {
-            $row = array(
+            $row = [
                 'date'    => $item->date,
                 'module'  => $item->module,
                 'args'    => $item->args ?? '',
                 'status'  => $item->status ? 'PASS' : 'FAIL',
                 'summary' => $item->summary,
                 'metric'  => $item->metric,
-            );
+            ];
 
             $rows[] = $row;
         }
 
         $table = new Qi_Console_Tabular(
             $rows,
-            array('headers' => $headers)
+            ['headers' => $headers]
         );
 
         $table->display();

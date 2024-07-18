@@ -24,16 +24,16 @@ class Config
      *
      * @var array
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
      * Default configuration options
      *
      * @var array
      */
-    protected $defaults = array(
-        'modules' => array(),
-    );
+    protected $defaults = [
+        'modules' => [],
+    ];
 
     /**
      * Constructor
@@ -97,10 +97,10 @@ class Config
     protected function addArray($sectionName, $data)
     {
         if (!isset($this->data[$sectionName])) {
-            $this->data[$sectionName] = array();
+            $this->data[$sectionName] = [];
         }
 
-        $section = array();
+        $section = [];
 
         foreach ($data as $key => $value) {
             if (false !== strpos($key, '.')) {
@@ -113,7 +113,7 @@ class Config
                 }
 
                 if (!isset($section[$pieces[0]])) {
-                    $section[$pieces[0]] = array();
+                    $section[$pieces[0]] = [];
                 }
                 $section[$pieces[0]][$pieces[1]] = $value;
             } else {
@@ -172,7 +172,7 @@ class Config
                 $this->data[$key] = $value;
             }
         } else {
-            $this->addArray($sectionName, array($key => $value));
+            $this->addArray($sectionName, [$key => $value]);
         }
     }
 

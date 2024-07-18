@@ -120,7 +120,7 @@ class MockQisModuleBaseForAll implements ModuleInterface
      */
     public function getMetrics()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -199,12 +199,12 @@ class AllTest extends BaseTestCase
      */
     public function setUp(): void
     {
-        $args     = new Qi_Console_ArgV(array());
+        $args     = new Qi_Console_ArgV([]);
         $terminal = new Qi_Console_Terminal();
 
         $this->qis = new Qis($args, $terminal);
 
-        $settings = array();
+        $settings = [];
 
         $this->object = new All($this->qis, $settings);
     }
@@ -240,7 +240,7 @@ class AllTest extends BaseTestCase
      */
     public function testExecuteEmptyArgs()
     {
-        $args = new Qi_Console_ArgV(array());
+        $args = new Qi_Console_ArgV([]);
 
         $result = $this->object->execute($args);
 
@@ -280,7 +280,7 @@ class AllTest extends BaseTestCase
     {
         $this->setupSomeDefaultModules();
 
-        $args = new Qi_Console_ArgV(array());
+        $args = new Qi_Console_ArgV([]);
 
         list($result, $status) = $this->execute($args);
 
@@ -302,7 +302,7 @@ class AllTest extends BaseTestCase
 
         $this->setupSomeDefaultModules();
 
-        $args = new Qi_Console_ArgV(array());
+        $args = new Qi_Console_ArgV([]);
 
         list($result, $status) = $this->execute($args);
 
@@ -324,7 +324,7 @@ class AllTest extends BaseTestCase
 
         $this->setupSomeDefaultModules();
 
-        $args = new Qi_Console_ArgV(array());
+        $args = new Qi_Console_ArgV([]);
 
         list($result, $status) = $this->execute($args);
 
@@ -346,7 +346,7 @@ class AllTest extends BaseTestCase
 
         $this->setupSomeDefaultModules();
 
-        $args = new Qi_Console_ArgV(array());
+        $args = new Qi_Console_ArgV([]);
 
         list($result, $status) = $this->execute($args);
 
@@ -371,7 +371,7 @@ class AllTest extends BaseTestCase
 
         $this->setupSomeDefaultModules();
 
-        $args = new Qi_Console_ArgV(array());
+        $args = new Qi_Console_ArgV([]);
 
         list($result, $status) = $this->execute($args);
 
@@ -393,7 +393,7 @@ class AllTest extends BaseTestCase
 
         $this->setupSomeDefaultModules();
 
-        $args = new Qi_Console_ArgV(array());
+        $args = new Qi_Console_ArgV([]);
 
         list($result, $status) = $this->execute($args);
 
@@ -415,7 +415,7 @@ class AllTest extends BaseTestCase
 
         $this->setupSomeDefaultModules();
 
-        $args = new Qi_Console_ArgV(array());
+        $args = new Qi_Console_ArgV([]);
 
         list($result, $status) = $this->execute($args);
 
@@ -431,7 +431,7 @@ class AllTest extends BaseTestCase
     public function testGetBuildOrderWithArrayBuildOrder()
     {
         $config = new Config();
-        $config->set('build_order', array('nofooling'));
+        $config->set('build_order', ['nofooling']);
 
         $this->qis->setConfig($config);
 

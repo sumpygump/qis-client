@@ -45,14 +45,14 @@ class CloverCoverageReport
      *
      * @var array
      */
-    protected $files = array();
+    protected $files = [];
 
     /**
      * Paths to ignore in the coverage report
      *
      * @var array
      */
-    protected $ignorePaths = array();
+    protected $ignorePaths = [];
 
     /**
      * Constructor
@@ -67,7 +67,7 @@ class CloverCoverageReport
         $xmlFilename,
         $targetFile = '',
         $root = null,
-        $ignorePaths = array()
+        $ignorePaths = []
     ) {
         if (!file_exists($xmlFilename)) {
             throw new CloverCoverageReportException(
@@ -82,7 +82,7 @@ class CloverCoverageReport
         libxml_use_internal_errors(true);
         $this->xml = simplexml_load_file($xmlFilename);
         if (false == $this->xml) {
-            $errors = array();
+            $errors = [];
             foreach (libxml_get_errors() as $error) {
                 $errors[] = trim($error->message)
                     . ' in file ' . trim($error->file) . ':' . $error->line;
@@ -141,10 +141,10 @@ class CloverCoverageReport
             if (!isset($this->files[$file])) {
                 $sloc = $this->getSloc($file);
 
-                $this->files[$file] = array(
+                $this->files[$file] = [
                     'coveredstatements' => 0,
                     'statements'        => $sloc,
-                );
+                ];
             }
         }
 
@@ -174,7 +174,7 @@ class CloverCoverageReport
     protected function getSloc($file)
     {
         $analyser = new Analyser();
-        $results = $analyser->countFiles(array($file), false);
+        $results = $analyser->countFiles([$file], false);
 
         // lloc = Logical Lines of Code
         return $results['lloc'];
@@ -242,10 +242,10 @@ class CloverCoverageReport
             // each file
             $coveredStatements = (int) $file->metrics['coveredstatements'];
 
-            $fileMetric = array(
+            $fileMetric = [
                 'coveredstatements' => $coveredStatements,
                 'statements' => (int) $file->metrics['statements'],
-            );
+            ];
 
             // Save metrics by filename
             $this->files[$name] = $fileMetric;
@@ -264,7 +264,7 @@ class CloverCoverageReport
 
         // Strip out the long paths by replacing with a common root as supplied
         // in $root
-        $newFiles = array();
+        $newFiles = [];
         foreach ($this->files as $name => $metrics) {
             $newFiles[str_replace($root, '', $name)] = $metrics;
         }
@@ -394,7 +394,7 @@ class CloverCoverageReport
      */
     public function gatherFileStatistics($filename)
     {
-        $stats = array();
+        $stats = [];
 
         $file = $this->findTargetFile($filename);
 
@@ -472,7 +472,7 @@ class CloverCoverageReport
         }
 
         $longest = 0;
-        $pathlist = array();
+        $pathlist = [];
 
         // Chunk each item into parts separated by dirSep
         foreach ($list as $item) {
@@ -490,7 +490,7 @@ class CloverCoverageReport
         // stop and use the previous one
         $root = '';
         for ($i = 0; $i < $longest; $i++) {
-            $common = array();
+            $common = [];
             foreach ($pathlist as $pathparts) {
                 $path = implode('/', array_slice($pathparts, 0, $i + 1));
 

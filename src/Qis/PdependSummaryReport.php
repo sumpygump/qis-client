@@ -27,7 +27,7 @@ class PdependSummaryReport
         libxml_use_internal_errors(true);
         $this->xml = simplexml_load_file($xmlFilename);
         if (false == $this->xml) {
-            $errors = array();
+            $errors = [];
             foreach (libxml_get_errors() as $error) {
                 $errors[] = trim($error->message)
                     . ' in file ' . trim($error->file) . ':' . $error->line;

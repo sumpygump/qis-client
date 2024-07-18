@@ -62,14 +62,14 @@ class Codingstandard implements ModuleInterface
      *
      * @var array
      */
-    protected $paths = array();
+    protected $paths = [];
 
     /**
      * List of files to sniff
      *
      * @var array
      */
-    protected $files = array();
+    protected $files = [];
 
     /**
      * Ignore patterns to exclude during sniffing
@@ -99,9 +99,9 @@ class Codingstandard implements ModuleInterface
      *
      * @var array
      */
-    protected $options = array(
+    protected $options = [
         'bin' => 'phpcs',
-    );
+    ];
 
     /**
      * Args from last execution
@@ -264,9 +264,9 @@ class Codingstandard implements ModuleInterface
             return $this->displayList();
         }
 
-        $options = array(
+        $options = [
             'direct' => (bool) $args->d,
-        );
+        ];
 
         $this->runCodeSniff($paths, $options);
 
@@ -370,7 +370,7 @@ class Codingstandard implements ModuleInterface
      * @param array $options Options
      * @return void
      */
-    protected function runCodeSniff($paths = array('.'), $options = array())
+    protected function runCodeSniff($paths = ['.'], $options = [])
     {
         if ($this->standard) {
             $sniffStandard = $this->standard;
@@ -380,7 +380,7 @@ class Codingstandard implements ModuleInterface
 
         $direct = isset($options['direct']) && $options['direct'];
 
-        $validPaths = array();
+        $validPaths = [];
         foreach ($paths as $path) {
             if (!file_exists($path)) {
                 $this->qis->halt("File '$path' doesn't exist.");
@@ -626,8 +626,8 @@ class Codingstandard implements ModuleInterface
         $results = $this->getMetrics();
 
         $table = new Qi_Console_Tabular(
-            array(array_values($results)),
-            array('headers' => array_keys($results))
+            [array_values($results)],
+            ['headers' => array_keys($results)]
         );
 
 
@@ -666,14 +666,14 @@ class Codingstandard implements ModuleInterface
         $results = $this->getFileList();
 
         // Determine common root from files
-        $filelist = array();
+        $filelist = [];
         foreach ($results as $row) {
             $filelist[] = $row['file'];
         }
         $root = realpath('.') . DIRECTORY_SEPARATOR;
 
         // Group by severity to get error and warning counts
-        $summary = array();
+        $summary = [];
         foreach ($results as $row) {
             $file = str_replace($root, '', $row['file']);
 
@@ -682,13 +682,13 @@ class Codingstandard implements ModuleInterface
 
         // Reformulate rows to include an error count
         // and warning count for each file
-        $rows = array();
+        $rows = [];
         foreach ($summary as $file => $counts) {
-            $row = array(
+            $row = [
                 'file'    => $file,
                 'error'   => 0,
                 'warning' => 0,
-            );
+            ];
             if (isset($counts['error'])) {
                 $row['error'] = $counts['error'];
             }
@@ -701,10 +701,10 @@ class Codingstandard implements ModuleInterface
         // Generate a terminal table display
         $table = new Qi_Console_Tabular(
             $rows,
-            array(
-                'headers'   => array('file', 'errors', 'warnings'),
-                'cellalign' => array('L', 'R', 'R'),
-            )
+            [
+                'headers'   => ['file', 'errors', 'warnings'],
+                'cellalign' => ['L', 'R', 'R'],
+            ]
         );
 
         echo $table->display(true);
@@ -798,10 +798,10 @@ class Codingstandard implements ModuleInterface
         if (strpos($path, ',') !== false) {
             $paths = explode(',', $path);
         } else {
-            $paths = array($path);
+            $paths = [$path];
         }
 
-        $fullpaths = array();
+        $fullpaths = [];
         foreach ($paths as $path) {
             $fullpath = realpath(trim($path));
             if ($fullpath != '') {
@@ -819,11 +819,11 @@ class Codingstandard implements ModuleInterface
      */
     protected function initDatabase()
     {
-        $cfg = array(
+        $cfg = [
             'dbfile'   => $this->outputPath . 'cs.db3',
             'log'      => true,
             'log_file' => $this->outputPath . 'db.log',
-        );
+        ];
 
         $createSchema = false;
         if (!file_exists($cfg['dbfile'])) {
@@ -928,7 +928,7 @@ class Codingstandard implements ModuleInterface
         $this->updateSloc($sloc);
         $this->updateCommentLines($comments);
 
-        return array($sloc, $comments);
+        return [$sloc, $comments];
     }
 
     /**
@@ -943,7 +943,7 @@ class Codingstandard implements ModuleInterface
             unlink($filelistPath);
         }
 
-        $this->files = array();
+        $this->files = [];
     }
 
     /**
@@ -988,7 +988,7 @@ class Codingstandard implements ModuleInterface
         $ignorePattern = str_replace(',', '|', $this->ignore);
 
         // Filter out ignored paths
-        $filtered = array();
+        $filtered = [];
         foreach ($files as $file) {
             if (preg_match('#' . $ignorePattern . '#', $file)) {
                 continue;

@@ -6,6 +6,8 @@
  * @package Qis
  */
 
+// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses
+
 namespace Qis\Module;
 
 use Qis\ModuleInterface;
@@ -29,28 +31,28 @@ class Coverage implements ModuleInterface
      *
      * @var object
      */
-    protected $_qis = null;
+    protected $qis = null;
 
     /**
      * Path
      *
      * @var string
      */
-    protected $_root = '.';
+    protected $root = '.';
 
     /**
      * Output path
      *
      * @var string
      */
-    protected $_outputPath = 'coverage';
+    protected $outputPath = 'coverage';
 
     /**
      * A list of ignore paths
      *
      * @var array
      */
-    protected $_ignorePaths = array();
+    protected $ignorePaths = array();
 
     /**
      * Args from last execution
@@ -83,14 +85,14 @@ class Coverage implements ModuleInterface
      */
     public function __construct(Qis $qis, $settings)
     {
-        $this->_qis = $qis;
+        $this->qis = $qis;
 
         if (isset($settings['root']) && trim($settings['root'])) {
-            $this->_root = $settings['root'];
+            $this->root = $settings['root'];
         }
 
         if (isset($settings['ignorePaths']) && trim($settings['ignorePaths'])) {
-            $this->_ignorePaths = explode(',', trim($settings['ignorePaths']));
+            $this->ignorePaths = explode(',', trim($settings['ignorePaths']));
         }
     }
 
@@ -101,15 +103,15 @@ class Coverage implements ModuleInterface
      */
     public function initialize()
     {
-        $this->_outputPath = $this->_qis->getProjectQisRoot()
+        $this->outputPath = $this->qis->getProjectQisRoot()
             . DIRECTORY_SEPARATOR
-            . $this->_outputPath . DIRECTORY_SEPARATOR;
+            . $this->outputPath . DIRECTORY_SEPARATOR;
 
-        if (!file_exists($this->_outputPath)) {
-            mkdir($this->_outputPath);
+        if (!file_exists($this->outputPath)) {
+            mkdir($this->outputPath);
         }
 
-        $this->_root = realpath($this->_root) . DIRECTORY_SEPARATOR;
+        $this->root = realpath($this->root) . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -127,16 +129,16 @@ class Coverage implements ModuleInterface
         }
         $this->args = $args->toArray();
 
-        $this->_saveTimeStamp();
+        $this->saveTimeStamp();
         try {
             if ($args->serve) {
-                $this->_serveCoverage();
+                $this->serveCoverage();
                 return 0;
             } else {
                 ob_start();
-                $this->_qis->qecho("\nRunning coverage module task...\n");
+                $this->qis->qecho("\nRunning coverage module task...\n");
 
-                $this->_checkCoverage($targetFile);
+                $this->checkCoverage($targetFile);
             }
         } catch (Exception $e) {
             // If there was an exception, eat the output from ob
@@ -148,7 +150,7 @@ class Coverage implements ModuleInterface
 
         ob_end_flush();
 
-        $this->_qis->qecho("\nCompleted coverage module task.\n");
+        $this->qis->qecho("\nCompleted coverage module task.\n");
 
         return 0;
     }
@@ -189,10 +191,10 @@ class Coverage implements ModuleInterface
             . "for the given filename.\n";
 
         $out .= "\nValid Options:\n"
-            . $this->_qis->getTerminal()->do_setaf(3)
+            . $this->qis->getTerminal()->do_setaf(3)
             . "  --list : Show list of files in coverage\n"
             . "  --serve : Serve the html coverage report on port 8005\n"
-            . $this->_qis->getTerminal()->do_op();
+            . $this->qis->getTerminal()->do_op();
 
         return $out;
     }
@@ -262,9 +264,9 @@ class Coverage implements ModuleInterface
      *
      * @return bool
      */
-    protected function _saveTimeStamp()
+    protected function saveTimeStamp()
     {
-        $file     = $this->_outputPath . 'lastrun';
+        $file     = $this->outputPath . 'lastrun';
         $contents = date('Y-m-d H:i:s');
 
         return file_put_contents($file, $contents);
@@ -276,9 +278,9 @@ class Coverage implements ModuleInterface
      * @param string $targetFile Target file
      * @return void
      */
-    protected function _checkCoverage($targetFile = null)
+    protected function checkCoverage($targetFile = null)
     {
-        $file = $this->_qis->getProjectQisRoot() . DIRECTORY_SEPARATOR
+        $file = $this->qis->getProjectQisRoot() . DIRECTORY_SEPARATOR
             . 'test-results' . DIRECTORY_SEPARATOR . 'coverage.xml';
 
         if (!file_exists($file)) {
@@ -288,22 +290,22 @@ class Coverage implements ModuleInterface
             );
         }
 
-        $this->_qis->log('Parsing clover coverage report...');
+        $this->qis->log('Parsing clover coverage report...');
         $report = new CloverCoverageReport(
             $file,
             $targetFile,
-            $this->_root,
-            $this->_ignorePaths
+            $this->root,
+            $this->ignorePaths
         );
 
         $totalCoverage = $report->getTotalCoverage();
 
-        $this->_saveTotalCoverage($totalCoverage);
+        $this->saveTotalCoverage($totalCoverage);
     }
 
-    protected function _serveCoverage()
+    protected function serveCoverage()
     {
-        $path = $this->_qis->getProjectQisRoot() . DIRECTORY_SEPARATOR
+        $path = $this->qis->getProjectQisRoot() . DIRECTORY_SEPARATOR
             . 'test-results' . DIRECTORY_SEPARATOR . 'coverage';
 
         if (!is_dir($path)) {
@@ -327,9 +329,9 @@ class Coverage implements ModuleInterface
      * @param float $totalCoverage Total coverage percentage
      * @return mixed
      */
-    protected function _saveTotalCoverage($totalCoverage)
+    protected function saveTotalCoverage($totalCoverage)
     {
-        $file = $this->_outputPath . 'totalcoverage.txt';
+        $file = $this->outputPath . 'totalcoverage.txt';
 
         $contents = "Total Coverage: " . $totalCoverage . "%";
         return file_put_contents($file, $contents);
@@ -342,7 +344,7 @@ class Coverage implements ModuleInterface
      */
     public function getTotalCoverage()
     {
-        $file = $this->_outputPath . 'totalcoverage.txt';
+        $file = $this->outputPath . 'totalcoverage.txt';
         $out  = '';
 
         if (!file_exists($file)) {

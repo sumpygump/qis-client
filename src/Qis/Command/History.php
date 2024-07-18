@@ -29,14 +29,14 @@ class History implements CommandInterface
      *
      * @var mixed
      */
-    protected $_qis = null;
+    protected $qis = null;
 
     /**
      * Terminal
      *
      * @var Qi_Console_Terminal
      */
-    protected $_terminal;
+    protected $terminal;
 
     /**
      * Get Name of command
@@ -57,8 +57,8 @@ class History implements CommandInterface
      */
     public function __construct(Qis $qis, $settings)
     {
-        $this->_qis      = $qis;
-        $this->_terminal = $this->_qis->getTerminal();
+        $this->qis = $qis;
+        $this->terminal = $this->qis->getTerminal();
     }
 
     /**
@@ -78,7 +78,7 @@ class History implements CommandInterface
      */
     public function execute(Qi_Console_ArgV $args)
     {
-        $history = $this->_qis->readHistory();
+        $history = $this->qis->readHistory();
 
         if ($args->__arg2) {
             $targetModule = $args->__arg2;

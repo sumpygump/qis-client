@@ -6,9 +6,11 @@
  * @package Qis
  */
 
+// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses
+
 namespace Qis\Tests\Command;
 
-use BaseTestCase;
+use Qis\Tests\BaseTestCase;
 use Qis\Command\Summary;
 use Qis\ModuleInterface;
 use Qis\Qis;
@@ -155,14 +157,14 @@ class MockQisModuleSummaryFalseStatus extends MockQisModuleBaseForSummary
 /**
  * Qis Command Init Test cases
  *
- * @uses BaseTestCase
+ * @uses \Qis\Tests\BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
 class SummaryTest extends BaseTestCase
 {
-    public $_qis;
+    public $qis;
 
     /**
      * Setup before each test
@@ -174,11 +176,11 @@ class SummaryTest extends BaseTestCase
         $args     = new Qi_Console_ArgV(array());
         $terminal = new Qi_Console_Terminal();
 
-        $this->_qis = new Qis($args, $terminal);
+        $this->qis = new Qis($args, $terminal);
 
         $settings = array();
 
-        $this->object = new Summary($this->_qis, $settings);
+        $this->object = new Summary($this->qis, $settings);
     }
 
     /**
@@ -214,7 +216,7 @@ class SummaryTest extends BaseTestCase
     {
         $args = new Qi_Console_ArgV(array());
 
-        list($result, $status) = $this->_execute($args);
+        list($result, $status) = $this->execute($args);
 
         $this->assertEquals("\n", $result);
         $this->assertEquals(0, $status);
@@ -234,7 +236,7 @@ class SummaryTest extends BaseTestCase
         );
         $args = new Qi_Console_ArgV($argv);
 
-        list($result, $status) = $this->_execute($args);
+        list($result, $status) = $this->execute($args);
 
         $this->assertEquals("\n", $result);
         $this->assertEquals(0, $status);
@@ -254,7 +256,7 @@ class SummaryTest extends BaseTestCase
         );
         $args = new Qi_Console_ArgV($argv);
 
-        list($result, $status) = $this->_execute($args);
+        list($result, $status) = $this->execute($args);
 
         $expected = str_repeat('-', 32) . "\n";
 
@@ -269,11 +271,11 @@ class SummaryTest extends BaseTestCase
      */
     public function testExecuteWithRegisteredModules()
     {
-        $this->_setupSomeDefaultModules();
+        $this->setupSomeDefaultModules();
 
         $args = new Qi_Console_ArgV(array());
 
-        list($result, $status) = $this->_execute($args);
+        list($result, $status) = $this->execute($args);
 
         $this->assertStringContainsString('long summary', $result);
         $this->assertStringContainsString('short summary', $result);
@@ -287,7 +289,7 @@ class SummaryTest extends BaseTestCase
      */
     public function testExecuteWithRegisteredModulesNoColor()
     {
-        $this->_setupSomeDefaultModules();
+        $this->setupSomeDefaultModules();
 
         $argv = array(
             './qis',
@@ -296,7 +298,7 @@ class SummaryTest extends BaseTestCase
         );
         $args = new Qi_Console_ArgV($argv);
 
-        list($result, $status) = $this->_execute($args);
+        list($result, $status) = $this->execute($args);
 
         $this->assertStringContainsString('long summary', $result);
         $this->assertStringContainsString('short summary', $result);
@@ -310,7 +312,7 @@ class SummaryTest extends BaseTestCase
      */
     public function testExecuteWithRegisteredModulesShort()
     {
-        $this->_setupSomeDefaultModules();
+        $this->setupSomeDefaultModules();
 
         $argv = array(
             './qis',
@@ -319,7 +321,7 @@ class SummaryTest extends BaseTestCase
         );
         $args = new Qi_Console_ArgV($argv);
 
-        list($result, $status) = $this->_execute($args);
+        list($result, $status) = $this->execute($args);
 
         $expected = str_repeat('-', 32) . "\n";
         $this->assertStringContainsString($expected, $result);
@@ -336,7 +338,7 @@ class SummaryTest extends BaseTestCase
      */
     public function testExecuteWithRegisteredModulesShortNoColor()
     {
-        $this->_setupSomeDefaultModules();
+        $this->setupSomeDefaultModules();
 
         $argv = array(
             './qis',
@@ -346,7 +348,7 @@ class SummaryTest extends BaseTestCase
         );
         $args = new Qi_Console_ArgV($argv);
 
-        list($result, $status) = $this->_execute($args);
+        list($result, $status) = $this->execute($args);
 
         $expected = str_repeat('-', 32) . "\n";
         $this->assertStringContainsString($expected, $result);
@@ -363,7 +365,7 @@ class SummaryTest extends BaseTestCase
      */
     public function testExecuteWithSpecifiedModule()
     {
-        $this->_setupSomeDefaultModules();
+        $this->setupSomeDefaultModules();
 
         $argv = array(
             './qis',
@@ -372,7 +374,7 @@ class SummaryTest extends BaseTestCase
         );
         $args = new Qi_Console_ArgV($argv);
 
-        list($result, $status) = $this->_execute($args);
+        list($result, $status) = $this->execute($args);
 
         $this->assertStringContainsString('long summary', $result);
         $this->assertStringContainsString('short summary', $result);
@@ -409,7 +411,7 @@ class SummaryTest extends BaseTestCase
      * @param Qi_Console_ArgV $args Arguments
      * @return array
      */
-    protected function _execute($args)
+    protected function execute($args)
     {
         ob_start();
         $status = $this->object->execute($args);
@@ -424,7 +426,7 @@ class SummaryTest extends BaseTestCase
      *
      * @return void
      */
-    protected function _setupSomeDefaultModules()
+    protected function setupSomeDefaultModules()
     {
         $modules = array(
             'mock' => array(
@@ -437,6 +439,6 @@ class SummaryTest extends BaseTestCase
             ),
         );
 
-        $this->_qis->registerModules($modules);
+        $this->qis->registerModules($modules);
     }
 }

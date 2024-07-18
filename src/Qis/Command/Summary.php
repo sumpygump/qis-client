@@ -27,14 +27,14 @@ class Summary implements CommandInterface
      *
      * @var mixed
      */
-    protected $_qis = null;
+    protected $qis = null;
 
     /**
      * Don't use color output
      *
      * @var mixed
      */
-    protected $_noColor = false;
+    protected $noColor = false;
 
     /**
      * Get Name of command
@@ -55,7 +55,7 @@ class Summary implements CommandInterface
      */
     public function __construct(Qis $qis, $settings)
     {
-        $this->_qis = $qis;
+        $this->qis = $qis;
     }
 
     /**
@@ -82,7 +82,7 @@ class Summary implements CommandInterface
         }
 
         if ($args->get('no-color')) {
-            $this->_noColor = true;
+            $this->noColor = true;
         }
 
         $shortSummary = false;
@@ -92,32 +92,32 @@ class Summary implements CommandInterface
         }
 
         if ($module == 'all') {
-            $modules = $this->_qis->getModules();
+            $modules = $this->qis->getModules();
         } else {
-            $modules = array($this->_qis->getModule($module));
+            $modules = array($this->qis->getModule($module));
         }
 
         foreach ($modules as $command => $module) {
             $summary = $module->getSummary($shortSummary);
 
             if ($shortSummary) {
-                if ($this->_noColor) {
+                if ($this->noColor) {
                     echo $summary . "\n";
                 } else {
-                    $this->_displayStatusMessage(
+                    $this->displayStatusMessage(
                         $summary,
                         $module->getStatus()
                     );
                 }
             } else {
-                if ($this->_noColor) {
+                if ($this->noColor) {
                     echo "\n" . $summary . "\n"
                         . $module->getSummary(true) . "\n";
                 } else {
                     $fg = 15;
                     $bg = 4;
-                    $this->_qis->prettyMessage(trim($summary), $fg, $bg);
-                    $this->_displayStatusMessage(
+                    $this->qis->prettyMessage(trim($summary), $fg, $bg);
+                    $this->displayStatusMessage(
                         $module->getSummary(true),
                         $module->getStatus()
                     );
@@ -139,7 +139,7 @@ class Summary implements CommandInterface
      * @param bool $status Positive (true) or negative (false)
      * @return void
      */
-    protected function _displayStatusMessage($message, $status)
+    protected function displayStatusMessage($message, $status)
     {
         if ($status) {
             $fg = 0;
@@ -149,7 +149,7 @@ class Summary implements CommandInterface
             $bg = 1;
         }
 
-        $this->_qis->displayMessage($message, true, $fg, $bg);
+        $this->qis->displayMessage($message, true, $fg, $bg);
     }
 
     /**
@@ -179,9 +179,9 @@ class Summary implements CommandInterface
             . "module name is given when running qis.\n";
 
         $out .= "\nValid Options:\n"
-            . $this->_qis->getTerminal()->do_setaf(3)
+            . $this->qis->getTerminal()->do_setaf(3)
             . "  --short : Show only short information\n"
-            . $this->_qis->getTerminal()->do_op();
+            . $this->qis->getTerminal()->do_op();
 
         return $out;
     }

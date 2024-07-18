@@ -6,9 +6,11 @@
  * @package Qis
  */
 
+// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses
+
 namespace Qis\Tests;
 
-use BaseTestCase;
+use Qis\Tests\BaseTestCase;
 use Qis\Qis;
 use Qis\ModuleInterface;
 use Qis\Config;
@@ -33,9 +35,9 @@ class MockQis extends Qis
      *
      * @return void
      */
-    public function registerCommands()
+    public function publicRegisterCommands()
     {
-        $this->_registerCommands();
+        $this->registerCommands();
     }
 }
 
@@ -157,7 +159,7 @@ class MockModule implements ModuleInterface
 /**
  * Qis Test class
  *
- * @uses BaseTestCase
+ * @uses \Qis\Tests\BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
@@ -271,7 +273,7 @@ class QisTest extends BaseTestCase
      */
     public function testRegisterCommands()
     {
-        $this->object->registerCommands();
+        $this->object->publicRegisterCommands();
 
         $commands = $this->object->getCommands();
 

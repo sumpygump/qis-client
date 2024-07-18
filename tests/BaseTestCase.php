@@ -6,6 +6,8 @@
  * @package Qis
  */
 
+namespace Qis\Tests;
+
 use PHPUnit\Framework\TestCase;
 
 /**

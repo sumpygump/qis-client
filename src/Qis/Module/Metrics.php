@@ -16,21 +16,21 @@ class Metrics implements ModuleInterface
      *
      * @var string
      */
-    protected $_outputPath = 'pdepend';
+    protected $outputPath = 'pdepend';
 
     /**
      * Qis kernel object
      *
      * @var Qis
      */
-    protected $_qis = null;
+    protected $qis = null;
 
     /**
      * Settings
      *
      * @var array
      */
-    protected $_settings = array();
+    protected $settings = array();
 
     /**
      * Path (root of project to analyze)
@@ -41,7 +41,7 @@ class Metrics implements ModuleInterface
      *
      * @var string
      */
-    protected $_path = 'src';
+    protected $path = 'src';
 
     /**
      * Args from last execution
@@ -59,12 +59,12 @@ class Metrics implements ModuleInterface
      */
     public function __construct(Qis $qis, $settings)
     {
-        $this->_qis      = $qis;
-        $this->_settings = $settings;
+        $this->qis      = $qis;
+        $this->settings = $settings;
 
         // Store the project root path
         if (isset($settings['path'])) {
-            $this->_path = $settings['path'];
+            $this->path = $settings['path'];
         }
     }
 
@@ -75,12 +75,12 @@ class Metrics implements ModuleInterface
      */
     public function initialize()
     {
-        $this->_outputPath = $this->_qis->getProjectQisRoot()
+        $this->outputPath = $this->qis->getProjectQisRoot()
             . DIRECTORY_SEPARATOR
-            . $this->_outputPath . DIRECTORY_SEPARATOR;
+            . $this->outputPath . DIRECTORY_SEPARATOR;
 
-        if (!file_exists($this->_outputPath)) {
-            mkdir($this->_outputPath);
+        if (!file_exists($this->outputPath)) {
+            mkdir($this->outputPath);
         }
     }
 
@@ -93,7 +93,7 @@ class Metrics implements ModuleInterface
     public function execute(Qi_Console_ArgV $args)
     {
         $this->args = $args->toArray();
-        $this->_qis->qecho("\nRunning Metrics module task...\n");
+        $this->qis->qecho("\nRunning Metrics module task...\n");
 
         if ($args->explain) {
             return $this->showExplain();
@@ -111,7 +111,7 @@ class Metrics implements ModuleInterface
         $this->analyzeProject();
         return $this->showMetrics();
 
-        $this->_qis->qecho("\nCompleted Metrics module task.\n");
+        $this->qis->qecho("\nCompleted Metrics module task.\n");
         return ModuleInterface::RETURN_SUCCESS;
     }
 
@@ -132,29 +132,29 @@ class Metrics implements ModuleInterface
      */
     public function analyzeProject()
     {
-        $bin = $this->_settings['bin'];
-        $xmlTarget = $this->_outputPath . 'summary.xml';
-        $cmd = sprintf('%s --summary-xml="%s" "%s"', $bin, $xmlTarget, $this->_path);
+        $bin = $this->settings['bin'];
+        $xmlTarget = $this->outputPath . 'summary.xml';
+        $cmd = sprintf('%s --summary-xml="%s" "%s"', $bin, $xmlTarget, $this->path);
 
-        $this->_qis->log($cmd);
+        $this->qis->log($cmd);
 
         passthru($cmd);
     }
 
     public function readMetrics()
     {
-        $this->_qis->log($this->_outputPath . 'summary.xml');
-        $summaryParser = new PdependSummaryReport($this->_outputPath . 'summary.xml');
+        $this->qis->log($this->outputPath . 'summary.xml');
+        $summaryParser = new PdependSummaryReport($this->outputPath . 'summary.xml');
         return $summaryParser->parse();
     }
 
     public function getThresholds()
     {
-        if (!isset($this->_settings['thresholds'])) {
+        if (!isset($this->settings['thresholds'])) {
             return [];
         }
 
-        return $this->_settings['thresholds'];
+        return $this->settings['thresholds'];
     }
 
     public function getHeader($header, $show_metrics)
@@ -185,7 +185,7 @@ class Metrics implements ModuleInterface
      */
     public function showMetrics()
     {
-        $terminal = $this->_qis->getTerminal();
+        $terminal = $this->qis->getTerminal();
         $metrics = $this->readMetrics();
 
         $show_metrics = ['loc', 'cr', 'csz', 'wmc'];
@@ -227,7 +227,7 @@ class Metrics implements ModuleInterface
     public function showMetricsForClass($targetClass)
     {
         $metrics = $this->readMetrics();
-        $terminal = $this->_qis->getTerminal();
+        $terminal = $this->qis->getTerminal();
 
         $show_metrics = ['loc', 'ccn2', 'npath', 'hnt', 'hnd', 'hd', 'he', 'hb'];
 
@@ -297,18 +297,27 @@ class Metrics implements ModuleInterface
         print "An explanation of the metrics gathered and reported.\n";
         print "----------------------------------------------------\n";
         print "LOC: lines of code in file/method\n";
-        print "CR: Code rank. A Google pagerank applied on packages and classes. Classes with a high value should be tested frequently.\n";
-        print "CSZ: Class Size. Number of methods and properties of a class: CSZ = NOM + VARS. Measures the size of a class concerning operations and data.\n";
+        print "CR: Code rank. A Google pagerank applied on packages and classes. "
+            . "Classes with a high value should be tested frequently.\n";
+        print "CSZ: Class Size. Number of methods and properties of a class: "
+            . "CSZ = NOM + VARS. Measures the size of a class concerning operations and data.\n";
         print "NOM: Number of methods\n";
         print "VARS: Number of properties\n";
-        print "WMC: Weighted Method Count. Sum of the complexities of all declared methods and constructors of class.\n";
-        print "CCN2: Extended cyclomatic complexity number. Based on the number of branches in a code like if, for, foreach\n";
+        print "WMC: Weighted Method Count. Sum of the complexities of all declared "
+            . "methods and constructors of class.\n";
+        print "CCN2: Extended cyclomatic complexity number. Based on the number of "
+            . "branches in a code like if, for, foreach\n";
         print "NPATH: NPath Complexity. Number of acyclic execution paths through a method.\n";
-        print "HNT: Halstead Length. Total number of operator occurrences and the total number of operand occurrences. HND = N1 + N2\n";
-        print "HND: Halstead Vocabulary. Total number of unique operator and unique operand occurrences. HND = n1 + n2\n";
-        print "HD: Halstead Difficulty. Difficulty of the program to write or understand, e.g. when doing code review. HD = (n1 / 2) * (N2 / n2)\n";
-        print "HE: Halstead Effort. Aount of mental activity needed to translate the existing algorithm into implementation. HE = HV * HD\n";
-        print "HB: Halstead Bugs. Estimated number of errors in the implementation HB = POW(HE, 2/3) / 3000\n";
+        print "HNT: Halstead Length. Total number of operator occurrences and the "
+            . "total number of operand occurrences. HNT = N1 + N2\n";
+        print "HND: Halstead Vocabulary. Total number of unique operator and unique "
+            . "operand occurrences. HND = n1 + n2\n";
+        print "HD: Halstead Difficulty. Difficulty of the program to write or "
+            . "understand, e.g. when doing code review. HD = (n1 / 2) * (N2 / n2)\n";
+        print "HE: Halstead Effort. Aount of mental activity needed to translate the "
+            . "existing algorithm into implementation. HE = HV * HD\n";
+        print "HB: Halstead Bugs. Estimated number of errors in the implementation "
+            . "HB = POW(HE, 2/3) / 3000\n";
 
         return null;
     }
@@ -335,11 +344,11 @@ class Metrics implements ModuleInterface
         $out .= "Usage: metrics [OPTIONS] [path]\n"
             . "This will run code metrics tool on the project files.\n\n"
             . "Valid Options:\n"
-            . $this->_qis->getTerminal()->do_setaf(3)
+            . $this->qis->getTerminal()->do_setaf(3)
             . "--results : Show results from last run\n"
             . "--class <name> : Show method metrics for class matching name\n"
             . "--explain : Show explanation of metrics\n"
-            . $this->_qis->getTerminal()->do_op();
+            . $this->qis->getTerminal()->do_op();
 
         return $out;
     }

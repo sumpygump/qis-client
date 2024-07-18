@@ -15,7 +15,7 @@ use Qi_Console_ArgV;
 /**
  * All command class (run all default modules)
  *
- * @uses QisModuleInterface
+ * @uses \Qis\CommandInterface
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
@@ -27,7 +27,7 @@ class All implements CommandInterface
      *
      * @var mixed
      */
-    protected $_qis = null;
+    protected $qis = null;
 
     /**
      * Get Name of command
@@ -48,7 +48,7 @@ class All implements CommandInterface
      */
     public function __construct(Qis $qis, $settings)
     {
-        $this->_qis = $qis;
+        $this->qis = $qis;
     }
 
     /**
@@ -68,7 +68,7 @@ class All implements CommandInterface
      */
     public function execute(Qi_Console_ArgV $args)
     {
-        $this->_executeAllModules($args);
+        $this->executeAllModules($args);
 
         // TODO: Add some kind of metric to determine the overall health of
         // project
@@ -108,10 +108,10 @@ class All implements CommandInterface
      * @param object $args Args
      * @return bool
      */
-    protected function _executeAllModules($args)
+    protected function executeAllModules($args)
     {
-        $modules = $this->_qis->getModules();
-        $order   = $this->_getBuildOrder();
+        $modules = $this->qis->getModules();
+        $order   = $this->getBuildOrder();
 
         foreach (explode(',', $order) as $name) {
             $name = trim($name);
@@ -122,12 +122,12 @@ class All implements CommandInterface
 
             $result = $module->execute($args);
             if ($result === 0) {
-                $this->_qis->saveHistory(
+                $this->qis->saveHistory(
                     $name,
                     $module
                 );
             }
-            $this->_rule();
+            $this->rule();
         }
 
         return true;
@@ -140,16 +140,13 @@ class All implements CommandInterface
      *
      * @return string
      */
-    protected function _getBuildOrder()
+    protected function getBuildOrder()
     {
-        $order = $this->_qis->getConfig()->get('build_order');
+        $order = $this->qis->getConfig()->get('build_order');
 
         $defaultBuildOrder = 'cs,test,coverage';
 
-        if (
-            empty($order) || !is_string($order)
-            || trim($order) == ''
-        ) {
+        if (empty($order) || !is_string($order) || trim($order) == '') {
             return $defaultBuildOrder;
         }
 
@@ -161,10 +158,10 @@ class All implements CommandInterface
      *
      * @return void
      */
-    protected function _rule()
+    protected function rule()
     {
         echo "\n";
-        $this->_qis->displayMessage(
+        $this->qis->displayMessage(
             str_repeat('%', 80),
             true,
             8,

@@ -23,56 +23,56 @@ class Qis
      *
      * @var string
      */
-    const VERSION = '1.2.6';
+    public const VERSION = '1.2.6';
 
     /**
      * Configuration
      *
      * @var mixed
      */
-    protected $_config = null;
+    protected $config = null;
 
     /**
      * Terminal The terminal object
      *
      * @var object
      */
-    protected $_terminal;
+    protected $terminal;
 
     /**
      * ArgV The arguments object
      *
      * @var object
      */
-    protected $_args;
+    protected $args;
 
     /**
      * Whether verbose output
      *
      * @var bool
      */
-    protected $_verbose = false;
+    protected $verbose = false;
 
     /**
      * Commands (Qis subcommands)
      *
      * @var array
      */
-    protected $_commands = [];
+    protected $commands = [];
 
     /**
      * Modules
      *
      * @var array
      */
-    protected $_modules = [];
+    protected $modules = [];
 
     /**
      * Qis root
      *
      * @var string
      */
-    protected $_projectQisRoot = '';
+    protected $projectQisRoot = '';
 
     /**
      * Whether this script should allow exiting
@@ -90,10 +90,10 @@ class Qis
      */
     public function __construct(Qi_Console_ArgV $args, $terminal)
     {
-        $this->_args     = $args;
-        $this->_terminal = $terminal;
+        $this->args     = $args;
+        $this->terminal = $terminal;
 
-        $this->_projectQisRoot = realpath('.') . DIRECTORY_SEPARATOR . '.qis';
+        $this->projectQisRoot = realpath('.') . DIRECTORY_SEPARATOR . '.qis';
     }
 
     /**
@@ -103,7 +103,7 @@ class Qis
      */
     public function getTerminal()
     {
-        return $this->_terminal;
+        return $this->terminal;
     }
 
     /**
@@ -113,10 +113,10 @@ class Qis
      */
     public function getConfig()
     {
-        if (!$this->_config) {
-            $this->_config = new Config();
+        if (!$this->config) {
+            $this->config = new Config();
         }
-        return $this->_config;
+        return $this->config;
     }
 
     /**
@@ -127,7 +127,7 @@ class Qis
      */
     public function setConfig(Config $config)
     {
-        $this->_config = $config;
+        $this->config = $config;
         return $this;
     }
 
@@ -138,7 +138,7 @@ class Qis
      */
     public function getProjectQisRoot()
     {
-        return $this->_projectQisRoot;
+        return $this->projectQisRoot;
     }
 
     /**
@@ -158,7 +158,7 @@ class Qis
      */
     public function isVerbose()
     {
-        return $this->_verbose;
+        return $this->verbose;
     }
 
     /**
@@ -166,7 +166,7 @@ class Qis
      *
      * @return void
      */
-    protected function _registerCommands()
+    protected function registerCommands()
     {
         $files = glob(
             dirname(__FILE__) . DIRECTORY_SEPARATOR
@@ -178,7 +178,7 @@ class Qis
             $classname   = 'Qis\\Command\\' . pathinfo($file, PATHINFO_FILENAME);
             $commandName = call_user_func([$classname, 'getName']);
 
-            $this->_commands[$commandName] = new $classname($this, []);
+            $this->commands[$commandName] = new $classname($this, []);
         }
     }
 
@@ -199,7 +199,7 @@ class Qis
             $this->registerModule($name, $settings);
         }
 
-        return count($this->_modules);
+        return count($this->modules);
     }
 
     /**
@@ -248,15 +248,15 @@ class Qis
 
         $this->log("Loaded module $name.");
 
-        $this->_modules[$command] = $module;
+        $this->modules[$command] = $module;
     }
 
     protected function getAction()
     {
-        if (null === $this->_args->action) {
+        if (null === $this->args->action) {
             $action = '';
         } else {
-            $action = trim($this->_args->action);
+            $action = trim($this->args->action);
         }
 
         if ($action != '') {
@@ -268,14 +268,14 @@ class Qis
 
     protected function preinit()
     {
-        if ($this->_args->v) {
-            $this->_verbose = true;
+        if ($this->args->v) {
+            $this->verbose = true;
         }
 
-        $this->_registerCommands();
-        $this->_loadProjectConfig();
-        if ($this->_config) {
-            $this->registerModules($this->_config->modules);
+        $this->registerCommands();
+        $this->loadProjectConfig();
+        if ($this->config) {
+            $this->registerModules($this->config->modules);
         }
     }
 
@@ -289,41 +289,41 @@ class Qis
         $this->preinit();
 
         // Detect '--help' and exit
-        if ($this->_args->help) {
-            $this->_showHelp();
+        if ($this->args->help) {
+            $this->showHelp();
             return 0;
         }
 
         // Detect '--version' and exit
-        if ($this->_args->version) {
+        if ($this->args->version) {
             echo $this->renderTitle();
             return 0;
         }
 
         $action = $this->getAction();
-        if (!$this->_config && $action != 'init') {
+        if (!$this->config && $action != 'init') {
             $this->displayError(
                 "No project config file found. Use 'qis init' to initialize."
             );
             //return 0;
         } else {
             $this->qecho($this->renderTitle());
-            if ($this->_config) {
-                $this->qecho("Project: " . $this->_config->project_name . "\n");
+            if ($this->config) {
+                $this->qecho("Project: " . $this->config->project_name . "\n");
             }
         }
 
         // Find command to run
-        if (isset($this->_commands[$action])) {
-            $command = $this->_commands[$action];
-            return $command->execute($this->_args);
+        if (isset($this->commands[$action])) {
+            $command = $this->commands[$action];
+            return $command->execute($this->args);
         }
 
         // Find module to run
-        if (isset($this->_modules[$action])) {
-            $module = $this->_modules[$action];
+        if (isset($this->modules[$action])) {
+            $module = $this->modules[$action];
 
-            $returnCode = $module->execute($this->_args);
+            $returnCode = $module->execute($this->args);
             if ($returnCode === 0) {
                 $this->saveHistory(
                     $action,
@@ -341,7 +341,7 @@ class Qis
      *
      * @return void
      */
-    protected function _loadProjectConfig()
+    protected function loadProjectConfig()
     {
         $file = $this->getProjectQisRoot()
             . DIRECTORY_SEPARATOR . "config.ini";
@@ -362,7 +362,7 @@ class Qis
      */
     public function getModules()
     {
-        return $this->_modules;
+        return $this->modules;
     }
 
     /**
@@ -373,11 +373,11 @@ class Qis
      */
     public function getModule($name)
     {
-        if (!isset($this->_modules[$name])) {
+        if (!isset($this->modules[$name])) {
             return false;
         }
 
-        return $this->_modules[$name];
+        return $this->modules[$name];
     }
 
     /**
@@ -387,7 +387,7 @@ class Qis
      */
     public function getCommands()
     {
-        return $this->_commands;
+        return $this->commands;
     }
 
     /**
@@ -398,11 +398,11 @@ class Qis
      */
     public function getCommand($name)
     {
-        if (!isset($this->_commands[$name])) {
+        if (!isset($this->commands[$name])) {
             return false;
         }
 
-        return $this->_commands[$name];
+        return $this->commands[$name];
     }
 
     /**
@@ -472,10 +472,10 @@ class Qis
      */
     public function log($message)
     {
-        if ($this->_verbose) {
-            $out = $this->_terminal->do_setaf(3)
+        if ($this->verbose) {
+            $out = $this->terminal->do_setaf(3)
                 . ">> " . $message . "\n"
-                . $this->_terminal->do_op();
+                . $this->terminal->do_op();
             echo $out;
         }
     }
@@ -485,15 +485,15 @@ class Qis
      *
      * @return void
      */
-    protected function _showHelp()
+    protected function showHelp()
     {
         echo $this->renderTitle();
 
-        if ($this->_config && $this->_config->project_name != '') {
-            echo "Project: " . $this->_config->project_name . "\n";
+        if ($this->config && $this->config->project_name != '') {
+            echo "Project: " . $this->config->project_name . "\n";
         }
 
-        $this->_commands['help']->execute($this->_args);
+        $this->commands['help']->execute($this->args);
     }
 
     /**
@@ -503,9 +503,9 @@ class Qis
      */
     public function renderTitle()
     {
-        $out = $this->_terminal->do_setaf(2)
+        $out = $this->terminal->do_setaf(2)
             . "Quantal Integration System " . $this->getVersion() . "\n"
-            . $this->_terminal->do_op();
+            . $this->terminal->do_op();
 
         return $out;
     }
@@ -536,7 +536,7 @@ class Qis
      */
     public function qecho($text)
     {
-        if ($this->_args->get('quiet')) {
+        if ($this->args->get('quiet')) {
             return;
         }
         echo $text;
@@ -563,7 +563,7 @@ class Qis
     public function displayError($message)
     {
         echo "\n";
-        $this->_terminal->pretty_message($message, 7, 1);
+        $this->terminal->pretty_message($message, 7, 1);
         echo "\n";
     }
 
@@ -583,10 +583,10 @@ class Qis
         $background = 0
     ) {
 
-        $this->_terminal->setaf($color);
-        $this->_terminal->setab($background);
+        $this->terminal->setaf($color);
+        $this->terminal->setab($background);
         echo $message;
-        $this->_terminal->op();
+        $this->terminal->op();
 
         if ($ensureNewline && substr($message, -1) != "\n") {
             //$message .= "\n";
@@ -606,8 +606,8 @@ class Qis
     {
         echo "\n";
 
-        if ($this->_terminal->isatty()) {
-            $this->_terminal->pretty_message($message, $fg, $bg);
+        if ($this->terminal->isatty()) {
+            $this->terminal->pretty_message($message, $fg, $bg);
         } else {
             echo $message;
         }

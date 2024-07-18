@@ -6,9 +6,11 @@
  * @package Qis
  */
 
+// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses
+
 namespace Qis\Tests\Module;
 
-use BaseTestCase;
+use Qis\Tests\BaseTestCase;
 use Qis\Module\Coverage;
 use Qis\Qis;
 use Qi_Console_ArgV;
@@ -29,7 +31,7 @@ class MockQisModuleCoverage extends Coverage
 /**
  * CoverageTest
  *
- * @uses BaseTestCase
+ * @uses \Qis\Tests\BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
@@ -46,7 +48,7 @@ class CoverageTest extends BaseTestCase
         $path = realpath('.') . DIRECTORY_SEPARATOR . '.qis';
         mkdir($path);
 
-        $this->_createObject();
+        $this->createObject();
     }
 
     /**
@@ -210,7 +212,7 @@ class CoverageTest extends BaseTestCase
      * @param Qi_Console_ArgV $args Arguments
      * @return Coverage
      */
-    protected function _createObject($initialize = true, $args = array())
+    protected function createObject($initialize = true, $args = array())
     {
         $settings = array(
             'root'        => '.',
@@ -218,7 +220,7 @@ class CoverageTest extends BaseTestCase
         );
 
         $this->object = new MockQisModuleCoverage(
-            $this->_getDefaultQisObject($args),
+            $this->getDefaultQisObject($args),
             $settings
         );
 
@@ -233,7 +235,7 @@ class CoverageTest extends BaseTestCase
      * @param Qi_Console_ArgV $args Arguments
      * @return Qis
      */
-    protected function _getDefaultQisObject($args = array())
+    protected function getDefaultQisObject($args = array())
     {
         $args     = new Qi_Console_ArgV($args);
         $terminal = new Qi_Console_Terminal();

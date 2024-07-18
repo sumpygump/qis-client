@@ -6,9 +6,11 @@
  * @package Qis
  */
 
+// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses
+
 namespace Qis\Tests\Command;
 
-use BaseTestCase;
+use Qis\Tests\BaseTestCase;
 use Qis\Command\Help;
 use Qis\ModuleInterface;
 use Qis\Qis;
@@ -134,14 +136,14 @@ class MockQisModuleBaseForHelp implements ModuleInterface
 /**
  * Qis Command Help Test cases
  *
- * @uses BaseTestCase
+ * @uses \Qis\Tests\BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
 class HelpTest extends BaseTestCase
 {
-    public $_qis;
+    public $qis;
 
     /**
      * Setup before each test
@@ -153,11 +155,11 @@ class HelpTest extends BaseTestCase
         $args     = new Qi_Console_ArgV(array());
         $terminal = new Qi_Console_Terminal();
 
-        $this->_qis = new Qis($args, $terminal);
+        $this->qis = new Qis($args, $terminal);
 
         $settings = array();
 
-        $this->object = new Help($this->_qis, $settings);
+        $this->object = new Help($this->qis, $settings);
     }
 
     /**
@@ -193,7 +195,7 @@ class HelpTest extends BaseTestCase
     {
         $args = new Qi_Console_ArgV(array());
 
-        list($result, $status) = $this->_execute($args);
+        list($result, $status) = $this->execute($args);
 
         $this->assertStringContainsString('Usage: qis <subcommand', $result);
         $this->assertStringContainsString('Global Options:', $result);
@@ -207,11 +209,11 @@ class HelpTest extends BaseTestCase
      */
     public function testExecuteRegularHelpWithModulesRegistered()
     {
-        $this->_setupSomeDefaultModules();
+        $this->setupSomeDefaultModules();
 
         $args = new Qi_Console_ArgV(array());
 
-        list($result, $status) = $this->_execute($args);
+        list($result, $status) = $this->execute($args);
 
         $this->assertStringContainsString('Usage: qis <subcommand', $result);
         $this->assertStringContainsString("Modules:", $result);
@@ -252,11 +254,11 @@ class HelpTest extends BaseTestCase
             'foobar',
         );
 
-        $this->_setupSomeDefaultModules();
+        $this->setupSomeDefaultModules();
 
         $args = new Qi_Console_ArgV($argv);
 
-        list($result, $status) = $this->_execute($args);
+        list($result, $status) = $this->execute($args);
 
         $this->assertStringContainsString("Help for module 'foobar'", $result);
         $this->assertStringContainsString("extended help message", $result);
@@ -293,7 +295,7 @@ class HelpTest extends BaseTestCase
      * @param Qi_Console_ArgV $args Arguments
      * @return array
      */
-    protected function _execute($args)
+    protected function execute($args)
     {
         ob_start();
         $status = $this->object->execute($args);
@@ -308,7 +310,7 @@ class HelpTest extends BaseTestCase
      *
      * @return void
      */
-    protected function _setupSomeDefaultModules()
+    protected function setupSomeDefaultModules()
     {
         $modules = array(
             'mock' => array(
@@ -317,6 +319,6 @@ class HelpTest extends BaseTestCase
             ),
         );
 
-        $this->_qis->registerModules($modules);
+        $this->qis->registerModules($modules);
     }
 }

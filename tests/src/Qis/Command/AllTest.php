@@ -6,9 +6,11 @@
  * @package Qis
  */
 
+// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses
+
 namespace Qis\Tests\Command;
 
-use BaseTestCase;
+use Qis\Tests\BaseTestCase;
 use Qis\Command\All;
 use Qis\ModuleInterface;
 use Qis\Config;
@@ -181,14 +183,14 @@ class MockQisModuleKk extends MockQisModuleBaseForAll
 /**
  * Qis Command All test
  *
- * @uses BaseTestCase
+ * @uses \Qis\Tests\BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
 class AllTest extends BaseTestCase
 {
-    public $_qis;
+    public $qis;
 
     /**
      * Setup before each test
@@ -200,11 +202,11 @@ class AllTest extends BaseTestCase
         $args     = new Qi_Console_ArgV(array());
         $terminal = new Qi_Console_Terminal();
 
-        $this->_qis = new Qis($args, $terminal);
+        $this->qis = new Qis($args, $terminal);
 
         $settings = array();
 
-        $this->object = new All($this->_qis, $settings);
+        $this->object = new All($this->qis, $settings);
     }
 
     /**
@@ -276,11 +278,11 @@ class AllTest extends BaseTestCase
      */
     public function testExecuteAllWithDefaultBuildOrder()
     {
-        $this->_setupSomeDefaultModules();
+        $this->setupSomeDefaultModules();
 
         $args = new Qi_Console_ArgV(array());
 
-        list($result, $status) = $this->_execute($args);
+        list($result, $status) = $this->execute($args);
 
         $this->assertStringContainsString('execute aa', $result);
         $this->assertStringContainsString('execute kk', $result);
@@ -296,13 +298,13 @@ class AllTest extends BaseTestCase
         $config = new Config();
         $config->set('build_order', 'cs');
 
-        $this->_qis->setConfig($config);
+        $this->qis->setConfig($config);
 
-        $this->_setupSomeDefaultModules();
+        $this->setupSomeDefaultModules();
 
         $args = new Qi_Console_ArgV(array());
 
-        list($result, $status) = $this->_execute($args);
+        list($result, $status) = $this->execute($args);
 
         $this->assertStringContainsString('execute aa', $result);
         $this->assertStringNotContainsString('execute kk', $result);
@@ -318,13 +320,13 @@ class AllTest extends BaseTestCase
         $config = new Config();
         $config->set('build_order', 'cs,  coverage,  test');
 
-        $this->_qis->setConfig($config);
+        $this->qis->setConfig($config);
 
-        $this->_setupSomeDefaultModules();
+        $this->setupSomeDefaultModules();
 
         $args = new Qi_Console_ArgV(array());
 
-        list($result, $status) = $this->_execute($args);
+        list($result, $status) = $this->execute($args);
 
         $this->assertStringContainsString('execute aa', $result);
         $this->assertStringContainsString('execute kk', $result);
@@ -340,13 +342,13 @@ class AllTest extends BaseTestCase
         $config = new Config();
         $config->set('build_order', ',,,,,,');
 
-        $this->_qis->setConfig($config);
+        $this->qis->setConfig($config);
 
-        $this->_setupSomeDefaultModules();
+        $this->setupSomeDefaultModules();
 
         $args = new Qi_Console_ArgV(array());
 
-        list($result, $status) = $this->_execute($args);
+        list($result, $status) = $this->execute($args);
 
         $this->assertStringNotContainsString('execute aa', $result);
         $this->assertStringNotContainsString('execute kk', $result);
@@ -365,13 +367,13 @@ class AllTest extends BaseTestCase
             '$#@$#@^%$#^%$#%$#$#@$,$#@!$#@!$#@!$#@!,8893438439483948393893'
         );
 
-        $this->_qis->setConfig($config);
+        $this->qis->setConfig($config);
 
-        $this->_setupSomeDefaultModules();
+        $this->setupSomeDefaultModules();
 
         $args = new Qi_Console_ArgV(array());
 
-        list($result, $status) = $this->_execute($args);
+        list($result, $status) = $this->execute($args);
 
         $this->assertStringNotContainsString('execute aa', $result);
         $this->assertStringNotContainsString('execute kk', $result);
@@ -387,13 +389,13 @@ class AllTest extends BaseTestCase
         $config = new Config();
         $config->set('build_order', '');
 
-        $this->_qis->setConfig($config);
+        $this->qis->setConfig($config);
 
-        $this->_setupSomeDefaultModules();
+        $this->setupSomeDefaultModules();
 
         $args = new Qi_Console_ArgV(array());
 
-        list($result, $status) = $this->_execute($args);
+        list($result, $status) = $this->execute($args);
 
         $this->assertStringContainsString('execute aa', $result);
         $this->assertStringContainsString('execute kk', $result);
@@ -409,13 +411,13 @@ class AllTest extends BaseTestCase
         $config = new Config();
         $config->set('build_order', '    ');
 
-        $this->_qis->setConfig($config);
+        $this->qis->setConfig($config);
 
-        $this->_setupSomeDefaultModules();
+        $this->setupSomeDefaultModules();
 
         $args = new Qi_Console_ArgV(array());
 
-        list($result, $status) = $this->_execute($args);
+        list($result, $status) = $this->execute($args);
 
         $this->assertStringContainsString('execute aa', $result);
         $this->assertStringContainsString('execute kk', $result);
@@ -431,13 +433,13 @@ class AllTest extends BaseTestCase
         $config = new Config();
         $config->set('build_order', array('nofooling'));
 
-        $this->_qis->setConfig($config);
+        $this->qis->setConfig($config);
 
-        $this->_setupSomeDefaultModules();
+        $this->setupSomeDefaultModules();
 
         $args = new Qi_Console_ArgV(array());
 
-        list($result, $status) = $this->_execute($args);
+        list($result, $status) = $this->execute($args);
 
         $this->assertStringContainsString('execute aa', $result);
         $this->assertStringContainsString('execute kk', $result);
@@ -450,11 +452,11 @@ class AllTest extends BaseTestCase
      */
     public function testRule()
     {
-        $this->_setupSomeDefaultModules();
+        $this->setupSomeDefaultModules();
 
         $args = new Qi_Console_ArgV(array());
 
-        list($result, $status) = $this->_execute($args);
+        list($result, $status) = $this->execute($args);
 
         $expected = str_repeat('%', 80);
 
@@ -467,7 +469,7 @@ class AllTest extends BaseTestCase
      * @param Qi_Console_ArgV $args ARguments
      * @return array
      */
-    protected function _execute($args)
+    protected function execute($args)
     {
         ob_start();
         $status = $this->object->execute($args);
@@ -482,7 +484,7 @@ class AllTest extends BaseTestCase
      *
      * @return void
      */
-    protected function _setupSomeDefaultModules()
+    protected function setupSomeDefaultModules()
     {
         $modules = array(
             'Aa' => array(
@@ -499,6 +501,6 @@ class AllTest extends BaseTestCase
             ),
         );
 
-        $this->_qis->registerModules($modules);
+        $this->qis->registerModules($modules);
     }
 }

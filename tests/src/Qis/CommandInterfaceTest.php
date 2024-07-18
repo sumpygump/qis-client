@@ -6,9 +6,11 @@
  * @package Qis
  */
 
+// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses
+
 namespace Qis\Tests;
 
-use BaseTestCase;
+use Qis\Tests\BaseTestCase;
 use Qis\CommandInterface;
 use Qis\Qis;
 use Qi_Console_ArgV;
@@ -86,14 +88,14 @@ class Command implements CommandInterface
 /**
  * Qis command interface test
  *
- * @uses BaseTestCase
+ * @uses \Qis\Tests\BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@nerdery.com>
  * @version $Id$
  */
 class CommandInterfaceTest extends BaseTestCase
 {
-    public $_qis;
+    public $qis;
 
     /**
      * Test get name
@@ -105,9 +107,9 @@ class CommandInterfaceTest extends BaseTestCase
         $args     = new Qi_Console_ArgV(array());
         $terminal = new Qi_Console_Terminal();
 
-        $this->_qis = new Qis($args, $terminal);
+        $this->qis = new Qis($args, $terminal);
 
-        $command = new Command($this->_qis, array());
+        $command = new Command($this->qis, array());
 
         $name = $command->getName();
         $this->assertEquals('name', $name);

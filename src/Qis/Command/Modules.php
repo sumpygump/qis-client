@@ -28,7 +28,7 @@ class Modules implements CommandInterface
      *
      * @var mixed
      */
-    protected $_qis = null;
+    protected $qis = null;
 
     /**
      * Get Name of command
@@ -49,7 +49,7 @@ class Modules implements CommandInterface
      */
     public function __construct(Qis $qis, $settings)
     {
-        $this->_qis = $qis;
+        $this->qis = $qis;
     }
 
     /**
@@ -69,7 +69,7 @@ class Modules implements CommandInterface
      */
     public function execute(Qi_Console_ArgV $args)
     {
-        $modules = $this->_qis->getModules();
+        $modules = $this->qis->getModules();
 
         $data = array();
         foreach ($modules as $command => $module) {

@@ -15,21 +15,21 @@ class Analysis implements ModuleInterface
      *
      * @var string
      */
-    protected $_outputPath = 'phpstan';
+    protected $outputPath = 'phpstan';
 
     /**
      * Qis kernel object
      *
      * @var Qis
      */
-    protected $_qis = null;
+    protected $qis = null;
 
     /**
      * Settings
      *
      * @var array
      */
-    protected $_settings = [];
+    protected $settings = [];
 
     /**
      * Path (root of project to analyze)
@@ -40,7 +40,7 @@ class Analysis implements ModuleInterface
      *
      * @var string
      */
-    protected $_paths = ['src'];
+    protected $paths = ['src'];
 
     /**
      * Args from last execution
@@ -58,8 +58,8 @@ class Analysis implements ModuleInterface
      */
     public function __construct(Qis $qis, $settings)
     {
-        $this->_qis      = $qis;
-        $this->_settings = $settings;
+        $this->qis      = $qis;
+        $this->settings = $settings;
 
         // Store the target analysis paths
         if (isset($settings['paths'])) {
@@ -71,7 +71,7 @@ class Analysis implements ModuleInterface
                 $paths = [$paths];
             }
 
-            $this->_paths = $paths;
+            $this->paths = $paths;
         }
     }
 
@@ -82,12 +82,12 @@ class Analysis implements ModuleInterface
      */
     public function initialize()
     {
-        $this->_outputPath = $this->_qis->getProjectQisRoot()
+        $this->outputPath = $this->qis->getProjectQisRoot()
             . DIRECTORY_SEPARATOR
-            . $this->_outputPath . DIRECTORY_SEPARATOR;
+            . $this->outputPath . DIRECTORY_SEPARATOR;
 
-        if (!file_exists($this->_outputPath)) {
-            mkdir($this->_outputPath);
+        if (!file_exists($this->outputPath)) {
+            mkdir($this->outputPath);
         }
     }
 
@@ -100,7 +100,7 @@ class Analysis implements ModuleInterface
     public function execute(Qi_Console_ArgV $args)
     {
         $this->args = $args->toArray();
-        $this->_qis->qecho("\nRunning Analysis module task...\n");
+        $this->qis->qecho("\nRunning Analysis module task...\n");
 
         // Add specific options/params to args for this task
         $args->addRule('level:');
@@ -110,7 +110,7 @@ class Analysis implements ModuleInterface
         $level = null;
         if ($args->level) {
             $level = $args->level;
-            $this->_settings['level'] = $level;
+            $this->settings['level'] = $level;
         }
 
         if ($args->explain) {
@@ -139,7 +139,7 @@ class Analysis implements ModuleInterface
             $this->showResults($level);
         }
 
-        $this->_qis->qecho("\nCompleted Analysis module task.\n");
+        $this->qis->qecho("\nCompleted Analysis module task.\n");
         return ModuleInterface::RETURN_SUCCESS;
     }
 
@@ -160,20 +160,24 @@ class Analysis implements ModuleInterface
      */
     public function analyzeProject($level_override = null, $raw_output = false, $path_override = null)
     {
-        $bin = $this->_settings['bin'];
+        $bin = $this->settings['bin'];
         exec("which $bin", $output, $code);
         if ($code) {
-            throw new \Exception("Cannot run executable '$bin'. Please check value defined in .qis/config.ini for analysis.bin\n");
+            throw new \Exception(
+                "Cannot run executable '$bin'. Please check value defined in "
+                . ".qis/config.ini for analysis.bin. "
+                . "(Currently set to '" . $this->settings['bin'] . "')\n"
+            );
         }
 
-        $level = $this->_settings['level'] ?? 0;
+        $level = $this->settings['level'] ?? 0;
         if ($level_override !== null) {
             $level = $level_override;
         }
-        $jsonTarget = $this->_outputPath . 'results.json';
+        $jsonTarget = $this->outputPath . 'results.json';
 
         $paths = "";
-        foreach ($this->_paths as $path) {
+        foreach ($this->paths as $path) {
             $paths .= "\"" . $path . "\" ";
         }
 
@@ -182,20 +186,27 @@ class Analysis implements ModuleInterface
         }
 
         $option_autoload = "";
-        if (isset($this->_settings['autoload_file']) && $this->_settings['autoload_file'] !== '') {
-            $option_autoload = " --autoload-file=" . $this->_settings['autoload_file'];
+        if (isset($this->settings['autoload_file']) && $this->settings['autoload_file'] !== '') {
+            $option_autoload = " --autoload-file=" . $this->settings['autoload_file'];
         }
 
         if ($raw_output) {
             $cmd = sprintf('%s analyse --level=%s %s --no-progress %s', $bin, $level, $option_autoload, $paths);
-            $this->_qis->log($cmd);
+            $this->qis->log($cmd);
             passthru($cmd);
             return false;
         }
 
-        $cmd = sprintf('%s analyse --level=%s --error-format=prettyJson --memory-limit 200M %s --no-progress %s', $bin, $level, $option_autoload, $paths);
+        $cmd = sprintf(
+            '%s analyse --level=%s --error-format=prettyJson '
+            . '--memory-limit 200M %s --no-progress %s',
+            $bin,
+            $level,
+            $option_autoload,
+            $paths
+        );
 
-        $this->_qis->log($cmd);
+        $this->qis->log($cmd);
 
         ob_start();
         passthru($cmd);
@@ -208,8 +219,8 @@ class Analysis implements ModuleInterface
 
     public function readResults()
     {
-        $filename = $this->_outputPath . 'results.json';
-        $this->_qis->log($filename);
+        $filename = $this->outputPath . 'results.json';
+        $this->qis->log($filename);
 
         // Load the file
         if (!file_exists($filename)) {
@@ -236,11 +247,11 @@ class Analysis implements ModuleInterface
 
     public function getThresholds()
     {
-        if (!isset($this->_settings['thresholds'])) {
+        if (!isset($this->settings['thresholds'])) {
             return [];
         }
 
-        return $this->_settings['thresholds'];
+        return $this->settings['thresholds'];
     }
 
     public function getHeader($header, $show_metrics)
@@ -256,10 +267,10 @@ class Analysis implements ModuleInterface
      */
     public function showResults($level_override = null)
     {
-        $terminal = $this->_qis->getTerminal();
+        $terminal = $this->qis->getTerminal();
         $results = $this->readResults();
 
-        $level = $this->_settings['level'] ?? 0;
+        $level = $this->settings['level'] ?? 0;
         if ($level_override !== null) {
             $level = $level_override;
         }
@@ -305,7 +316,7 @@ class Analysis implements ModuleInterface
      */
     public function showResultsForFile($file)
     {
-        $terminal = $this->_qis->getTerminal();
+        $terminal = $this->qis->getTerminal();
         $results = $this->readResults();
 
         $root = realpath('.') . DIRECTORY_SEPARATOR;
@@ -354,7 +365,7 @@ class Analysis implements ModuleInterface
      */
     public function showResultsForFileAsTable($file)
     {
-        $terminal = $this->_qis->getTerminal();
+        $terminal = $this->qis->getTerminal();
         $results = $this->readResults();
 
         $headers = ['', 'File:Line', 'Message'];
@@ -390,7 +401,7 @@ class Analysis implements ModuleInterface
             ['headers' => $headers, 'cellalign' => $aligns]
         );
 
-        printf("Level: %s   Last run: %s\n", $this->_settings['level'] ?? 0, $this->getLastRunTimeStamp());
+        printf("Level: %s   Last run: %s\n", $this->settings['level'] ?? 0, $this->getLastRunTimeStamp());
         $table->display();
         print($terminal->do_setaf(8) . $terminal->do_setab(1));
         if (count($found_list) == 1) {
@@ -454,13 +465,13 @@ class Analysis implements ModuleInterface
         $out .= "Usage: analysis [OPTIONS] [path]\n"
             . "This will run static analysis tool on the project files.\n\n"
             . "Valid Options:\n"
-            . $this->_qis->getTerminal()->do_setaf(3)
+            . $this->qis->getTerminal()->do_setaf(3)
             . "--results : Show results from last run\n"
             . "--file <name> : Show results for a specific file\n"
             . "--explain : Show explanation of levels\n"
             . "--level : Perform analysis for level 0-8 (See --explain for explanation of levels)\n"
             . "--raw : Show the raw output of phpstan (instead of saving to results file)\n"
-            . $this->_qis->getTerminal()->do_op();
+            . $this->qis->getTerminal()->do_op();
 
         return $out;
     }
@@ -500,7 +511,7 @@ class Analysis implements ModuleInterface
      */
     protected function saveTimeStamp()
     {
-        $file     = $this->_outputPath . 'lastrun';
+        $file     = $this->outputPath . 'lastrun';
         $contents = date('Y-m-d H:i:s');
 
         return file_put_contents($file, $contents);
@@ -513,7 +524,7 @@ class Analysis implements ModuleInterface
      */
     public function getLastRunTimeStamp()
     {
-        $file = $this->_outputPath . 'lastrun';
+        $file = $this->outputPath . 'lastrun';
 
         return trim(file_get_contents($file));
     }
@@ -535,7 +546,7 @@ class Analysis implements ModuleInterface
                 return "Analysis results";
             }
         }
-        $level = $this->_settings['level'] ?? 0;
+        $level = $this->settings['level'] ?? 0;
 
         if ($short) {
             return sprintf("Analysis errors (L%s): %s", $level, $results->totals->file_errors);
@@ -589,7 +600,7 @@ class Analysis implements ModuleInterface
         }
 
         return [
-            'level' => $this->_settings['level'] ?? 0,
+            'level' => $this->settings['level'] ?? 0,
             'errors' => $errors,
             'error_score' => $metric,
         ];

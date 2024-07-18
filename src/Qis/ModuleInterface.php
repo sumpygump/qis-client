@@ -24,9 +24,9 @@ interface ModuleInterface
      *
      * @var int
      */
-    const RETURN_SUCCESS = 0;
-    const RETURN_ERROR   = 1;
-    const RETURN_BENIGN  = 8;
+    public const RETURN_SUCCESS = 0;
+    public const RETURN_ERROR   = 1;
+    public const RETURN_BENIGN  = 8;
 
     /**
      * Get the default ini for this module

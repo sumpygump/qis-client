@@ -37,7 +37,7 @@ class ExceptionHandler
         self::setQis($qis);
 
         set_exception_handler(array('Qis\ExceptionHandler', 'handle'));
-        set_error_handler(array('Qis\ExceptionHandler', 'handle_error'));
+        set_error_handler(array('Qis\ExceptionHandler', 'handleError'));
     }
 
     /**
@@ -67,7 +67,7 @@ class ExceptionHandler
      *
      * @return void
      */
-    public static function handle_error()
+    public static function handleError()
     {
         $args = func_get_args();
         if (count($args) < 4) {
@@ -77,7 +77,7 @@ class ExceptionHandler
 
         list($errno, $message, $file, $line) = $args;
 
-        $message = self::_error_code($errno)
+        $message = self::getErrorCode($errno)
             . ": " . $message . " in " . $file . ":" . $line;
 
         echo $message . "\n";
@@ -102,7 +102,7 @@ class ExceptionHandler
      * @param int $code The PHP error code
      * @return string
      */
-    protected static function _error_code($code)
+    protected static function getErrorCode($code)
     {
         $error_levels = array(
             1     => 'E_ERROR',

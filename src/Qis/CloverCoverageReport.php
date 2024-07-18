@@ -6,6 +6,8 @@
  * @package Qis
  */
 
+// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses
+
 namespace Qis;
 
 use SebastianBergmann\PHPLOC\Analyser;
@@ -29,28 +31,28 @@ class CloverCoverageReport
      *
      * @var mixed
      */
-    protected $_xml = null;
+    protected $xml = null;
 
     /**
      * Report text
      *
      * @var string
      */
-    protected $_reportText = '';
+    protected $reportText = '';
 
     /**
      * Files
      *
      * @var array
      */
-    protected $_files = array();
+    protected $files = array();
 
     /**
      * Paths to ignore in the coverage report
      *
      * @var array
      */
-    protected $_ignorePaths = array();
+    protected $ignorePaths = array();
 
     /**
      * Constructor
@@ -78,8 +80,8 @@ class CloverCoverageReport
         // Turn on internal errors for libxml, so we can throw them as
         // exceptions in case of errors encountered while parsing XML
         libxml_use_internal_errors(true);
-        $this->_xml = simplexml_load_file($xmlFilename);
-        if (false == $this->_xml) {
+        $this->xml = simplexml_load_file($xmlFilename);
+        if (false == $this->xml) {
             $errors = array();
             foreach (libxml_get_errors() as $error) {
                 $errors[] = trim($error->message)
@@ -90,7 +92,7 @@ class CloverCoverageReport
         }
         libxml_use_internal_errors(false);
 
-        $this->_ignorePaths = $ignorePaths;
+        $this->ignorePaths = $ignorePaths;
 
         // If targetFile is supplied, instead of outputting the overall stats,
         // display the file with line numbers and the number of times covered
@@ -113,7 +115,7 @@ class CloverCoverageReport
     {
         $this->gatherFileMetrics();
         if (null === $root) {
-            $root = self::findCommonRoot(array_keys($this->_files));
+            $root = self::findCommonRoot(array_keys($this->files));
         }
 
         // Find files in project that weren't included in the coverage report
@@ -127,8 +129,8 @@ class CloverCoverageReport
 
             // User can supply paths to ignore, which uses simple regex to
             // filter filenames out
-            if (!empty($this->_ignorePaths)) {
-                $ignoreRegex = implode('|', $this->_ignorePaths);
+            if (!empty($this->ignorePaths)) {
+                $ignoreRegex = implode('|', $this->ignorePaths);
                 if (preg_match("#" . $ignoreRegex . "#", $file)) {
                     continue;
                 }
@@ -136,17 +138,17 @@ class CloverCoverageReport
 
             // We want files that weren't in the coverage XML to also appear in
             // the report so we know which ones haven't been covered yet.
-            if (!isset($this->_files[$file])) {
-                $sloc = $this->_getSloc($file);
+            if (!isset($this->files[$file])) {
+                $sloc = $this->getSloc($file);
 
-                $this->_files[$file] = array(
+                $this->files[$file] = array(
                     'coveredstatements' => 0,
                     'statements'        => $sloc,
                 );
             }
         }
 
-        $timestamp = (int) $this->_xml->project['timestamp'];
+        $timestamp = (int) $this->xml->project['timestamp'];
 
         // Generate the report by calling methods to add information
         // This is put into a buffer so it can be output
@@ -169,7 +171,7 @@ class CloverCoverageReport
      * @param  string $file Path to file
      * @return int
      */
-    protected function _getSloc($file)
+    protected function getSloc($file)
     {
         $analyser = new Analyser();
         $results = $analyser->countFiles(array($file), false);
@@ -200,16 +202,16 @@ class CloverCoverageReport
      */
     public function gatherFileMetrics()
     {
-        if (!isset($this->_xml->project)) {
+        if (!isset($this->xml->project)) {
             return false;
         }
 
         // Handle <file> nodes
-        $this->gatherFileMetricsFromGroup($this->_xml->project->file);
+        $this->gatherFileMetricsFromGroup($this->xml->project->file);
 
         // Handle <package> nodes
-        if (isset($this->_xml->project->package)) {
-            foreach ($this->_xml->project->package as $package) {
+        if (isset($this->xml->project->package)) {
+            foreach ($this->xml->project->package as $package) {
                 $this->gatherFileMetricsFromGroup($package->file);
             }
         }
@@ -229,8 +231,8 @@ class CloverCoverageReport
             $name = (string) $file['name'];
 
             // Use simple regex to filter out unwanted filenames
-            if (!empty($this->_ignorePaths)) {
-                $ignoreRegex = implode('|', $this->_ignorePaths);
+            if (!empty($this->ignorePaths)) {
+                $ignoreRegex = implode('|', $this->ignorePaths);
                 if (preg_match("#" . $ignoreRegex . "#", $name)) {
                     continue;
                 }
@@ -246,7 +248,7 @@ class CloverCoverageReport
             );
 
             // Save metrics by filename
-            $this->_files[$name] = $fileMetric;
+            $this->files[$name] = $fileMetric;
         }
     }
 
@@ -258,22 +260,22 @@ class CloverCoverageReport
      */
     public function addFileMetrics($root = '')
     {
-        ksort($this->_files);
+        ksort($this->files);
 
         // Strip out the long paths by replacing with a common root as supplied
         // in $root
         $newFiles = array();
-        foreach ($this->_files as $name => $metrics) {
+        foreach ($this->files as $name => $metrics) {
             $newFiles[str_replace($root, '', $name)] = $metrics;
         }
-        $this->_files = $newFiles;
+        $this->files = $newFiles;
 
         // Calculate the column widths to accommodate the longest names
         // Start with some default assumptions for calculating the width of
         // columns
         $longestNameLength = 10;
         $largestLineCount  = 2;
-        foreach ($this->_files as $name => $metrics) {
+        foreach ($this->files as $name => $metrics) {
             if (strlen($name) > $longestNameLength) {
                 $longestNameLength = strlen($name);
             }
@@ -287,7 +289,7 @@ class CloverCoverageReport
         $lineCountPad = strlen((string) $largestLineCount);
 
         // Perform logic of laying out into tabular format
-        foreach ($this->_files as $name => $metrics) {
+        foreach ($this->files as $name => $metrics) {
             $line = str_pad($name, $longestNameLength);
 
             $coveredStatements = str_pad(
@@ -314,7 +316,7 @@ class CloverCoverageReport
 
             $line .= " | " . $coveredStatements . ' / ' . $statements
                 . " | " . str_pad($percent, 3, ' ', STR_PAD_LEFT) . "%"
-                . "  " . $this->_bar($percent);
+                . "  " . $this->bar($percent);
 
             $this->append($line);
         }
@@ -334,21 +336,21 @@ class CloverCoverageReport
     {
         $this->gatherFileMetrics();
 
-        if (empty($this->_files)) {
+        if (empty($this->files)) {
             return false;
         }
 
         if (null === $root) {
-            $root = self::findCommonRoot(array_keys($this->_files));
+            $root = self::findCommonRoot(array_keys($this->files));
         }
 
         // If file isn't in XML, prepend the root.
-        if (!isset($this->_files[$file])) {
+        if (!isset($this->files[$file])) {
             $file = $root . $file;
         }
 
         // If it still isn't in the list, we don't know about it. abort.
-        if (!isset($this->_files[$file])) {
+        if (!isset($this->files[$file])) {
             $this->append("No coverage information available\n for file $file");
             return false;
         }
@@ -435,18 +437,18 @@ class CloverCoverageReport
     public function findTargetFile($filename)
     {
         // Look through <file> nodes
-        foreach ($this->_xml->project->file as $file) {
+        foreach ($this->xml->project->file as $file) {
             if ((string) $file['name'] == $filename) {
                 return $file;
             }
         }
 
-        if (!isset($this->_xml->project->package)) {
+        if (!isset($this->xml->project->package)) {
             return null;
         }
 
         // Look through <package> nodes
-        foreach ($this->_xml->project->package as $package) {
+        foreach ($this->xml->project->package as $package) {
             foreach ($package->file as $file) {
                 if ((string) $file['name'] == $filename) {
                     return $file;
@@ -528,7 +530,7 @@ class CloverCoverageReport
      * @param  mixed $percent The percent value
      * @return string
      */
-    protected function _bar($percent)
+    protected function bar($percent)
     {
         $width = 10;
         $val   = (int) ($percent / $width);
@@ -547,7 +549,7 @@ class CloverCoverageReport
      */
     public function render()
     {
-        echo $this->_reportText;
+        echo $this->reportText;
     }
 
     /**
@@ -560,7 +562,7 @@ class CloverCoverageReport
         $totalStatements   = 0;
         $coveredStatements = 0;
 
-        foreach ($this->_files as $filename => $stats) {
+        foreach ($this->files as $filename => $stats) {
             $totalStatements += $stats['statements'];
 
             $coveredStatements += $stats['coveredstatements'];
@@ -587,10 +589,10 @@ class CloverCoverageReport
      */
     public function getTotalCoverageFromCoverageXml()
     {
-        $totalStatements = $this->_xml->project->metrics['statements'];
+        $totalStatements = $this->xml->project->metrics['statements'];
 
         $coveredStatements =
-            $this->_xml->project->metrics['coveredstatements'];
+            $this->xml->project->metrics['coveredstatements'];
 
         if ($totalStatements != 0) {
             $totalCoveragePercentage = round(
@@ -611,7 +613,7 @@ class CloverCoverageReport
      */
     public function addTitle()
     {
-        $project = $this->_xml->project;
+        $project = $this->xml->project;
         $name = 'Coverage';
 
         // Find the name from the XML, either in the project node, or the
@@ -637,7 +639,7 @@ class CloverCoverageReport
      */
     public function append($text)
     {
-        $this->_reportText .= $text . "\n";
+        $this->reportText .= $text . "\n";
     }
 
     /**

@@ -6,9 +6,11 @@
  * @package Qis
  */
 
+// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses
+
 namespace Qis\Tests\Command;
 
-use BaseTestCase;
+use Qis\Tests\BaseTestCase;
 use Qis\Command\Modules;
 use Qis\ModuleInterface;
 use Qis\Qis;
@@ -134,14 +136,14 @@ class MockQisModuleBaseForModules implements ModuleInterface
 /**
  * Qis Command Init Test cases
  *
- * @uses BaseTestCase
+ * @uses \Qis\Tests\BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
  */
 class ModulesTest extends BaseTestCase
 {
-    public $_qis;
+    public $qis;
 
     /**
      * Setup before each test
@@ -153,11 +155,11 @@ class ModulesTest extends BaseTestCase
         $args     = new Qi_Console_ArgV(array());
         $terminal = new Qi_Console_Terminal();
 
-        $this->_qis = new Qis($args, $terminal);
+        $this->qis = new Qis($args, $terminal);
 
         $settings = array();
 
-        $this->object = new Modules($this->_qis, $settings);
+        $this->object = new Modules($this->qis, $settings);
     }
 
     /**
@@ -193,7 +195,7 @@ class ModulesTest extends BaseTestCase
     {
         $args = new Qi_Console_ArgV(array());
 
-        list($result, $status) = $this->_execute($args);
+        list($result, $status) = $this->execute($args);
 
         $this->assertEquals('', $result);
         $this->assertEquals(0, $status);
@@ -206,11 +208,11 @@ class ModulesTest extends BaseTestCase
      */
     public function testExecuteWithRegisteredModules()
     {
-        $this->_setupSomeDefaultModules();
+        $this->setupSomeDefaultModules();
 
         $args = new Qi_Console_ArgV(array());
 
-        list($result, $status) = $this->_execute($args);
+        list($result, $status) = $this->execute($args);
 
         $this->assertStringContainsString('|  Module', $result);
         $this->assertStringContainsString('|  Qis\\Tests\\Command\\MockQisModuleBaseForModules  |', $result);
@@ -247,7 +249,7 @@ class ModulesTest extends BaseTestCase
      * @param Qis_Console_ArgV $args Arguments
      * @return array
      */
-    protected function _execute($args)
+    protected function execute($args)
     {
         ob_start();
         $status = $this->object->execute($args);
@@ -262,7 +264,7 @@ class ModulesTest extends BaseTestCase
      *
      * @return void
      */
-    protected function _setupSomeDefaultModules()
+    protected function setupSomeDefaultModules()
     {
         $modules = array(
             'mock' => array(
@@ -271,6 +273,6 @@ class ModulesTest extends BaseTestCase
             ),
         );
 
-        $this->_qis->registerModules($modules);
+        $this->qis->registerModules($modules);
     }
 }

@@ -6,9 +6,11 @@
  * @package Qis
  */
 
+// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses
+
 namespace Qis\Tests\Module;
 
-use BaseTestCase;
+use Qis\Tests\BaseTestCase;
 use Qis\Module\Codingstandard;
 use Qis\Module\CodingStandardException;
 use Qis\Qis;
@@ -32,7 +34,7 @@ class MockQisModuleCodingstandard extends Codingstandard
      */
     public function getStandard()
     {
-        return $this->_standard;
+        return $this->standard;
     }
 
     /**
@@ -42,7 +44,7 @@ class MockQisModuleCodingstandard extends Codingstandard
      */
     public function getPath()
     {
-        return $this->_path;
+        return $this->path;
     }
 
     /**
@@ -50,9 +52,9 @@ class MockQisModuleCodingstandard extends Codingstandard
      *
      * @return bool
      */
-    public function checkVersion()
+    public function publicCheckVersion()
     {
-        return $this->_checkVersion();
+        return $this->checkVersion();
     }
 }
 
@@ -80,7 +82,7 @@ class MockQisModuleCodingstandardErrorLevel extends MockQisModuleCodingstandard
 /**
  * Codingstandard Module Test class
  *
- * @uses BaseTestCase
+ * @uses \Qis\Tests\BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
@@ -241,7 +243,7 @@ class CodingstandardTest extends BaseTestCase
         $this->expectException(CodingStandardException::class);
 
         $this->object->setOption('bin', 'ffffffff');
-        $this->object->checkVersion();
+        $this->object->publicCheckVersion();
     }
 
     /**
@@ -255,7 +257,7 @@ class CodingstandardTest extends BaseTestCase
         // This means no version output will be found so checkVersion will
         // return false
         $this->object->setOption('bin', ':');
-        $result = $this->object->checkVersion();
+        $result = $this->object->publicCheckVersion();
 
         $this->assertFalse($result);
     }
@@ -271,7 +273,7 @@ class CodingstandardTest extends BaseTestCase
         // phpcs
         $this->object->setOption('bin', 'ls');
         $this->expectException(\Qis\Module\CodingStandardException::class);
-        $result = $this->object->checkVersion();
+        $result = $this->object->publicCheckVersion();
 
         $this->assertFalse($result);
     }

@@ -24,14 +24,14 @@ class Config
      *
      * @var array
      */
-    protected $_data = array();
+    protected $data = array();
 
     /**
      * Default configuration options
      *
      * @var array
      */
-    protected $_defaults = array(
+    protected $defaults = array(
         'modules' => array(),
     );
 
@@ -43,9 +43,9 @@ class Config
      */
     public function __construct($filename = null)
     {
-        $this->_data = $this->_defaults;
+        $this->data = $this->defaults;
         if ($filename !== null) {
-            $this->_loadIni($filename);
+            $this->loadIni($filename);
         }
     }
 
@@ -68,7 +68,7 @@ class Config
      * @param string $filename Ini filename
      * @return void
      */
-    protected function _loadIni($filename)
+    protected function loadIni($filename)
     {
         $raw = parse_ini_file($filename, true);
 
@@ -78,9 +78,9 @@ class Config
 
         foreach ($raw as $key => $value) {
             if (is_array($value)) {
-                $this->_addArray($key, $value);
+                $this->addArray($key, $value);
             } else {
-                $this->_data[$key] = $value;
+                $this->data[$key] = $value;
             }
         }
     }
@@ -94,10 +94,10 @@ class Config
      * @param array $data Data to add
      * @return void
      */
-    protected function _addArray($sectionName, $data)
+    protected function addArray($sectionName, $data)
     {
-        if (!isset($this->_data[$sectionName])) {
-            $this->_data[$sectionName] = array();
+        if (!isset($this->data[$sectionName])) {
+            $this->data[$sectionName] = array();
         }
 
         $section = array();
@@ -121,7 +121,7 @@ class Config
             }
         }
 
-        $this->_data[$sectionName] = $section;
+        $this->data[$sectionName] = $section;
     }
 
     /**
@@ -137,15 +137,12 @@ class Config
         $value = null;
 
         if (null == $section) {
-            if (isset($this->_data[$var])) {
-                $value = $this->_data[$var];
+            if (isset($this->data[$var])) {
+                $value = $this->data[$var];
             }
         } else {
-            if (
-                isset($this->_data[$section])
-                && isset($this->_data[$section][$var])
-            ) {
-                $value = $this->_data[$section][$var];
+            if (isset($this->data[$section]) && isset($this->data[$section][$var])) {
+                $value = $this->data[$section][$var];
             }
         }
 
@@ -170,12 +167,12 @@ class Config
 
         if (null === $sectionName) {
             if (is_array($value)) {
-                $this->_addArray($key, $value);
+                $this->addArray($key, $value);
             } else {
-                $this->_data[$key] = $value;
+                $this->data[$key] = $value;
             }
         } else {
-            $this->_addArray($sectionName, array($key => $value));
+            $this->addArray($sectionName, array($key => $value));
         }
     }
 

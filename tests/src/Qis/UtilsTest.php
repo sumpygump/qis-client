@@ -8,14 +8,14 @@
 
 namespace Qis\Tests;
 
-use BaseTestCase;
+use Qis\Tests\BaseTestCase;
 use Qis\Utils;
 use StdClass;
 
 /**
  * Utils test class
  *
- * @uses BaseTestCase
+ * @uses \Qis\Tests\BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@nerdery.com>
  * @version $Id$

@@ -6,6 +6,8 @@
  * @package Qis
  */
 
+// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses
+
 namespace Qis\Module;
 
 use Qi_Console_ArgV;
@@ -32,35 +34,35 @@ class Codingstandard implements ModuleInterface
      *
      * @var mixed
      */
-    protected $_qis = null;
+    protected $qis = null;
 
     /**
      * Output path
      *
      * @var string
      */
-    protected $_outputPath = 'codingstandard';
+    protected $outputPath = 'codingstandard';
 
     /**
      * Sniff standard
      *
      * @var string
      */
-    protected $_standard = 'PSR2';
+    protected $standard = 'PSR2';
 
     /**
      * Path to start sniffing
      *
      * @var string
      */
-    protected $_path = '.';
+    protected $path = '.';
 
     /**
      * Paths to sniff
      *
      * @var array
      */
-    protected $_paths = array();
+    protected $paths = array();
 
     /**
      * List of files to sniff
@@ -74,14 +76,14 @@ class Codingstandard implements ModuleInterface
      *
      * @var string
      */
-    protected $_ignore = '';
+    protected $ignore = '';
 
     /**
      * Database object
      *
      * @var object
      */
-    protected $_db = null;
+    protected $db = null;
 
     /**
      * Whether to include sniffcodes in result
@@ -90,15 +92,15 @@ class Codingstandard implements ModuleInterface
      *
      * @var bool
      */
-    protected $_includeSniffCodes = true;
+    protected $includeSniffCodes = true;
 
     /**
      * Options
      *
      * @var array
      */
-    protected $_options = array(
-        'bin'   => 'phpcs',
+    protected $options = array(
+        'bin' => 'phpcs',
     );
 
     /**
@@ -117,35 +119,26 @@ class Codingstandard implements ModuleInterface
      */
     public function __construct(Qis $qis, $settings)
     {
-        $this->_qis = $qis;
+        $this->qis = $qis;
 
-        if (
-            isset($settings['standard'])
-            && $settings['standard'] != ''
-        ) {
-            $this->_standard = $settings['standard'];
+        if (isset($settings['standard']) && $settings['standard'] != '') {
+            $this->standard = $settings['standard'];
         }
 
-        if (
-            isset($settings['bin'])
-            && $settings['bin'] != ''
-        ) {
+        if (isset($settings['bin']) && $settings['bin'] != '') {
             $this->setOption('bin', $settings['bin']);
         }
 
         // Store the project path
-        if (
-            isset($settings['path'])
-            && $settings['path'] != ''
-        ) {
-            $this->_path = $settings['path'];
+        if (isset($settings['path']) && $settings['path'] != '') {
+            $this->path = $settings['path'];
         }
 
         if (isset($settings['ignore'])) {
-            $this->_ignore = $settings['ignore'];
+            $this->ignore = $settings['ignore'];
         }
 
-        $this->_paths = $this->_parsePath($this->_path);
+        $this->paths = $this->parsePath($this->path);
     }
 
     /**
@@ -157,7 +150,7 @@ class Codingstandard implements ModuleInterface
      */
     public function setOption($name, $value)
     {
-        $this->_options[$name] = $value;
+        $this->options[$name] = $value;
         return $this;
     }
 
@@ -168,15 +161,15 @@ class Codingstandard implements ModuleInterface
      */
     public function initialize()
     {
-        $this->_outputPath = $this->_qis->getProjectQisRoot()
+        $this->outputPath = $this->qis->getProjectQisRoot()
             . DIRECTORY_SEPARATOR
-            . $this->_outputPath . DIRECTORY_SEPARATOR;
+            . $this->outputPath . DIRECTORY_SEPARATOR;
 
-        if (!file_exists($this->_outputPath)) {
-            mkdir($this->_outputPath);
+        if (!file_exists($this->outputPath)) {
+            mkdir($this->outputPath);
         }
 
-        $this->_initDatabase();
+        $this->initDatabase();
     }
 
     /**
@@ -184,9 +177,9 @@ class Codingstandard implements ModuleInterface
      *
      * @return void
      */
-    protected function _checkRequirements()
+    protected function checkRequirements()
     {
-        $this->_checkVersion();
+        $this->checkVersion();
     }
 
     /**
@@ -194,29 +187,29 @@ class Codingstandard implements ModuleInterface
      *
      * @return bool
      */
-    protected function _checkVersion()
+    protected function checkVersion()
     {
-        $cmd = $this->_options['bin'] . ' --version 2>&1';
+        $cmd = $this->options['bin'] . ' --version 2>&1';
         exec($cmd, $result, $status);
 
-        $this->_qis->log('Checking version of phpcs');
+        $this->qis->log('Checking version of phpcs');
 
         if ($status != 0) {
             throw new CodingStandardException(
                 "PHPCodeSniffer (phpcs) not installed. Please install with "
                 . "command `composer global require squizlabs/php_codesniffer` "
-                . "(codingstandard.bin is set to '" . $this->_options['bin'] . "')"
+                . "(codingstandard.bin is set to '" . $this->options['bin'] . "')"
             );
         }
 
         if (!isset($result[0])) {
-            $this->_qis->log(
+            $this->qis->log(
                 "Couldn't detect version of phpcs. No output from phpcs."
             );
             return false;
         }
 
-        $this->_qis->log($result[0]);
+        $this->qis->log($result[0]);
 
         $foundMatch = preg_match(
             "/version (\d).(\d+).(\d+)/",
@@ -225,11 +218,11 @@ class Codingstandard implements ModuleInterface
         );
 
         if (!$foundMatch) {
-            $this->_qis->log("Version: " . $result[0]);
-            $this->_qis->log("Couldn't detect version of phpcs");
+            $this->qis->log("Version: " . $result[0]);
+            $this->qis->log("Couldn't detect version of phpcs");
             throw new CodingStandardException(
                 "Couldn't detect version of phpcs "
-                . "(codingstandard.bin is set to '" . $this->_options['bin'] . "')"
+                . "(codingstandard.bin is set to '" . $this->options['bin'] . "')"
             );
             return false;
         }
@@ -237,7 +230,7 @@ class Codingstandard implements ModuleInterface
         list($version, $major, $minor, $revision) = $matches;
 
         if ((int) $major <= 1 && (int) $minor < 3) {
-            $this->_includeSniffCodes = false;
+            $this->includeSniffCodes = false;
             throw new CodingStandardException(
                 "phpcs version 1.3 or higher required."
             );
@@ -255,16 +248,16 @@ class Codingstandard implements ModuleInterface
     public function execute(Qi_Console_ArgV $args)
     {
         $this->args = $args->toArray();
-        $this->_qis->qecho("\nRunning Codingstandard module task...\n");
-        $this->_checkRequirements();
+        $this->qis->qecho("\nRunning Codingstandard module task...\n");
+        $this->checkRequirements();
 
         if ($args->__arg2) {
-            $paths = $this->_parsePath($args->__arg2);
+            $paths = $this->parsePath($args->__arg2);
             if (empty($paths)) {
-                return $this->_qis->halt("Path `$args->__arg2' not found.");
+                return $this->qis->halt("Path `$args->__arg2' not found.");
             }
         } else {
-            $paths = $this->_paths;
+            $paths = $this->paths;
         }
 
         if ($args->list) {
@@ -275,9 +268,9 @@ class Codingstandard implements ModuleInterface
             'direct' => (bool) $args->d,
         );
 
-        $this->_runCodeSniff($paths, $options);
+        $this->runCodeSniff($paths, $options);
 
-        $this->_qis->qecho("\nCompleted Codingstandard module task.\n");
+        $this->qis->qecho("\nCompleted Codingstandard module task.\n");
 
         $this->displaySummary();
 
@@ -321,11 +314,11 @@ class Codingstandard implements ModuleInterface
             . "comma separated list of directories\n";
 
         $out .= "\nValid Options:\n"
-            . $this->_qis->getTerminal()->do_setaf(3)
+            . $this->qis->getTerminal()->do_setaf(3)
             . "  --list : Show list of files sniffed\n"
             . "  -d [--direct] : Output resulting report directly "
             . "(when not using default path)\n"
-            . $this->_qis->getTerminal()->do_op();
+            . $this->qis->getTerminal()->do_op();
 
         return $out;
     }
@@ -377,10 +370,10 @@ class Codingstandard implements ModuleInterface
      * @param array $options Options
      * @return void
      */
-    protected function _runCodeSniff($paths = array('.'), $options = array())
+    protected function runCodeSniff($paths = array('.'), $options = array())
     {
-        if ($this->_standard) {
-            $sniffStandard = $this->_standard;
+        if ($this->standard) {
+            $sniffStandard = $this->standard;
         } else {
             $sniffStandard = 'PSR2';
         }
@@ -390,55 +383,55 @@ class Codingstandard implements ModuleInterface
         $validPaths = array();
         foreach ($paths as $path) {
             if (!file_exists($path)) {
-                $this->_qis->halt("File '$path' doesn't exist.");
+                $this->qis->halt("File '$path' doesn't exist.");
             }
             $validPaths[] = $path;
         }
 
-        $this->_qis->qecho("Sniffing code with '$sniffStandard' standard...\n");
-        if ($this->_qis->isVerbose()) {
+        $this->qis->qecho("Sniffing code with '$sniffStandard' standard...\n");
+        if ($this->qis->isVerbose()) {
             echo "\n";
         }
 
-        $cmd = $this->_options['bin']
+        $cmd = $this->options['bin']
             . ' --standard=' . $sniffStandard
             . ' -p'
             . ' --extensions=php';
 
-        if ($this->_ignore) {
-            $cmd .= ' --ignore=' . escapeshellarg($this->_ignore);
+        if ($this->ignore) {
+            $cmd .= ' --ignore=' . escapeshellarg($this->ignore);
         }
 
-        if ($paths == $this->_paths) {
+        if ($paths == $this->paths) {
             // Show high-level summary
             $cmd .= ' --report=summary';
         } else {
             $cmd .= ' --report=full';
         }
 
-        $cmd .= ' --report-csv=' . $this->_outputPath . 'results.csv'
+        $cmd .= ' --report-csv=' . $this->outputPath . 'results.csv'
             . ' "' . implode('" "', $validPaths) . '" ';
 
-        $this->_qis->log($cmd);
+        $this->qis->log($cmd);
 
         passthru($cmd);
 
-        if (!$this->_qis->isVerbose()) {
+        if (!$this->qis->isVerbose()) {
             echo "done.\n";
         }
 
         if (!$direct) {
-            if (!file_exists($this->_outputPath . 'results.csv')) {
-                $this->_qis->warningMessage("No csv file to import.");
+            if (!file_exists($this->outputPath . 'results.csv')) {
+                $this->qis->warningMessage("No csv file to import.");
                 return false;
             }
             try {
-                $this->_saveTimeStamp();
+                $this->saveTimeStamp();
                 $this->countSloc();
-                $this->_importCsv($this->_outputPath . 'results.csv', $paths);
-                $this->_saveTotals();
+                $this->importCsv($this->outputPath . 'results.csv', $paths);
+                $this->saveTotals();
             } catch (Exception $e) {
-                $this->_qis->halt($e->getMessage());
+                $this->qis->halt($e->getMessage());
             }
         }
     }
@@ -450,25 +443,25 @@ class Codingstandard implements ModuleInterface
      * @param string $paths Paths of file just sniffed
      * @return void
      */
-    protected function _importCsv($csv, $paths = null)
+    protected function importCsv($csv, $paths = null)
     {
         if (null === $paths) {
-            $paths = $this->_paths;
+            $paths = $this->paths;
         }
 
         $sql = "DELETE FROM snif_results";
 
         // FIXME: This only correctly works if you are re-running
         // the sniff on a specific file, not a subdirectory
-        if ($paths != $this->_paths) {
+        if ($paths != $this->paths) {
             // We ran the sniff for a specific file
             foreach ($paths as $path) {
                 $sqlString = $sql . " WHERE file = '" . realpath($path) . "';";
-                $this->_db->executeQuery($sqlString);
+                $this->db->executeQuery($sqlString);
             }
         } else {
             // Yes, just delete everything.
-            $this->_db->executeQuery($sql);
+            $this->db->executeQuery($sql);
         }
 
         $row    = 0;
@@ -479,8 +472,8 @@ class Codingstandard implements ModuleInterface
             throw new Exception("Error importing csv: " . $cols[0]);
         }
 
-        if ($this->_qis->isVerbose()) {
-            $this->_qis->log("Writing results to db");
+        if ($this->qis->isVerbose()) {
+            $this->qis->log("Writing results to db");
         } else {
             echo "Writing results to db...";
         }
@@ -488,7 +481,7 @@ class Codingstandard implements ModuleInterface
         $sqlPre = "INSERT INTO snif_results ('file', 'line', 'column', "
             . "'severity', 'message', 'sniffcode') VALUES ";
 
-        $this->_db->beginTransaction();
+        $this->db->beginTransaction();
 
         while (($data = fgetcsv($handle, 1000, ',')) !== false) {
             // only add the row if there was a 1,
@@ -499,39 +492,39 @@ class Codingstandard implements ModuleInterface
 
             if ($data[0] == $cols[0]) {
                 // No data, we got the headers again.
-                if ($this->_qis->isVerbose()) {
-                    $this->_qis->log('No sniff results found.');
+                if ($this->qis->isVerbose()) {
+                    $this->qis->log('No sniff results found.');
                 }
                 break;
             }
 
-            if ($this->_includeSniffCodes) {
-                $sniffCode = $this->_db->escape($data[5]);
+            if ($this->includeSniffCodes) {
+                $sniffCode = $this->db->escape($data[5]);
             } else {
                 $sniffCode = '';
             }
 
-            $sqlRow = "('" . $this->_db->escape($data[0]) . "',"
-                . $this->_db->escape($data[1]) . ","
-                . $this->_db->escape($data[2]) . ","
-                . "'" . $this->_db->escape($data[3]) . "',"
-                . "'" . $this->_db->escape($data[4]) . "',"
+            $sqlRow = "('" . $this->db->escape($data[0]) . "',"
+                . $this->db->escape($data[1]) . ","
+                . $this->db->escape($data[2]) . ","
+                . "'" . $this->db->escape($data[3]) . "',"
+                . "'" . $this->db->escape($data[4]) . "',"
                 . "'" . $sniffCode . "')";
 
             $sql = $sqlPre . $sqlRow;
-            $this->_db->executeQuery($sql);
+            $this->db->executeQuery($sql);
 
-            if ($this->_qis->isVerbose()) {
+            if ($this->qis->isVerbose()) {
                 echo '.';
             }
 
             $row++;
         }
 
-        $this->_db->commit();
+        $this->db->commit();
 
-        if ($this->_qis->isVerbose()) {
-            $this->_qis->log('Finished writing results to db.');
+        if ($this->qis->isVerbose()) {
+            $this->qis->log('Finished writing results to db.');
         } else {
             echo "done\n";
         }
@@ -544,14 +537,14 @@ class Codingstandard implements ModuleInterface
      *
      * @return void
      */
-    protected function _saveTotals()
+    protected function saveTotals()
     {
         $sql = "select severity, count(id) as count "
             . "from snif_results "
             . "group by severity "
             . "order by severity;";
 
-        $rows = $this->_db->fetchRows($sql);
+        $rows = $this->db->fetchRows($sql);
 
         $errorTotal   = 0;
         $warningTotal = 0;
@@ -577,7 +570,7 @@ class Codingstandard implements ModuleInterface
 
         $sql = "update project set errors=$errorTotal, "
             . "warnings=$warningTotal, error_level=$errorLevel;";
-        $this->_db->executeQuery($sql);
+        $this->db->executeQuery($sql);
 
         return $errorLevel;
     }
@@ -591,7 +584,7 @@ class Codingstandard implements ModuleInterface
     {
         $sql = "select * from project order by id desc limit 1;";
 
-        return $this->_db->fetchRow($sql);
+        return $this->db->fetchRow($sql);
     }
 
     /**
@@ -646,7 +639,7 @@ class Codingstandard implements ModuleInterface
         }
 
         if ($pretty) {
-            $this->_qis->prettyMessage(trim($out), 15, 4);
+            $this->qis->prettyMessage(trim($out), 15, 4);
         } else {
             return $out;
         }
@@ -670,7 +663,7 @@ class Codingstandard implements ModuleInterface
      */
     public function displayList()
     {
-        $results = $this->_getFileList();
+        $results = $this->getFileList();
 
         // Determine common root from files
         $filelist = array();
@@ -724,14 +717,14 @@ class Codingstandard implements ModuleInterface
      *
      * @return array
      */
-    protected function _getFileList()
+    protected function getFileList()
     {
         $sql = "select file, severity, count(id) as `count` "
             . "from snif_results "
             . "group by file, severity "
             . "order by file, severity";
 
-        return $this->_db->fetchRows($sql);
+        return $this->db->fetchRows($sql);
     }
 
     /**
@@ -765,12 +758,12 @@ class Codingstandard implements ModuleInterface
      *
      * @return bool
      */
-    protected function _saveTimeStamp()
+    protected function saveTimeStamp()
     {
-        $file     = $this->_outputPath . 'lastrun';
+        $file     = $this->outputPath . 'lastrun';
         $contents = date('Y-m-d H:i:s');
 
-        $this->_qis->log("Saving timestamp of $contents");
+        $this->qis->log("Saving timestamp of $contents");
 
         return file_put_contents($file, $contents);
     }
@@ -800,7 +793,7 @@ class Codingstandard implements ModuleInterface
      * @param string $path Path
      * @return array
      */
-    protected function _parsePath($path)
+    protected function parsePath($path)
     {
         if (strpos($path, ',') !== false) {
             $paths = explode(',', $path);
@@ -824,12 +817,12 @@ class Codingstandard implements ModuleInterface
      *
      * @return void
      */
-    protected function _initDatabase()
+    protected function initDatabase()
     {
         $cfg = array(
-            'dbfile'   => $this->_outputPath . 'cs.db3',
+            'dbfile'   => $this->outputPath . 'cs.db3',
             'log'      => true,
-            'log_file' => $this->_outputPath . 'db.log',
+            'log_file' => $this->outputPath . 'db.log',
         );
 
         $createSchema = false;
@@ -838,12 +831,12 @@ class Codingstandard implements ModuleInterface
             $createSchema = true;
         }
 
-        $this->_db = new PdoSqlite($cfg);
+        $this->db = new PdoSqlite($cfg);
 
         if ($createSchema) {
             // First time db setup
-            $this->_createSchema();
-            $this->_createProjectRow();
+            $this->createSchema();
+            $this->createProjectRow();
         }
     }
 
@@ -852,9 +845,9 @@ class Codingstandard implements ModuleInterface
      *
      * @return bool
      */
-    protected function _createSchema()
+    protected function createSchema()
     {
-        $this->_qis->log("Creating cs database schema");
+        $this->qis->log("Creating cs database schema");
 
         $sql = "create table project (
             'id' integer primary key,
@@ -866,7 +859,7 @@ class Codingstandard implements ModuleInterface
             'error_level' real
         );";
 
-        $this->_db->executeQuery($sql);
+        $this->db->executeQuery($sql);
 
         $sql = "create table snif_results (
             'id' integer primary key,
@@ -878,7 +871,7 @@ class Codingstandard implements ModuleInterface
             'sniffcode' text
         );";
 
-        $this->_db->executeQuery($sql);
+        $this->db->executeQuery($sql);
 
         return true;
     }
@@ -888,11 +881,11 @@ class Codingstandard implements ModuleInterface
      *
      * @return void
      */
-    protected function _createProjectRow()
+    protected function createProjectRow()
     {
         $sql = "INSERT INTO project (datetime) values (" . time() . ");";
 
-        $id = $this->_db->executeQuery($sql);
+        $id = $this->db->executeQuery($sql);
         return $id;
     }
 
@@ -903,20 +896,20 @@ class Codingstandard implements ModuleInterface
      */
     public function countSloc()
     {
-        $filelistPath = $this->_outputPath . 'filelist';
+        $filelistPath = $this->outputPath . 'filelist';
 
-        $this->_qis->log(
+        $this->qis->log(
             "Counting lines of codes in paths '"
-            . implode(',', $this->_paths) . "'"
+            . implode(',', $this->paths) . "'"
         );
 
         $sloc     = 0;
         $comments = 1;
 
-        $this->_clearFileList();
+        $this->clearFileList();
 
-        foreach ($this->_paths as $path) {
-            $files = $this->_createFileList($path);
+        foreach ($this->paths as $path) {
+            $files = $this->createFileList($path);
         }
 
         $analyser = new Analyser();
@@ -932,8 +925,8 @@ class Codingstandard implements ModuleInterface
             $comments = $results['cloc'];
         }
 
-        $this->_updateSloc($sloc);
-        $this->_updateCommentLines($comments);
+        $this->updateSloc($sloc);
+        $this->updateCommentLines($comments);
 
         return array($sloc, $comments);
     }
@@ -943,9 +936,9 @@ class Codingstandard implements ModuleInterface
      *
      * @return void
      */
-    protected function _clearFileList()
+    protected function clearFileList()
     {
-        $filelistPath = $this->_outputPath . 'filelist';
+        $filelistPath = $this->outputPath . 'filelist';
         if (file_exists($filelistPath)) {
             unlink($filelistPath);
         }
@@ -959,19 +952,19 @@ class Codingstandard implements ModuleInterface
      * @param string $path Path to start globbing
      * @return array
      */
-    protected function _createFileList($path)
+    protected function createFileList($path)
     {
         // Ensure path ends in single slash
         $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-        $this->_qis->log("Creating file list for path `$path'");
+        $this->qis->log("Creating file list for path `$path'");
 
         $files = Utils::rglob('*.php', 0, $path);
 
-        $files = $this->_filterIgnoredFiles($files);
+        $files = $this->filterIgnoredFiles($files);
         $filelist = implode("\n", $files);
 
-        $filelistPath = $this->_outputPath . 'filelist';
+        $filelistPath = $this->outputPath . 'filelist';
 
         file_put_contents($filelistPath, $filelist . "\n", FILE_APPEND);
 
@@ -986,13 +979,13 @@ class Codingstandard implements ModuleInterface
      * @param array $files Array of file paths
      * @return array Filtered array of file paths
      */
-    protected function _filterIgnoredFiles($files)
+    protected function filterIgnoredFiles($files)
     {
-        if ($this->_ignore == '') {
+        if ($this->ignore == '') {
             return $files;
         }
 
-        $ignorePattern = str_replace(',', '|', $this->_ignore);
+        $ignorePattern = str_replace(',', '|', $this->ignore);
 
         // Filter out ignored paths
         $filtered = array();
@@ -1009,7 +1002,7 @@ class Codingstandard implements ModuleInterface
             count($files)
         );
 
-        $this->_qis->log($message);
+        $this->qis->log($message);
 
         return $filtered;
     }
@@ -1020,10 +1013,10 @@ class Codingstandard implements ModuleInterface
      * @param int $total Total source lines
      * @return void
      */
-    protected function _updateSloc($total)
+    protected function updateSloc($total)
     {
         $sql = "update project set sloc=$total";
-        return $this->_db->executeQuery($sql);
+        return $this->db->executeQuery($sql);
     }
 
     /**
@@ -1032,10 +1025,10 @@ class Codingstandard implements ModuleInterface
      * @param int $total Total comment lines
      * @return mixed
      */
-    protected function _updateCommentLines($total)
+    protected function updateCommentLines($total)
     {
         $sql = "update project set comment_lines=$total";
-        return $this->_db->executeQuery($sql);
+        return $this->db->executeQuery($sql);
     }
 }
 

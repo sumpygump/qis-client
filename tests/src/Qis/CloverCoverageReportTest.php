@@ -8,14 +8,14 @@
 
 namespace Qis\Tests;
 
-use BaseTestCase;
+use Qis\Tests\BaseTestCase;
 use Qis\CloverCoverageReport;
 use StdClass;
 
 /**
  * Clover Coverage Report test class
  *
- * @uses BaseTestCase
+ * @uses \Qis\Tests\BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
@@ -66,9 +66,9 @@ final class CloverCoverageReportTest extends BaseTestCase
         $contents = '<?xml version="1.0" encoding="UTF-8"?>
     <coverage generated="1301557448" phpunit="3.4.15">
     </coverage>';
-        $this->_createXmlFile($contents);
+        $this->createXmlFile($contents);
 
-        $result = $this->_bufferOutput();
+        $result = $this->bufferOutput();
 
         $this->assertStringContainsString('Coverage report generated', $result);
         $this->assertStringContainsString('Total Coverage', $result);
@@ -81,9 +81,9 @@ final class CloverCoverageReportTest extends BaseTestCase
      */
     public function testReportProjectIsPresent()
     {
-        $this->_createXmlFile();
+        $this->createXmlFile();
 
-        $result = $this->_bufferOutput();
+        $result = $this->bufferOutput();
 
         $this->assertStringContainsString('Coverage report generated', $result);
         $this->assertStringContainsString('/ 152 |   0%  [', $result);
@@ -97,7 +97,7 @@ final class CloverCoverageReportTest extends BaseTestCase
      */
     public function testReportFileAnalysisWhenNoXml()
     {
-        $this->_createXmlFile('');
+        $this->createXmlFile('');
         $this->expectException(\Qis\CloverCoverageReportException::class);
 
         $this->object = new CloverCoverageReport(
@@ -115,9 +115,9 @@ final class CloverCoverageReportTest extends BaseTestCase
      */
     public function testReportFileAnalysisTargetFileNotExisting()
     {
-        $this->_createXmlFile();
+        $this->createXmlFile();
 
-        $result = $this->_bufferOutput('foobar.php');
+        $result = $this->bufferOutput('foobar.php');
         $this->assertStringContainsString("No coverage information available", $result);
     }
 
@@ -129,9 +129,9 @@ final class CloverCoverageReportTest extends BaseTestCase
      */
     public function testReportFileAnalysisShortTarget()
     {
-        $this->_createXmlFile();
+        $this->createXmlFile();
 
-        $result = $this->_bufferOutput(
+        $result = $this->bufferOutput(
             'src/Qis/Qis.php'
         );
         $this->assertStringContainsString('    1          : <' . '?php', $result);
@@ -147,8 +147,8 @@ final class CloverCoverageReportTest extends BaseTestCase
         $contents = '<?xml version="1.0" encoding="UTF-8"?>
     <coverage generated="1301557448" phpunit="3.4.15">
     </coverage>';
-        $this->_createXmlFile($contents);
-        $report = $this->_bufferOutput('Crank.php');
+        $this->createXmlFile($contents);
+        $report = $this->bufferOutput('Crank.php');
 
         $result = $this->object->generateFileAnalysis('Crankshaft.php');
         $this->assertEquals('', $report);
@@ -166,8 +166,8 @@ final class CloverCoverageReportTest extends BaseTestCase
         $file = $path . 'foobar.php';
         touch($file);
 
-        $this->_createXmlFile();
-        $result = $this->_bufferOutput();
+        $this->createXmlFile();
+        $result = $this->bufferOutput();
 
         $this->assertStringNotContainsString('tests/foobar.php', $result);
 
@@ -313,7 +313,7 @@ final class CloverCoverageReportTest extends BaseTestCase
      * @param string $targetFile Target file name
      * @return array
      */
-    protected function _bufferOutput($targetFile = null)
+    protected function bufferOutput($targetFile = null)
     {
         ob_start();
         $this->object = new CloverCoverageReport(
@@ -335,7 +335,7 @@ final class CloverCoverageReportTest extends BaseTestCase
      * @param string $contents Contents of file
      * @return void
      */
-    protected function _createXmlFile($contents = null)
+    protected function createXmlFile($contents = null)
     {
         $filename = 'samplecoverage.xml';
         $path     = realpath('..');

@@ -29,21 +29,21 @@ class Test implements ModuleInterface
      *
      * @var string
      */
-    protected $_outputPath = 'test-results';
+    protected $outputPath = 'test-results';
 
     /**
      * Qis kernel object
      *
      * @var Qis
      */
-    protected $_qis = null;
+    protected $qis = null;
 
     /**
      * Settings
      *
      * @var array
      */
-    protected $_settings = array();
+    protected $settings = array();
 
     /**
      * Path (root of tests to run)
@@ -54,7 +54,7 @@ class Test implements ModuleInterface
      *
      * @var string
      */
-    protected $_path = '.';
+    protected $path = '.';
 
     /**
      * Args from last execution
@@ -72,12 +72,12 @@ class Test implements ModuleInterface
      */
     public function __construct(Qis $qis, $settings)
     {
-        $this->_qis      = $qis;
-        $this->_settings = $settings;
+        $this->qis      = $qis;
+        $this->settings = $settings;
 
         // Store the test run path
         if (isset($settings['path'])) {
-            $this->_path = $settings['path'];
+            $this->path = $settings['path'];
         }
     }
 
@@ -88,12 +88,12 @@ class Test implements ModuleInterface
      */
     public function initialize()
     {
-        $this->_outputPath = $this->_qis->getProjectQisRoot()
+        $this->outputPath = $this->qis->getProjectQisRoot()
             . DIRECTORY_SEPARATOR
-            . $this->_outputPath . DIRECTORY_SEPARATOR;
+            . $this->outputPath . DIRECTORY_SEPARATOR;
 
-        if (!file_exists($this->_outputPath)) {
-            mkdir($this->_outputPath);
+        if (!file_exists($this->outputPath)) {
+            mkdir($this->outputPath);
         }
     }
 
@@ -106,7 +106,7 @@ class Test implements ModuleInterface
     public function execute(Qi_Console_ArgV $args)
     {
         $this->args = $args->toArray();
-        $this->_qis->qecho("\nRunning Test (unit tests) module task...\n");
+        $this->qis->qecho("\nRunning Test (unit tests) module task...\n");
 
         if ($args->__arg2) {
             $path = $args->__arg2;
@@ -129,10 +129,10 @@ class Test implements ModuleInterface
             $options['testdox'] = true;
         }
 
-        $this->_saveTimeStamp();
+        $this->saveTimeStamp();
         $this->runTest($path, $options);
 
-        $this->_qis->qecho("\nCompleted Test module task.\n");
+        $this->qis->qecho("\nCompleted Test module task.\n");
         return 0;
     }
 
@@ -172,11 +172,11 @@ class Test implements ModuleInterface
             . "for a certain file or directory.\n";
 
         $out .= "\nValid Options:\n"
-            . $this->_qis->getTerminal()->do_setaf(3)
+            . $this->qis->getTerminal()->do_setaf(3)
             . "  --init : Initialize a test environment\n"
             . "  --list : Show list of previous tests run\n"
             . "  --testdox : Use testdox output when running tests\n"
-            . $this->_qis->getTerminal()->do_op();
+            . $this->qis->getTerminal()->do_op();
 
         return $out;
     }
@@ -191,7 +191,7 @@ class Test implements ModuleInterface
     public function getSummary($short = false, $label = null)
     {
         if ($short) {
-            return $this->_getShortSummary($label);
+            return $this->getShortSummary($label);
         }
 
         return $this->displaySummary(false);
@@ -203,7 +203,7 @@ class Test implements ModuleInterface
      * @param string $label Label
      * @return string
      */
-    protected function _getShortSummary($label = null)
+    protected function getShortSummary($label = null)
     {
         if (null === $label) {
             $label = 'Test: ';
@@ -244,13 +244,13 @@ class Test implements ModuleInterface
      */
     public function runTest($path = '.', $options = array())
     {
-        $coverageReportFilename = $this->_outputPath
+        $coverageReportFilename = $this->outputPath
             . 'coverage.xml';
 
-        $coverageHtmlDir = $this->_outputPath
+        $coverageHtmlDir = $this->outputPath
             . 'coverage' . DIRECTORY_SEPARATOR;
 
-        $testsDir = $this->_path;
+        $testsDir = $this->path;
 
         $rootTestsDir = false;
         if ($testsDir == '') {
@@ -261,30 +261,27 @@ class Test implements ModuleInterface
             }
         } else {
             if (!file_exists($testsDir)) {
-                $this->_qis->halt("Tests directory '$testsDir' not found.");
+                $this->qis->halt("Tests directory '$testsDir' not found.");
             }
         }
 
         $colors = '';
-        if ($this->_qis->getTerminal()->isatty()) {
+        if ($this->qis->getTerminal()->isatty()) {
             $colors = '--colors ';
         }
 
         $bootstrap = '';
-        if (
-            isset($this->_settings['bootstrap'])
-            && $this->_settings['bootstrap']
-        ) {
-            $bootstrap = '--bootstrap=' . $this->_settings['bootstrap'] . ' ';
+        if (isset($this->settings['bootstrap']) && $this->settings['bootstrap']) {
+            $bootstrap = '--bootstrap=' . $this->settings['bootstrap'] . ' ';
         }
 
         $configuration = '';
         if (
-            isset($this->_settings['configuration'])
-            && $this->_settings['configuration']
+            isset($this->settings['configuration'])
+            && $this->settings['configuration']
         ) {
             $configuration = '--configuration='
-                . $this->_settings['configuration'] . ' ';
+                . $this->settings['configuration'] . ' ';
 
             // Set path to empty if it is not set to something other than . to
             // allow for setting a more specific path in the XML configuration
@@ -298,7 +295,7 @@ class Test implements ModuleInterface
                 // check if there is a bootstrap file and auto bootstrap it.
                 $detectedBootstrapFile = $testsDir . DIRECTORY_SEPARATOR . 'bootstrap.php';
                 if (file_exists($detectedBootstrapFile)) {
-                    $this->_qis->qecho("QIS Auto-detected bootstrap file bootstrap.php\n");
+                    $this->qis->qecho("QIS Auto-detected bootstrap file bootstrap.php\n");
                     $bootstrap = '--bootstrap=bootstrap.php ';
                 }
             }
@@ -309,7 +306,7 @@ class Test implements ModuleInterface
             $executionOutputFormat = '--testdox ';
         }
 
-        $phpunitBin = $this->_settings['bin'];
+        $phpunitBin = $this->settings['bin'];
 
         // If phpunit binary path is not in config file, default to 'phpunit'
         $isEmptyPhpunitBin = (array) $phpunitBin;
@@ -323,19 +320,19 @@ class Test implements ModuleInterface
             . $configuration
             . $colors
             . $executionOutputFormat
-            . '--log-junit ' . $this->_outputPath . 'log.junit '
-            . '--testdox-text ' . $this->_outputPath . 'testdox.text.txt '
+            . '--log-junit ' . $this->outputPath . 'log.junit '
+            . '--testdox-text ' . $this->outputPath . 'testdox.text.txt '
             . '--coverage-clover=' . $coverageReportFilename . ' ';
 
-        if (isset($this->_settings['coverage-html']) && (bool) $this->_settings['coverage-html']) {
+        if (isset($this->settings['coverage-html']) && (bool) $this->settings['coverage-html']) {
             $cmd .= '--coverage-html=' . $coverageHtmlDir . ' ';
         }
 
         $cmd .= $path
-            . ' | tee ' . $this->_outputPath . 'output.log;'
+            . ' | tee ' . $this->outputPath . 'output.log;'
             . 'cd - > /dev/null';
 
-        $this->_qis->log($cmd);
+        $this->qis->log($cmd);
 
         passthru($cmd);
     }
@@ -345,9 +342,9 @@ class Test implements ModuleInterface
      *
      * @return void
      */
-    protected function _saveTimeStamp()
+    protected function saveTimeStamp()
     {
-        $file     = $this->_outputPath . 'lastrun';
+        $file     = $this->outputPath . 'lastrun';
         $contents = date('Y-m-d H:i:s');
 
         return file_put_contents($file, $contents);
@@ -360,7 +357,7 @@ class Test implements ModuleInterface
      */
     public function getLastRunTimeStamp()
     {
-        $file = $this->_outputPath . 'lastrun';
+        $file = $this->outputPath . 'lastrun';
 
         return trim(file_get_contents($file));
     }
@@ -406,7 +403,7 @@ class Test implements ModuleInterface
 
         $out = "Test (unit tests) results:\n" . $table->display(true);
         if ($pretty) {
-            $this->_qis->prettyMessage(trim($out), $fg, $bg);
+            $this->qis->prettyMessage(trim($out), $fg, $bg);
         } else {
             return $out;
         }
@@ -420,7 +417,7 @@ class Test implements ModuleInterface
      */
     public function getMetrics($onlyPrimary = false)
     {
-        $metrics = $this->readLogJunit($this->_outputPath . 'log.junit');
+        $metrics = $this->readLogJunit($this->outputPath . 'log.junit');
 
         if (!$onlyPrimary) {
             return $metrics;
@@ -445,7 +442,7 @@ class Test implements ModuleInterface
         echo $this->getLastRunTimeStamp() . " \n";
         echo str_repeat('-', 32) . "\n";
 
-        $data = $this->readTestDox($this->_outputPath . 'testdox.text.txt');
+        $data = $this->readTestDox($this->outputPath . 'testdox.text.txt');
 
         echo $data;
 
@@ -497,55 +494,55 @@ class Test implements ModuleInterface
 
     public function initializeTestEnvironment()
     {
-        $this->_qis->qecho("\nInitializing default testing environment...\n");
+        $this->qis->qecho("\nInitializing default testing environment...\n");
 
-        $this->_qis->qecho("This includes the following:\n");
-        $this->_qis->qecho(" - Create `tests` dir at the root of project\n");
-        $this->_qis->qecho(" - Create phpunit.xml file in `tests` dir\n");
-        $this->_qis->qecho(" - Create a default test file to start with\n\n");
+        $this->qis->qecho("This includes the following:\n");
+        $this->qis->qecho(" - Create `tests` dir at the root of project\n");
+        $this->qis->qecho(" - Create phpunit.xml file in `tests` dir\n");
+        $this->qis->qecho(" - Create a default test file to start with\n\n");
 
         $input = readline("Do you want to continue? (Y/n): ");
         if (strtolower(trim($input)) != 'y' && trim($input) != '') {
-            $this->_qis->qecho("Exiting\n");
+            $this->qis->qecho("Exiting\n");
             return 0;
         }
-        $this->_qis->qecho("\n");
+        $this->qis->qecho("\n");
 
-        $root = dirname($this->_qis->getProjectQisRoot());
+        $root = dirname($this->qis->getProjectQisRoot());
 
         // Make tests dir
         $testsdir = $root . '/tests';
         if (!is_dir($testsdir)) {
-            $this->_qis->qecho(sprintf("Creating directory `%s`\n", $testsdir));
+            $this->qis->qecho(sprintf("Creating directory `%s`\n", $testsdir));
             mkdir($testsdir);
         } else {
-            $this->_qis->qecho(sprintf("Directory `%s` already exists.\n", $testsdir));
+            $this->qis->qecho(sprintf("Directory `%s` already exists.\n", $testsdir));
         }
 
         // Write phpunit.xml file
         $phpunitConfig = $testsdir . '/phpunit.xml';
         if (!file_exists($phpunitConfig)) {
-            $this->_qis->qecho(sprintf("Writing file `%s`\n", $phpunitConfig));
+            $this->qis->qecho(sprintf("Writing file `%s`\n", $phpunitConfig));
             file_put_contents($phpunitConfig, $this->getDefaultPhpunitConfigXml());
         } else {
-            $this->_qis->qecho(sprintf("File `%s` already exists.\n", $phpunitConfig));
+            $this->qis->qecho(sprintf("File `%s` already exists.\n", $phpunitConfig));
         }
 
         // Create first test
-        $testsfileroot = $testsdir . '/src/' . ucfirst($this->_qis->getConfig()->project_name);
+        $testsfileroot = $testsdir . '/src/' . ucfirst($this->qis->getConfig()->project_name);
         if (!is_dir($testsfileroot)) {
-            $this->_qis->qecho(sprintf("Creating directory `%s`\n", $testsfileroot));
+            $this->qis->qecho(sprintf("Creating directory `%s`\n", $testsfileroot));
             mkdir($testsfileroot, 0755, true);
 
             $testfile = $testsfileroot . '/DefaultTest.php';
-            $this->_qis->qecho(sprintf("Writing file `%s`\n", $testfile));
+            $this->qis->qecho(sprintf("Writing file `%s`\n", $testfile));
             file_put_contents($testfile, $this->getDefaultTestFile());
         }
 
-        $this->_qis->qecho("\nTest environment initialized. Now run `qis test` to run your first test.\n");
-        $this->_qis->qecho("Note that the phpunit.xml file defined assumes that the source\n");
-        $this->_qis->qecho("for this project is at `src`. If it needs to change, update the\n");
-        $this->_qis->qecho("value in coverage.include.directory in tests/phpunit.xml\n");
+        $this->qis->qecho("\nTest environment initialized. Now run `qis test` to run your first test.\n");
+        $this->qis->qecho("Note that the phpunit.xml file defined assumes that the source\n");
+        $this->qis->qecho("for this project is at `src`. If it needs to change, update the\n");
+        $this->qis->qecho("value in coverage.include.directory in tests/phpunit.xml\n");
 
         return 0;
     }

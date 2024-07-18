@@ -29,14 +29,14 @@ class Help implements CommandInterface
      *
      * @var mixed
      */
-    protected $_qis = null;
+    protected $qis = null;
 
     /**
-     * _terminal
+     * Terminal
      *
      * @var Qi_Console_Terminal
      */
-    protected $_terminal;
+    protected $terminal;
 
     /**
      * Get Name of command
@@ -57,8 +57,8 @@ class Help implements CommandInterface
      */
     public function __construct(Qis $qis, $settings)
     {
-        $this->_qis      = $qis;
-        $this->_terminal = $this->_qis->getTerminal();
+        $this->qis = $qis;
+        $this->terminal = $this->qis->getTerminal();
     }
 
     /**
@@ -85,9 +85,9 @@ class Help implements CommandInterface
         }
 
         if ($context == '.') {
-            echo $this->_showHelp();
+            echo $this->showHelp();
         } else {
-            echo $this->_showContextualHelp($context);
+            echo $this->showContextualHelp($context);
         }
 
         return 0;
@@ -127,39 +127,39 @@ class Help implements CommandInterface
      *
      * @return string
      */
-    protected function _showHelp()
+    protected function showHelp()
     {
         $out = '';
 
-        $out .= $this->_terminal->do_setaf(2)
+        $out .= $this->terminal->do_setaf(2)
             . "Usage: qis <subcommand|module> [OPTIONS] [ARGS]\n\n";
 
-        $out .= $this->_terminal->do_op()
+        $out .= $this->terminal->do_op()
             . "Subcommands:\n";
 
-        $out .= $this->_terminal->do_setaf(3);
+        $out .= $this->terminal->do_setaf(3);
 
-        foreach ($this->_qis->getCommands() as $name => $command) {
+        foreach ($this->qis->getCommands() as $name => $command) {
             $out .= '  ' . $name . ' : ' . $command->getHelpMessage();
         }
 
-        if (count($this->_qis->getModules())) {
-            $out .= $this->_terminal->do_op()
+        if (count($this->qis->getModules())) {
+            $out .= $this->terminal->do_op()
                 . "\nModules:\n"
-                . $this->_terminal->do_setaf(3);
+                . $this->terminal->do_setaf(3);
 
-            foreach ($this->_qis->getModules() as $name => $module) {
+            foreach ($this->qis->getModules() as $name => $module) {
                 $out .= '  ' . $name . ' : ' . $module->getHelpMessage();
             }
         }
 
-        $out .= $this->_terminal->do_op();
+        $out .= $this->terminal->do_op();
         $out .= "\nUse `qis help [module|subcommand]` to get specific help\n"
             . "for a module or subcommand.\n";
 
         $out .= $this->getGlobalOptions();
 
-        $out .= $this->_terminal->do_op();
+        $out .= $this->terminal->do_op();
         return $out;
     }
 
@@ -170,9 +170,9 @@ class Help implements CommandInterface
      */
     public function getGlobalOptions()
     {
-        $out = $this->_terminal->do_op()
+        $out = $this->terminal->do_op()
             . "\nGlobal Options:\n"
-            . $this->_terminal->do_setaf(3)
+            . $this->terminal->do_setaf(3)
             . "  -h [--help] : Show help\n"
             . "  -v [--verbose] : Show verbose messages\n"
             . "  -q [--quiet] : Print less messages\n"
@@ -188,17 +188,17 @@ class Help implements CommandInterface
      * @param string $context Module or subcommand name
      * @return string
      */
-    protected function _showContextualHelp($context)
+    protected function showContextualHelp($context)
     {
         $contextType = 'module';
         $out = '';
 
         // First try to find module by name
-        $contextObject = $this->_qis->getModule($context);
+        $contextObject = $this->qis->getModule($context);
 
         if (!$contextObject) {
             // No module; try a command by that name
-            $contextObject = $this->_qis->getCommand($context);
+            $contextObject = $this->qis->getCommand($context);
             $contextType = 'command';
         }
 
@@ -206,7 +206,7 @@ class Help implements CommandInterface
             throw new CommandException("No module or command by name '$context' found.", 64);
         }
 
-        $this->_qis->prettyMessage("Help for $contextType '$context'", 8, 4);
+        $this->qis->prettyMessage("Help for $contextType '$context'", 8, 4);
         $out .= $contextObject->getExtendedHelpMessage();
 
         $out .= $this->getGlobalOptions();

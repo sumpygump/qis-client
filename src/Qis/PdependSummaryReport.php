@@ -15,7 +15,7 @@ class PdependSummaryReport
      *
      * @var mixed
      */
-    protected $_xml = null;
+    protected $xml = null;
 
     protected $data = [];
 
@@ -25,8 +25,8 @@ class PdependSummaryReport
         // Turn on internal errors for libxml, so we can throw them as
         // exceptions in case of errors encountered while parsing XML
         libxml_use_internal_errors(true);
-        $this->_xml = simplexml_load_file($xmlFilename);
-        if (false == $this->_xml) {
+        $this->xml = simplexml_load_file($xmlFilename);
+        if (false == $this->xml) {
             $errors = array();
             foreach (libxml_get_errors() as $error) {
                 $errors[] = trim($error->message)
@@ -40,12 +40,12 @@ class PdependSummaryReport
 
     public function parse()
     {
-        if (!isset($this->_xml->package)) {
+        if (!isset($this->xml->package)) {
             return false;
         }
 
         $this->data['packages'] = [];
-        foreach ($this->_xml->package as $package) {
+        foreach ($this->xml->package as $package) {
             $this->data['packages'][] = $this->parsePackage($package);
         }
 

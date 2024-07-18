@@ -28,7 +28,7 @@ class Init implements CommandInterface
      *
      * @var mixed
      */
-    protected $_qis = null;
+    protected $qis = null;
 
     /**
      * Get Name of command
@@ -49,7 +49,7 @@ class Init implements CommandInterface
      */
     public function __construct(Qis $qis, $settings)
     {
-        $this->_qis = $qis;
+        $this->qis = $qis;
     }
 
     /**
@@ -69,7 +69,7 @@ class Init implements CommandInterface
      */
     public function execute(Qi_Console_ArgV $args)
     {
-        return $this->_initializeProject();
+        return $this->initializeProject();
     }
 
     /**
@@ -105,14 +105,14 @@ class Init implements CommandInterface
      *
      * @return int
      */
-    protected function _initializeProject()
+    protected function initializeProject()
     {
         echo "Initializing project...";
 
-        $path = $this->_qis->getProjectQisRoot();
+        $path = $this->qis->getProjectQisRoot();
 
-        if ($this->_verifyDirExists($path)) {
-            if (!$this->_promptOverwrite()) {
+        if ($this->verifyDirExists($path)) {
+            if (!$this->promptOverwrite()) {
                 return 0;
             } else {
                 passthru("rm -rfv \"$path\"");
@@ -120,19 +120,19 @@ class Init implements CommandInterface
             }
         }
 
-        $this->_verifyDirExists($path, true);
+        $this->verifyDirExists($path, true);
 
         $file = $path . DIRECTORY_SEPARATOR . 'config.ini';
 
-        $projectName = $this->_promptProjectName();
+        $projectName = $this->promptProjectName();
 
         $contents = '; QIS configuration file'
-            . ' v' . $this->_qis->getVersion() . "\n"
+            . ' v' . $this->qis->getVersion() . "\n"
             . "project_name=$projectName\n"
             . "project_root=\"" . realpath(dirname('.')) . "\"\n"
             . "\nbuild_order=cs,test,coverage\n";
 
-        $contents .= $this->_addModuleConfigDefaults();
+        $contents .= $this->addModuleConfigDefaults();
 
         file_put_contents($file, $contents);
 
@@ -146,11 +146,11 @@ class Init implements CommandInterface
      *
      * @return string
      */
-    protected function _promptProjectName()
+    protected function promptProjectName()
     {
         $name = '';
 
-        if (!$this->_qis->getTerminal()->isatty()) {
+        if (!$this->qis->getTerminal()->isatty()) {
             return $name;
         }
 
@@ -165,9 +165,9 @@ class Init implements CommandInterface
      *
      * @return bool
      */
-    protected function _promptOverwrite()
+    protected function promptOverwrite()
     {
-        $this->_qis->warningMessage(
+        $this->qis->warningMessage(
             "\nQis has already been initialized for this project."
         );
         echo "Do you want to re-init [All data will be lost] (y/n)? ";
@@ -188,7 +188,7 @@ class Init implements CommandInterface
      *
      * @return string
      */
-    protected function _addModuleConfigDefaults()
+    protected function addModuleConfigDefaults()
     {
         $contents = "\n[modules]\n";
 
@@ -221,20 +221,20 @@ class Init implements CommandInterface
      * @param  bool   $create Whether to create if not exists
      * @return bool
      */
-    protected function _verifyDirExists($dir, $create = false)
+    protected function verifyDirExists($dir, $create = false)
     {
-        $this->_qis->log("Checking existence of directory '$dir'");
+        $this->qis->log("Checking existence of directory '$dir'");
 
         if (!is_dir($dir)) {
-            $this->_qis->log("Directory '$dir' doesn't exist.");
+            $this->qis->log("Directory '$dir' doesn't exist.");
             if ($create) {
-                $this->_qis->log("Creating directory '$dir'.");
+                $this->qis->log("Creating directory '$dir'.");
                 mkdir($dir);
             }
             return false;
         }
 
-        $this->_qis->log("Directory '$dir' found.");
+        $this->qis->log("Directory '$dir' found.");
 
         return true;
     }

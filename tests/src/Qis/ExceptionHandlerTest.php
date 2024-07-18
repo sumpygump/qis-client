@@ -6,9 +6,11 @@
  * @package Qis
  */
 
+// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses
+
 namespace Qis\Tests;
 
-use BaseTestCase;
+use Qis\Tests\BaseTestCase;
 use Qis\ExceptionHandler;
 use Qis\Qis;
 use Qi_Console_ArgV;
@@ -43,14 +45,14 @@ class MockQisExceptionHandler extends ExceptionHandler
      */
     public static function errorCode($code)
     {
-        return self::_error_code($code);
+        return self::getErrorCode($code);
     }
 }
 
 /**
  * QisExceptionHandler Test class
  *
- * @uses BaseTestCase
+ * @uses \Qis\Tests\BaseTestCase
  * @package Qis
  * @author Jansen Price <jansen.price@gmail.com>
  * @version $Id$
@@ -86,7 +88,7 @@ class ExceptionHandlerTest extends BaseTestCase
      */
     public function testInitHandlersNormal()
     {
-        ExceptionHandler::initHandlers($this->_getDefaultQisObject());
+        ExceptionHandler::initHandlers($this->getDefaultQisObject());
 
         // No side effects to confirm
         $this->assertTrue(true);
@@ -120,7 +122,7 @@ class ExceptionHandlerTest extends BaseTestCase
         $expected = "E_ERROR: An error occurred in filename.php:1\n";
 
         ob_start();
-        ExceptionHandler::handle_error(
+        ExceptionHandler::handleError(
             $errorNumber,
             $message,
             $filename,
@@ -140,7 +142,7 @@ class ExceptionHandlerTest extends BaseTestCase
     public function testHandleErrorWithNoArguments()
     {
         ob_start();
-        ExceptionHandler::handle_error();
+        ExceptionHandler::handleError();
         $result = ob_get_contents();
         ob_end_clean();
 
@@ -154,7 +156,7 @@ class ExceptionHandlerTest extends BaseTestCase
      */
     public function testHandle()
     {
-        ExceptionHandler::initHandlers($this->_getDefaultQisObject());
+        ExceptionHandler::initHandlers($this->getDefaultQisObject());
 
         $exception = new Exception('There was a problem.', 1);
 
@@ -195,7 +197,7 @@ class ExceptionHandlerTest extends BaseTestCase
      *
      * @return Qis
      */
-    protected function _getDefaultQisObject()
+    protected function getDefaultQisObject()
     {
         $args     = new Qi_Console_ArgV(array());
         $terminal = new Qi_Console_Terminal();

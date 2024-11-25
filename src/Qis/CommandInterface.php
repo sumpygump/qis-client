@@ -34,10 +34,9 @@ interface CommandInterface
      * Constructor
      *
      * @param Qis $qis Qis object
-     * @param array $settings Settings
      * @return void
      */
-    public function __construct(Qis $qis, $settings);
+    public function __construct(Qis $qis);
 
     /**
      * Initialize this command object

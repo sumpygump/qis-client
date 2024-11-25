@@ -1,0 +1,4 @@
+parameters:
+    universalObjectCratesClasses:
+        - Qi_Console_ArgV
+        - Qi_Console_Terminal

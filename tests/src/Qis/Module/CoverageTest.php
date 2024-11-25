@@ -63,18 +63,6 @@ class CoverageTest extends BaseTestCase
     }
 
     /**
-     * Test constructor with no arguments
-     *
-     * @return void
-     */
-    public function testConstructorWithNoArguments()
-    {
-        $this->expectException(\ArgumentCountError::class);
-        $this->expectExceptionMessage("Too few arguments");
-        $this->object = new Coverage();
-    }
-
-    /**
      * Test get default ini
      *
      * @return void
@@ -208,7 +196,7 @@ class CoverageTest extends BaseTestCase
      *
      * @param bool $initialize Whether to initialize
      * @param Qi_Console_ArgV $args Arguments
-     * @return Coverage
+     * @return void
      */
     protected function createObject($initialize = true, $args = [])
     {

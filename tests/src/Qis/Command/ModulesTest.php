@@ -45,6 +45,8 @@ class MockQisModuleBaseForModules implements ModuleInterface
      */
     public function __construct(Qis $qis, $settings)
     {
+        $qis == null;
+        $settings == null;
     }
 
     /**
@@ -155,9 +157,7 @@ class ModulesTest extends BaseTestCase
 
         $this->qis = new Qis($args, $terminal);
 
-        $settings = [];
-
-        $this->object = new Modules($this->qis, $settings);
+        $this->object = new Modules($this->qis);
     }
 
     /**

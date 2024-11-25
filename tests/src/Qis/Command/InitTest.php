@@ -40,9 +40,7 @@ class InitTest extends BaseTestCase
 
         $this->qis = new Qis($args, $terminal);
 
-        $settings = [];
-
-        $this->object = new Init($this->qis, $settings);
+        $this->object = new Init($this->qis);
     }
 
     /**

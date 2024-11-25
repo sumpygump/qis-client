@@ -43,9 +43,7 @@ class HistoryTest extends BaseTestCase
 
         $this->qis = new Qis($args, $terminal);
 
-        $settings = [];
-
-        $this->object = new History($this->qis, $settings);
+        $this->object = new History($this->qis);
     }
 
     /**

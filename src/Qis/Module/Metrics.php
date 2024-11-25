@@ -194,7 +194,7 @@ class Metrics implements ModuleInterface
     /**
      * Show the statistics
      *
-     * @return string
+     * @return int
      */
     public function showMetrics()
     {
@@ -229,6 +229,8 @@ class Metrics implements ModuleInterface
 
         $table->display();
         print "Use `qis metrics --class <search-term>` to show granular metrics per class.\n";
+
+        return 0;
     }
 
     /**

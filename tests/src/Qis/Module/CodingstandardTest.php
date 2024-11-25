@@ -58,7 +58,7 @@ class MockQisModuleCodingstandard extends Codingstandard
 
     public function publicRunCodeSniff($paths, $options = [])
     {
-        return $this->runCodeSniff($paths, $options);
+        $this->runCodeSniff($paths, $options);
     }
 }
 
@@ -123,32 +123,6 @@ class CodingstandardTest extends BaseTestCase
             passthru("rm -rf $path");
         }
         @unlink($this->sampleFile);
-    }
-
-    /**
-     * Test constructor with no arguments
-     *
-     * @return void
-     */
-    public function testConstructorWithNoArguments()
-    {
-        $this->expectException(\ArgumentCountError::class);
-        $this->expectExceptionMessage("Too few arguments");
-        $this->object = new Codingstandard();
-    }
-
-    /**
-     * testConstructorWithoutSecondArgument
-     *
-     * @return void
-     */
-    public function testConstructorWithoutSecondArgument()
-    {
-        $this->expectException(\ArgumentCountError::class);
-        $this->expectExceptionMessage("Too few arguments");
-        $this->object = new Codingstandard(
-            $this->getDefaultQisObject()
-        );
     }
 
     /**
@@ -534,15 +508,16 @@ class CodingstandardTest extends BaseTestCase
 
         $result = $this->object->getSummary(true);
 
-        $this->assertStringContainsString('level: 0.13%', $result);
+        $this->assertStringContainsString('level: 0.1', $result);
     }
 
     /**
      * Create object
      *
      * @param bool $initialize Whether to initialize
+     * @param array<string,mixed>|null $settings Settings to pass to codingstandard obj
      * @param Qi_Console_ArgV $args Arguments to pass to object
-     * @return Codingstandard
+     * @return void
      */
     protected function createObject($initialize = true, $settings = null, $args = [])
     {

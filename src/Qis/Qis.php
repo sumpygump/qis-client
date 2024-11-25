@@ -184,7 +184,7 @@ class Qis
             $classname   = 'Qis\\Command\\' . pathinfo($file, PATHINFO_FILENAME);
             $commandName = call_user_func([$classname, 'getName']);
 
-            $this->commands[$commandName] = new $classname($this, []);
+            $this->commands[$commandName] = new $classname($this);
         }
     }
 
@@ -336,6 +336,8 @@ class Qis
         } else {
             $this->halt("Unrecognized command '$action'", 1);
         }
+
+        return 0;
     }
 
     /**

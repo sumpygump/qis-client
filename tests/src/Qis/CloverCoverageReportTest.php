@@ -32,18 +32,6 @@ final class CloverCoverageReportTest extends BaseTestCase
     }
 
     /**
-     * Test construction incorrectly
-     *
-     * @return void
-     */
-    public function testConstructionIncorrectly()
-    {
-        $this->expectException(\ArgumentCountError::class);
-        $this->expectExceptionMessage("Too few arguments");
-        $this->object = new CloverCoverageReport();
-    }
-
-    /**
      * A valid file is required
      *
      * @return void

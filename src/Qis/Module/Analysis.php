@@ -134,7 +134,8 @@ class Analysis implements ModuleInterface
             if ($args->file) {
                 return $this->showResultsForFile($args->file);
             } else {
-                return $this->showResults();
+                $this->showResults();
+                return;
             }
         }
 
@@ -276,7 +277,7 @@ class Analysis implements ModuleInterface
     /**
      * Show the errors found
      *
-     * @return string
+     * @return void
      */
     public function showResults($level_override = null)
     {
@@ -363,6 +364,7 @@ class Analysis implements ModuleInterface
             }
             print("\n");
         }
+        return 0;
     }
 
     public static function wrap($text, $width, $prefix_width = 7)
@@ -386,6 +388,7 @@ class Analysis implements ModuleInterface
 
         $root = realpath('.') . DIRECTORY_SEPARATOR;
 
+        $_filename = '';
         $found_list = [];
         foreach ($results->files as $filename => $file_results) {
             $_filename = str_replace($root, '', $filename);
@@ -425,6 +428,8 @@ class Analysis implements ModuleInterface
         }
         print($terminal->do_op());
         print("\n\n");
+
+        return 0;
     }
 
     /**

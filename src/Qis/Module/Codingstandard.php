@@ -904,11 +904,11 @@ class Codingstandard implements ModuleInterface
         $this->clearFileList();
 
         foreach ($this->paths as $path) {
-            $files = $this->createFileList($path);
+            $this->createFileList($path);
         }
 
         $analyser = new Analyser();
-        $results = $analyser->countFiles($files, false);
+        $results = $analyser->countFiles($this->files, false);
 
         if (isset($results['loc'])) {
             // Lines of Code

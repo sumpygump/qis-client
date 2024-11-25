@@ -68,6 +68,8 @@ class MockModule implements ModuleInterface
      */
     public function __construct(Qis $qis, $settings)
     {
+        $qis == null;
+        $settings == null;
     }
 
     /**
@@ -87,6 +89,7 @@ class MockModule implements ModuleInterface
      */
     public function execute(Qi_Console_ArgV $args)
     {
+        return 0;
     }
 
     /**

@@ -26,9 +26,9 @@ class Help implements CommandInterface
     /**
      * Qis kernel object
      *
-     * @var mixed
+     * @var Qis
      */
-    protected $qis = null;
+    protected $qis;
 
     /**
      * Terminal
@@ -50,11 +50,10 @@ class Help implements CommandInterface
     /**
      * Constructor
      *
-     * @param object $qis Qis object
-     * @param mixed $settings Configuration settings
+     * @param Qis $qis Qis object
      * @return void
      */
-    public function __construct(Qis $qis, $settings)
+    public function __construct(Qis $qis)
     {
         $this->qis = $qis;
         $this->terminal = $this->qis->getTerminal();

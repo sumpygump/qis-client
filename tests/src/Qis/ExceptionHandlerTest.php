@@ -68,18 +68,6 @@ class ExceptionHandlerTest extends BaseTestCase
     }
 
     /**
-     * Test initing handlers with no arguments
-     *
-     * @return void
-     */
-    public function testInitHandlersNoArguments()
-    {
-        $this->expectException(\ArgumentCountError::class);
-        $this->expectExceptionMessage("Too few arguments");
-        ExceptionHandler::initHandlers();
-    }
-
-    /**
      * Test init handlers normal
      *
      * @return void

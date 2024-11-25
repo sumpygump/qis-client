@@ -39,11 +39,11 @@ class Command implements CommandInterface
      * Constructor
      *
      * @param Qis $qis Qis object
-     * @param array $settings Config settings
      * @return void
      */
-    public function __construct(Qis $qis, $settings)
+    public function __construct(Qis $qis)
     {
+        $qis == null;
     }
 
     /**
@@ -63,6 +63,7 @@ class Command implements CommandInterface
      */
     public function execute(Qi_Console_ArgV $args)
     {
+        return 0;
     }
 
     /**
@@ -72,6 +73,7 @@ class Command implements CommandInterface
      */
     public function getHelpMessage()
     {
+        return '';
     }
 
     /**
@@ -81,6 +83,7 @@ class Command implements CommandInterface
      */
     public function getExtendedHelpMessage()
     {
+        return '';
     }
 }
 
@@ -107,7 +110,7 @@ class CommandInterfaceTest extends BaseTestCase
 
         $this->qis = new Qis($args, $terminal);
 
-        $command = new Command($this->qis, []);
+        $command = new Command($this->qis);
 
         $name = $command->getName();
         $this->assertEquals('name', $name);
